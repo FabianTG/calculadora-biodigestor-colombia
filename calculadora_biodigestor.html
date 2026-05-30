@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Prefactibilidad – Biodigestores Bovinos</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    
+    <style>
+        
+        :root {
+            --bg-cream: #FAF6EE;         
+            --primary-green: #1B4332;    
+            --primary-light: #2D5A27;    
+            --accent-terracota: #A24823; 
+            --accent-mustard: #E09F3E;   
+            --wood-dark: #4A3728;        
+            --text-dark: #2E1E12;        
+            --card-bg: #FFFFFF;          
+            --border-color: #E6DCD2;     
+            --shadow-soft: 0 8px 24px rgba(74, 55, 40, 0.08);
+            --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+            --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cabin', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-cream);
+            background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
+            background-size: 24px 24px;
+            padding: 20px 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 30px 20px;
+            background-color: var(--primary-green);
+            border-radius: 16px;
+            box-shadow: var(--shadow-soft);
+            border-bottom: 6px solid var(--accent-terracota);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: var(--accent-mustard);
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            color: #FAF6EE;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: #E6DCD2;
+            font-size: 1.05rem;
+            font-weight: 400;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media (min-width: 850px) {
+            .calculator-grid {
+                grid-template-columns: 1.1fr 1.2fr;
+            }
+        }
+
+        
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-color);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            position: relative;
+        }
+
+        
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            border-radius: 14px 14px 0 0;
+        }
+
+        .card-inputs::after {
+            background-color: var(--wood-dark);
+        }
+
+        .card-results::after {
+            background-color: var(--primary-light);
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-bottom: 2px solid var(--bg-cream);
+            padding-bottom: 12px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title span {
+            font-family: inherit;
+            color: var(--primary-green);
+        }
+
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-label {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--wood-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-description {
+            font-size: 0.85rem;
+            color: #665544;
+            line-height: 1.35;
+            margin-top: -2px;
+        }
+
+        
+        .number-control {
+            display: flex;
+            align-items: center;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: var(--bg-cream);
+            height: 48px;
+            transition: border-color 0.2s var(--ease-out);
+        }
+
+        .number-control:focus-within {
+            border-color: var(--primary-light);
+        }
+
+        .btn-number {
+            width: 48px;
+            height: 100%;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #FFFFFF;
+            transition: background-color 0.15s;
+        }
+
+        .btn-number:hover {
+            background-color: var(--border-color);
+        }
+
+        .btn-number:active {
+            background-color: #E6DCD2;
+        }
+
+        .input-number {
+            flex: 1;
+            height: 100%;
+            border: none;
+            background: none;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            outline: none;
+        }
+
+        
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .slider-value-display {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            background-color: var(--bg-cream);
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .custom-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: var(--border-color);
+            outline: none;
+            transition: background 0.15s;
+        }
+
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--accent-terracota);
+            cursor: pointer;
+            border: 2px solid #FFFFFF;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: transform 0.1s var(--ease-out);
+        }
+
+        .custom-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        .custom-slider::-webkit-slider-thumb:active {
+            transform: scale(0.95);
+            background: var(--wood-dark);
+        }
+
+        .custom-slider::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--accent-terracota);
+            cursor: pointer;
+            border: 2px solid #FFFFFF;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: transform 0.1s var(--ease-out);
+        }
+
+        .custom-slider::-moz-range-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        
+        .climate-badge {
+            align-self: flex-start;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+            transition: all 0.3s var(--ease-out);
+        }
+
+        .badge-warm {
+            background-color: #FDF2E9;
+            color: var(--accent-terracota);
+            border: 1px solid #FADBD8;
+        }
+
+        .badge-temperate {
+            background-color: #FEF9E7;
+            color: #B7950B;
+            border: 1px solid #FCF3CF;
+        }
+
+        .badge-cold {
+            background-color: #EBF5FB;
+            color: #2471A3;
+            border: 1px solid #D4E6F1;
+        }
+
+        
+        .btn-calculate {
+            background-color: var(--accent-terracota);
+            color: #FAF6EE;
+            border: none;
+            border-radius: 8px;
+            height: 52px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(162, 72, 35, 0.2);
+            transition: all 0.2s var(--ease-out);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+            border-bottom: 4px solid #782E14;
+        }
+
+        .btn-calculate:hover {
+            background-color: #B3532C;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(162, 72, 35, 0.3);
+        }
+
+        .btn-calculate:active {
+            transform: translateY(2px);
+            border-bottom-width: 1px;
+            box-shadow: 0 2px 4px rgba(162, 72, 35, 0.2);
+        }
+
+        
+        .results-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            height: 100%;
+            min-height: 350px;
+            border: 2px dashed var(--border-color);
+            border-radius: 10px;
+            background-color: #FCFBF7;
+        }
+
+        .placeholder-icon {
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+            opacity: 0.7;
+        }
+
+        .placeholder-text {
+            font-size: 1.05rem;
+            color: #887766;
+            max-width: 320px;
+            line-height: 1.4;
+        }
+
+        .results-container {
+            display: none; 
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.4s var(--ease-out);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        
+        .coverage-block {
+            background-color: var(--bg-cream);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .coverage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .coverage-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--wood-dark);
+        }
+
+        .coverage-value {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary-green);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 12px;
+            background-color: #E6DCD2;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: var(--shadow-inset);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%; 
+            border-radius: 6px;
+            background-color: var(--accent-terracota);
+            transition: width 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stat-card {
+            background-color: #FFFFFF;
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #887766;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        
+        .viability-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .viability-si {
+            background-color: #D4EFDF;
+            color: #196F3D;
+            border: 1px solid #A9DFBF;
+        }
+
+        .viability-parcial {
+            background-color: #FCF3CF;
+            color: #B7950B;
+            border: 1px solid #F9E79F;
+        }
+
+        .viability-no {
+            background-color: #FADBD8;
+            color: #943126;
+            border: 1px solid #F5B7B1;
+        }
+
+        
+        .savings-block {
+            background-color: #EBF5FB;
+            border: 1.5px solid #AED6F1;
+            padding: 22px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .savings-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: #2E86C1;
+        }
+
+        .savings-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #2E86C1;
+            letter-spacing: 0.5px;
+        }
+
+        .savings-value {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: #1B4F72;
+        }
+
+        .savings-detail {
+            font-size: 0.85rem;
+            color: #5499C7;
+            font-style: italic;
+        }
+
+        
+        .recommendation-block {
+            background-color: #FDF5E6;
+            border-left: 5px solid var(--accent-mustard);
+            padding: 18px;
+            border-radius: 4px 10px 10px 4px;
+            font-size: 0.95rem;
+            line-height: 1.45;
+        }
+
+        .recommendation-block strong {
+            color: var(--wood-dark);
+        }
+
+        .needed-cows-alert {
+            background-color: #FAF9F5;
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .needed-cows-alert span.icon {
+            font-size: 1.3rem;
+        }
+
+        
+        .reference-section {
+            margin-top: 16px;
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-color);
+            padding: 28px;
+            position: relative;
+        }
+
+        .reference-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            border-radius: 14px 14px 0 0;
+            background-color: var(--accent-mustard);
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: var(--primary-green);
+            color: #FAF6EE;
+            font-weight: 700;
+            padding: 12px 16px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        th:first-child {
+            text-align: left;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--bg-cream);
+        }
+
+        td:first-child {
+            text-align: left;
+            font-weight: 700;
+            color: var(--wood-dark);
+        }
+
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-bottom: 20px;
+            font-size: 0.85rem;
+            color: #887766;
+            line-height: 1.5;
+        }
+
+        footer a {
+            color: var(--primary-light);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    
+        
+    
+        .btn-reset {
+            background-color: transparent;
+            color: var(--wood-dark);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            height: 52px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .btn-reset:hover {
+            background-color: var(--bg-cream);
+            border-color: var(--wood-dark);
+        }
+
+        .btn-reset:active {
+            transform: translateY(1px);
+        }
+
+        .button-group-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 12px;
+            margin-top: 8px;
+        }
+    
+</style>
+</head>
+<body>
+
+    <div class="container">
+        
+        
+        <header>
+            <h1>Calculadora de Prefactibilidad – Biodigestores Bovinos</h1>
+            <p>Estime la viabilidad técnica, cobertura energética de cocción y ahorro económico para hogares rurales en Colombia según clima y tamaño de hato.</p>
+        </header>
+
+        
+        <div class="calculator-grid">
+            
+            
+                        <div class="card card-inputs">
+                <h2 class="card-title">
+                    <span>🌾 Datos de Entrada</span>
+                </h2>
+
+                <div class="input-group">
+                    <div class="input-label">
+                        <span>Número de Bovinos</span>
+                    </div>
+                    <p class="input-description">Bovinos en pastoreo o confinamiento (el estiércol recolectable se calcula según la fracción de recolección seleccionada).</p>
+                    <div class="number-control">
+                        <button type="button" class="btn-number" onclick="adjustBovinos(-1)">−</button>
+                        <input type="number" id="input-bovinos" class="input-number" value="5" min="0" step="1" oninput="calculateRealtime()">
+                        <button type="button" class="btn-number" onclick="adjustBovinos(1)">+</button>
+                    </div>
+                </div>
+
+                <div class="input-group slider-container">
+                    <div class="input-label">
+                        <span>Fracción de Recolección</span>
+                        <span id="display-fraccion" class="slider-value-display">25%</span>
+                    </div>
+                    <p class="input-description">Ajuste el porcentaje de estiércol que logra recolectar diariamente según su sistema de manejo y frecuencia (ej. 25% en semiestabulado con dos recolecciones al día).</p>
+                    <input type="range" id="input-fraccion" class="custom-slider" min="0" max="100" value="25" step="1" oninput="updateFraccionDisplay()">
+                    <p id="manure-calc-note" class="input-description" style="font-weight: 700; color: var(--primary-light); margin-top: 4px;">
+                        Estiércol recolectable: 10.0 kg/animal/día
+                    </p>
+                    <p class="input-description" style="font-size: 0.8rem; font-style: italic; color: var(--accent-terracota); margin-top: 2px;">
+                        * El valor del 25% corresponds al sistema semiestabulado (referencia del artículo). Ajuste según su capacidad de recolección diaria.
+                    </p>
+                </div>
+
+                <div class="input-group slider-container">
+                    <div class="input-label">
+                        <span>Personas en el Hogar</span>
+                        <span id="display-personas" class="slider-value-display">4 personas</span>
+                    </div>
+                    <p class="input-description">Determina la demanda energética útil para cocción basada en el consumo estándar de 0.166 kg GLP/persona/día.</p>
+                    <input type="range" id="input-personas" class="custom-slider" min="1" max="10" value="4" step="1" oninput="updatePersonasDisplay()">
+                </div>
+
+                <div class="input-group slider-container">
+                    <div class="input-label">
+                        <span>Temperatura Media Anual</span>
+                        <span id="display-temp" class="slider-value-display">16.0 °C</span>
+                    </div>
+                    <p class="input-description">La temperatura ambiente regula la velocidad de digestión bacteriana psicrófila/mesófila en sistemas tubulares de bajo costo.</p>
+                    <input type="range" id="input-temp" class="custom-slider" min="-5" max="40" value="16" step="0.5" oninput="updateTempDisplay()">
+                    <div id="badge-clima" class="climate-badge badge-cold">
+                        ❄️ Clima Frío (&lt;18°C) – factor 0.55
+                    </div>
+                </div>
+
+                <div class="button-group-row">
+                    <button type="button" class="btn-calculate" onclick="triggerCalculation()">
+                        <span>📊 Calcular Viabilidad</span>
+                    </button>
+                    <button type="button" class="btn-reset" onclick="resetCalculator()">
+                        <span>🧹 Limpiar todo</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card card-results">
+                <h2 class="card-title">
+                    <span>💡 Resultados del Análisis</span>
+                </h2>
+
+                
+                <div id="results-placeholder" class="results-placeholder">
+                    <div class="placeholder-icon">🐄</div>
+                    <p class="placeholder-text">Modifique los parámetros de la izquierda y haga clic en <strong>Calcular viabilidad</strong> para ver el análisis de prefactibilidad técnica y económica.</p>
+                </div>
+
+                
+                <div id="results-container" class="results-container">
+                    
+                    
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <div class="stat-label">Clima Detectado</div>
+                            <div id="res-clima" class="stat-value" style="font-size: 1.15rem; color: var(--primary-green); font-weight: 700;">Frío</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Biogás Estimado</div>
+                            <div id="res-biogas" class="stat-value">0.00 m³/día</div>
+                            <div id="res-manure-line" style="font-size: 0.85rem; color: #665544; margin-top: 4px; font-weight: 500;">Estiércol recolectable: 10.0 kg/animal/día</div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="coverage-block">
+                        <div class="coverage-header">
+                            <span class="coverage-label">Cobertura de Demanda de Cocción</span>
+                            <span id="res-cobertura-pct" class="coverage-value">0%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div id="res-progress-fill" class="progress-bar-fill"></div>
+                        </div>
+                        <p id="res-cobertura-desc" class="input-description" style="margin-top: 4px;"></p>
+                    </div>
+
+                    
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <div class="stat-label">Viabilidad Técnica</div>
+                            <div style="margin-top: 4px;">
+                                <span id="res-viability" class="viability-badge viability-no">No</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Hato Requerido (100%)</div>
+                            <div id="res-needed-cows" class="stat-value">0 bovinos</div>
+                        </div>
+                    </div>
+
+                    
+                    <div id="res-savings-card" class="savings-block">
+                        <span class="savings-label">Ahorro Anual Estimado</span>
+                        <span id="res-savings-value" class="savings-value">$ 0 COP</span>
+                        <span id="res-savings-detail" class="savings-detail">Equivalente a 0 cilindros de GLP de 35 lb evitados</span>
+                    </div>
+
+                    
+                    <div id="res-recommendation" class="recommendation-block">
+                        Recomendación.
+                    </div>
+
+                    
+                    <div id="res-alert-insufficient" class="needed-cows-alert" style="display: none;">
+                        <span class="icon">⚠️</span>
+                        <span id="res-alert-text">La escala actual es insuficiente; considere aumentar el número de bovinos o mejorar la recolección de estiércol.</span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        
+        <div class="reference-section">
+            <h2 class="card-title" style="font-size: 1.35rem;">
+                <span>📋 Tabla de Referencia: Umbrales de Autoconsumo Potencial</span>
+            </h2>
+            <p class="input-description" style="margin-top: 6px; font-size: 0.9rem;">
+                Número mínimo de bovinos requeridos para alcanzar el 100% de cobertura de cocción familiar, según el tamaño del hogar y el piso térmico (Tabla 6 del artículo de investigación).
+            </p>
+            <p class="input-description" style="margin-top: 6px; font-size: 0.9rem; font-style: italic; color: var(--accent-terracota);">
+                * Nota: Los umbrales consideran una fracción de recolección del 25% (semiestabulado). Ajuste la fracción en los parámetros para otros sistemas.
+            </p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Personas en el Hogar</th>
+                            <th>Clima Cálido (&gt;24°C)</th>
+                            <th>Clima Templado (18–24°C)</th>
+                            <th>Clima Frío (&lt;18°C)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="row-p1">
+                            <td>1 Persona</td>
+                            <td>2 bovinos</td>
+                            <td>3 bovinos</td>
+                            <td>5 bovinos</td>
+                        </tr>
+                        <tr id="row-p2">
+                            <td>2 Personas</td>
+                            <td>3 bovinos</td>
+                            <td>5 bovinos</td>
+                            <td>8 bovinos</td>
+                        </tr>
+                        <tr id="row-p3">
+                            <td>3 Personas</td>
+                            <td>4 bovinos</td>
+                            <td>6 bovinos</td>
+                            <td>10 bovinos</td>
+                        </tr>
+                        <tr id="row-p4">
+                            <td>4 Personas</td>
+                            <td>5 bovinos</td>
+                            <td>8 bovinos</td>
+                            <td>12 bovinos</td>
+                        </tr>
+                        <tr id="row-p5">
+                            <td>5 o más Personas</td>
+                            <td>6 bovinos</td>
+                            <td>9 bovinos</td>
+                            <td>13 bovinos</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        
+        <footer>
+            <p><strong>Copiloto de Investigación – Biodigestores Bovinos en Colombia (2026)</strong></p>
+            <p>Parámetros técnicos validados con base en Rivera et al. (2025), López et al. (2025), Andrade et al. (2020) e Inversiones GLP (2026).</p>
+            <p style="margin-top: 6px; font-size: 0.8rem; opacity: 0.8;">Herramienta estática de libre distribución para fomento de la economía circular y la transición energética rural.</p>
+        </footer>
+
+    </div>
+
+    
+    <script>
+        const VS_FRACCION = 0.12;
+        const PCI_METANO = 35.8;
+        const EFICIENCIA_FOGON = 0.55;
+        const DEMANDA_GLP_PERSONA = 0.166;
+        const PCI_GLP = 46.0;
+        const PRECIO_GLP_KG = 6000;
+        const GLP_CILINDRO_KG = 15.87;
+
+        function adjustBovinos(amount) {
+            const input = document.getElementById('input-bovinos');
+            let val = parseInt(input.value) || 0;
+            val = Math.max(0, val + amount);
+            input.value = val;
+            calculateRealtime();
+        }
+
+        function updatePersonasDisplay() {
+            const val = document.getElementById('input-personas').value;
+            const display = document.getElementById('display-personas');
+            if (parseInt(val) >= 5) {
+                display.innerText = val + " o más personas";
+            } else {
+                display.innerText = val + (parseInt(val) === 1 ? " persona" : " personas");
+            }
+            highlightReferenceRow(parseInt(val));
+            calculateRealtime();
+        }
+
+        function updateTempDisplay() {
+            const temp = parseFloat(document.getElementById('input-temp').value);
+            document.getElementById('display-temp').innerText = temp.toFixed(1) + " °C";
+            const badge = document.getElementById('badge-clima');
+            if (temp > 24) {
+                badge.innerText = "🔥 Clima Cálido (>24°C) – factor 1.00";
+                badge.className = "climate-badge badge-warm";
+            } else if (temp >= 18) {
+                badge.innerText = "🍃 Clima Templado (18–24°C) – factor 0.75";
+                badge.className = "climate-badge badge-temperate";
+            } else {
+                badge.innerText = "❄️ Clima Frío (<18°C) – factor 0.55";
+                badge.className = "climate-badge badge-cold";
+            }
+            calculateRealtime();
+        }
+
+        function updateFraccionDisplay() {
+            const slider = document.getElementById('input-fraccion');
+            const val = parseInt(slider.value);
+            document.getElementById('display-fraccion').innerText = val + "%";
+            const manure = 40 * (val / 100);
+            document.getElementById('manure-calc-note').innerText = "Estiércol recolectable: " + manure.toFixed(1) + " kg/animal/día";
+            calculateRealtime();
+        }
+
+        function highlightReferenceRow(personas) {
+            for (let i = 1; i <= 5; i++) {
+                const row = document.getElementById('row-p' + i);
+                if (row) row.style.backgroundColor = '';
+                if (row) row.style.fontWeight = 'normal';
+            }
+            const activeIndex = Math.min(personas, 5);
+            const activeRow = document.getElementById('row-p' + activeIndex);
+            if (activeRow) {
+                activeRow.style.backgroundColor = '#FCF3CF';
+                activeRow.style.fontWeight = 'bold';
+            }
+        }
+
+        function getClimateParams(temp) {
+            if (temp > 24) {
+                return { name: "Cálido (>24°C)", factor: 1.00, rendimiento: 0.1700 };
+            } else if (temp >= 18) {
+                return { name: "Templado (18–24°C)", factor: 0.75, rendimiento: 0.1275 };
+            } else {
+                return { name: "Frío (<18°C)", factor: 0.55, rendimiento: 0.0935 };
+            }
+        }
+
+        function calculateRealtime() {
+            const container = document.getElementById('results-container');
+            if (container.style.display === 'flex') {
+                runCalculations();
+            }
+        }
+
+        function triggerCalculation() {
+            document.getElementById('results-placeholder').style.display = 'none';
+            const container = document.getElementById('results-container');
+            container.style.display = 'flex';
+            runCalculations();
+            if (window.innerWidth < 850) {
+                container.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function runCalculations() {
+            const bovinos = Math.max(0, parseInt(document.getElementById('input-bovinos').value) || 0);
+            const personas = parseInt(document.getElementById('input-personas').value);
+            const temp = parseFloat(document.getElementById('input-temp').value);
+            const fraccion = parseInt(document.getElementById('input-fraccion').value);
+            
+            const manure_per_animal = 40 * (fraccion / 100);
+            document.getElementById('res-manure-line').innerText = "Estiércol recolectable: " + manure_per_animal.toFixed(1) + " kg/animal/día";
+
+            const clima = getClimateParams(temp);
+            const biogas_dia = bovinos * manure_per_animal * VS_FRACCION * clima.rendimiento;
+            document.getElementById('res-biogas').innerText = biogas_dia.toFixed(2) + " m³/día";
+            document.getElementById('res-clima').innerText = clima.name + " (f: " + clima.factor.toFixed(2) + ")";
+
+            const demanda_hogar = 4.20 * personas;
+            const oferta_por_bovino = manure_per_animal * VS_FRACCION * clima.rendimiento * PCI_METANO * EFICIENCIA_FOGON;
+            const oferta_total = bovinos * oferta_por_bovino;
+
+            let cobertura = 0;
+            if (demanda_hogar > 0) {
+                cobertura = (oferta_total / demanda_hogar) * 100;
+            }
+            
+            const displayPct = Math.round(cobertura);
+            document.getElementById('res-cobertura-pct').innerText = displayPct + "%";
+            
+            const fillWidth = Math.min(cobertura, 100);
+            const fill = document.getElementById('res-progress-fill');
+            fill.style.width = fillWidth + "%";
+
+            if (cobertura >= 100) {
+                fill.style.backgroundColor = "var(--primary-green)";
+                document.getElementById('res-cobertura-desc').innerHTML = "<strong>¡Suficiencia energética alcanzada!</strong> El biogás generado cubre la demanda total de cocción.";
+            } else if (cobertura >= 50) {
+                fill.style.backgroundColor = "var(--accent-mustard)";
+                document.getElementById('res-cobertura-desc').innerHTML = "<strong>Suficiencia parcial.</strong> Cubre una parte significativa; requiere un cilindro de GLP de respaldo ocasional.";
+            } else {
+                fill.style.backgroundColor = "var(--accent-terracota)";
+                document.getElementById('res-cobertura-desc').innerHTML = "<strong>Suficiencia baja.</strong> Producción insuficiente para la demanda del hogar. Considere aumentar el hato.";
+            }
+
+            const viabilityBadge = document.getElementById('res-viability');
+            if (cobertura >= 100) {
+                viabilityBadge.innerText = "SÍ";
+                viabilityBadge.className = "viability-badge viability-si";
+            } else if (cobertura >= 50) {
+                viabilityBadge.innerText = "PARCIAL";
+                viabilityBadge.className = "viability-badge viability-parcial";
+            } else {
+                viabilityBadge.innerText = "NO";
+                viabilityBadge.className = "viability-badge viability-no";
+            }
+
+            const bovinos_necesarios = Math.ceil(demanda_hogar / oferta_por_bovino);
+            document.getElementById('res-needed-cows').innerText = isFinite(bovinos_necesarios) && bovinos_necesarios > 0 ? bovinos_necesarios + (bovinos_necesarios === 1 ? " bovino" : " bovinos") : "0 bovinos";
+
+            const cobertura_efectiva = Math.min(cobertura, 100);
+            const consumo_glp_evitado_anual = (cobertura_efectiva / 100) * personas * DEMANDA_GLP_PERSONA * 365;
+            const ahorro_anual_cop = consumo_glp_evitado_anual * PRECIO_GLP_KG;
+            
+            const formattedSavings = new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(ahorro_anual_cop);
+            
+            document.getElementById('res-savings-value').innerText = formattedSavings + " / año";
+
+            const cilindros_evitados = consumo_glp_evitado_anual / GLP_CILINDRO_KG;
+            document.getElementById('res-savings-detail').innerText = "Equivalente a " + cilindros_evitados.toFixed(1) + " cilindros de GLP (35 lb) evitados al año";
+
+            const recBlock = document.getElementById('res-recommendation');
+            let recText = "";
+            if (bovinos < 15) {
+                recText = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor tubular de bajo costo</strong> (tipo de manga flexible plástica). Es ideal para el autoconsumo familiar, requiere baja inversión inicial y es de fácil mantenimiento por el propio productor.";
+            } else {
+                recText = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor comercial preensamblado</strong>. Su escala justifica una estructura más robusta, que aunque exige mayor inversión inicial, ofrece mayor vida útil, mejor retención térmica y facilidad de operación a mediano plazo.";
+            }
+            recBlock.innerHTML = recText;
+
+            const alertBlock = document.getElementById('res-alert-insufficient');
+            if (cobertura < 50) {
+                alertBlock.style.display = "flex";
+            } else {
+                alertBlock.style.display = "none";
+            }
+        }
+
+        function resetCalculator() {
+            document.getElementById('input-bovinos').value = 5;
+            document.getElementById('input-fraccion').value = 25;
+            document.getElementById('input-personas').value = 4;
+            document.getElementById('input-temp').value = 16;
+            
+            updatePersonasDisplay();
+            updateTempDisplay();
+            updateFraccionDisplay();
+            
+            document.getElementById('results-container').style.display = 'none';
+            document.getElementById('results-placeholder').style.display = 'flex';
+        }
+
+        window.onload = function() {
+            highlightReferenceRow(4);
+            updateTempDisplay();
+            updateFraccionDisplay();
+        };
+    </script>
+
+</body>
+</html>
