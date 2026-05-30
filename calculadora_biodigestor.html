@@ -149,12 +149,13 @@
         .chart-container {
             position: relative;
             margin: 1.5rem 0;
-            height: 250px;
+            height: 400px;
             width: 100%;
             background-color: #FFFFFF;
-            padding: 10px;
+            padding: 15px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
         }
 
         .btn-toggle-table {
@@ -1255,8 +1256,11 @@
                     <p style="line-height: 1.5; font-size: 0.9rem; color: var(--text-dark); margin-bottom: 1rem;">
                         El <strong>Biol</strong> es un abono líquido de origen orgánico que resulta del proceso de fermentación anaeróbica dentro del biodigestor. A diferencia de los fertilizantes de síntesis química como la Urea, el Biol aporta una amplia gama de macro y micronutrientes, materia orgánica y fitohormonas que mejoran la estructura del suelo y la salud de los cultivos a largo plazo.
                     </p>
-                    <p style="line-height: 1.5; font-size: 0.9rem; color: var(--text-dark); margin-bottom: 1.5rem;">
+                    <p style="line-height: 1.5; font-size: 0.9rem; color: var(--text-dark); margin-bottom: 1rem;">
                         Para estimar su valor económico de manera práctica, la literatura académica establece una equivalencia basada en el costo de oportunidad: el uso de Biol en las pasturas permite sustituir o reducir la compra de fertilizantes comerciales. Al ingresar el precio local del bulto de Urea, la calculadora determina el ahorro económico equivalente por cada litro de Biol producido en su finca.
+                    </p>
+                    <p style="line-height: 1.5; font-size: 0.9rem; color: var(--text-dark); margin-bottom: 1.5rem; background-color: #F1F8E9; padding: 0.75rem 1rem; border-radius: 6px; border-left: 4px solid #81C784;">
+                        ⚠️ <strong>Nota de rigor científico:</strong> En sistemas reales, no todo el Biol producido es asimilado por el suelo debido a pérdidas por volatilización del nitrógeno, escorrentía o limitaciones físicas de aplicación. Por ello, esta calculadora aplica un <strong>Factor de Aprovechamiento Agronómico conservador del 30%</strong> sobre la producción total, garantizando una estimación financiera realista y defendible ante pares académicos o entidades de crédito.
                     </p>
                     
                     <div class="input-group">
@@ -1624,10 +1628,17 @@
             let biol_dia = 0;
             let biol_mes = 0;
             let biol_ahorro_anual = 0;
+            
+            // Constante de aprovechamiento agronómico real y conservador (30%)
+            // Justificación académica: pérdidas por volatilización de nitrógeno, escorrentía, 
+            // limitaciones de área de aplicación y absorción del suelo en sistemas reales.
+            const FACTOR_APROVECHAMIENTO_BIOL = 0.30; 
+            
             if (temp >= 10) {
                 biol_dia = manure_total_dia * 2;
                 biol_mes = biol_dia * 30;
-                biol_ahorro_anual = biol_mes * 12 * biolPricePerLiter; // Valorización dinámica basada en el precio real de la Urea
+                // Se aplica el factor del 30% para reflejar un ahorro neto realista en sustitución de fertilizantes
+                biol_ahorro_anual = biol_mes * 12 * biolPricePerLiter * FACTOR_APROVECHAMIENTO_BIOL; 
             }
             document.getElementById('res-biol').innerText = Math.round(biol_dia) + " L/día (" + Math.round(biol_mes).toLocaleString('es-CO') + " L/mes)";
             document.getElementById('res-biol-ahorro-value').innerText = "$ " + Math.round(biol_ahorro_anual).toLocaleString('es-CO') + " /año";
