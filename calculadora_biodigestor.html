@@ -1563,7 +1563,13 @@
             } else {
                 if (placeholder) placeholder.style.display = 'flex';
                 if (container) container.style.display = 'none';
-                return; // Si no hay bovinos, detenemos el cálculo para evitar errores en elementos no visibles
+                
+                // Limpiar también la página de reporte cuando bovinos sea 0
+                document.getElementById('report-glp-savings').innerText = "$ 0";
+                document.getElementById('report-biol-savings').innerText = "$ 0";
+                document.getElementById('report-total-savings').innerText = "$ 0 /año";
+                document.getElementById('report-roi-text').innerHTML = "Ingrese un número de bovinos mayor a 0 en la pestaña de la calculadora para estimar el retorno de inversión combinado.";
+                return;
             }
             
             const manure_per_animal = 40 * (fraccion / 100);
@@ -1713,6 +1719,35 @@
             } else {
                 valor_proyecto = 1500000; // Biodigestor tubular de bajo costo
                 recommendation.innerHTML = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor tubular de bajo costo tipo modelo de trinchera (plástico de invernadero o geomembrana flexible)</strong>, el cual es económico, fácil de autoconstruir y mantener por la misma familia.";
+            }
+
+            // Actualizar la página de Reporte & Urea en tiempo real
+            const reportGlpSavingsEl = document.getElementById('report-glp-savings');
+            const reportBiolSavingsEl = document.getElementById('report-biol-savings');
+            const reportTotalSavingsEl = document.getElementById('report-total-savings');
+            const reportRoiTextEl = document.getElementById('report-roi-text');
+            
+            if (reportGlpSavingsEl) reportGlpSavingsEl.innerText = "$ " + Math.round(ahorro_anual).toLocaleString('es-CO');
+            if (reportBiolSavingsEl) reportBiolSavingsEl.innerText = "$ " + Math.round(biol_ahorro_anual).toLocaleString('es-CO');
+            
+            const total_ahorro_anual = ahorro_anual + biol_ahorro_anual;
+            if (reportTotalSavingsEl) reportTotalSavingsEl.innerText = "$ " + Math.round(total_ahorro_anual).toLocaleString('es-CO') + " /año";
+            
+            if (reportRoiTextEl) {
+                if (total_ahorro_anual > 0) {
+                    const anos_retorno = valor_proyecto / total_ahorro_anual;
+                    let roi_msg = `Para un proyecto con un costo estimado de <strong>$ ${valor_proyecto.toLocaleString('es-CO')} COP</strong> (según su escala), el ahorro combinado de GLP y Biol permite recuperar el 100% de la inversión inicial en aproximadamente <strong>${anos_retorno.toFixed(1)} años</strong>. `;
+                    if (anos_retorno <= 2) {
+                        roi_msg += "¡Este proyecto tiene un retorno de inversión excepcionalmente rápido y altamente rentable!";
+                    } else if (anos_retorno <= 5) {
+                        roi_msg += "El retorno se encuentra dentro del rango estándar de viabilidad para tecnologías limpias de fomento rural.";
+                    } else {
+                        roi_msg += "Considere optimizar la fracción de recolección de estiércol para acelerar la amortización del proyecto.";
+                    }
+                    reportRoiTextEl.innerHTML = roi_msg;
+                } else {
+                    reportRoiTextEl.innerHTML = "Ingrese datos de entrada válidos para estimar el retorno de inversión combinado.";
+                }
             }
 
             // Si hay bovinos, mostramos y actualizamos el módulo de crédito
