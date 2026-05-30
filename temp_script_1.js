@@ -1,13 +1,4 @@
-import re
 
-with open("/home/ubuntu/calculadora_biodigestor/calculadora_biodigestor.html", "r", encoding="utf-8") as f:
-    html = f.read()
-
-# Escribamos la lógica JavaScript completa, incluyendo la inicialización del gráfico Chart.js,
-# la función toggleAmortizationTable, y el cálculo de ingresos del Biol valorizado ($150 COP/litro).
-# Para evitar duplicaciones y asegurar una carga limpia, definimos un script robusto.
-
-new_script = """<script>
         const VS_FRACCION = 0.12;
         const PCI_METANO = 35.8;
         const EFICIENCIA_FOGON = 0.55;
@@ -22,6 +13,41 @@ new_script = """<script>
         const GRADIENTE_FINAGRO = 0.02;
 
         // Variable global para almacenar la instancia del gráfico
+        
+        // SISTEMA DE NAVEGACIÓN MULTIPÁGINA (SPA)
+        function switchPage(pageId) {
+            // Ocultar todas las páginas
+            const pages = document.querySelectorAll('.spa-page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Desactivar todos los botones del menú
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => {
+                buttonId = btn.getAttribute('onclick');
+                if (buttonId && buttonId.includes(pageId)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Mostrar la página seleccionada
+            const activePage = document.getElementById(pageId);
+            if (activePage) {
+                activePage.classList.add('active');
+            }
+            
+            // Re-renderizar el gráfico de amortización si se entra a la página de crédito
+            if (pageId === 'page-credit' && typeof runCalculations === 'function') {
+                runCalculations();
+            }
+            
+            // Desplazar al inicio de la página suavemente
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         let creditChartInstance = null;
 
         function adjustBovinos(amount) {
@@ -127,6 +153,43 @@ new_script = """<script>
             }
         }
 
+        
+        // VARIABLES DINÁMICAS DE UREA (2026)
+        let selectedUreaPrice = 189000; // Valor por defecto (MercadoLibre)
+        let biolPricePerLiter = 180;    // Valor por defecto ($180 COP)
+
+        function updateUreaPrice() {
+            const selectEl = document.getElementById('select-urea-price');
+            if (selectEl) {
+                selectedUreaPrice = parseFloat(selectEl.value);
+                
+                // Calcular el valor del Biol según la equivalencia agronómica real:
+                // Para $170,000 COP -> $150 COP/litro (Surticampo)
+                // Para $189,000 COP -> $180 COP/litro (MercadoLibre)
+                // Para otros valores, interpolamos proporcionalmente:
+                if (selectedUreaPrice === 170000) {
+                    biolPricePerLiter = 150;
+                } else if (selectedUreaPrice === 189000) {
+                    biolPricePerLiter = 180;
+                } else if (selectedUreaPrice === 150000) {
+                    biolPricePerLiter = 130;
+                } else if (selectedUreaPrice === 220000) {
+                    biolPricePerLiter = 200;
+                } else {
+                    biolPricePerLiter = Math.round((selectedUreaPrice / 170000) * 150);
+                }
+                
+                // Actualizar la etiqueta en el reporte
+                const reportBiolValEl = document.getElementById('report-biol-value');
+                if (reportBiolValEl) {
+                    reportBiolValEl.textContent = `$ ${biolPricePerLiter} COP`;
+                }
+                
+                // Re-ejecutar los cálculos para actualizar los ahorros
+                runCalculations();
+            }
+        }
+
         function runCalculations() {
             const bovinos = Math.max(0, parseInt(document.getElementById('input-bovinos').value) || 0);
             const personas = parseInt(document.getElementById('input-personas').value);
@@ -188,7 +251,7 @@ new_script = """<script>
             if (temp >= 10) {
                 biol_dia = manure_total_dia * 2;
                 biol_mes = biol_dia * 30;
-                biol_ahorro_anual = biol_mes * 12 * 150; // $150 COP por litro de ahorro en Urea sintética
+                biol_ahorro_anual = biol_mes * 12 * 180; // $150 COP por litro de ahorro en Urea sintética
             }
             document.getElementById('res-biol').innerText = Math.round(biol_dia) + " L/día (" + Math.round(biol_mes).toLocaleString('es-CO') + " L/mes)";
             document.getElementById('res-biol-ahorro-value').innerText = "$ " + Math.round(biol_ahorro_anual).toLocaleString('es-CO') + " /año";
@@ -518,12 +581,3 @@ new_script = """<script>
             updateTempDisplay();
             updateFraccionDisplay();
         };
-</script>"""
-
-# Reemplazar el bloque <script>
-html = re.sub(r"<script>[\s\S]*?</script>", new_script, html)
-
-with open("/home/ubuntu/calculadora_biodigestor/calculadora_biodigestor.html", "w", encoding="utf-8") as f:
-    f.write(html)
-
-print("Lógica JavaScript avanzada para Biol valorizado, Chart.js y tabla desplegable integrada con éxito.")
