@@ -33,7 +33,35 @@ El modelo matemático y los parámetros biológicos han sido calibrados y valida
 
 ## 🧮 Metodología y Modelo Matemático
 
-La calculadora procesa las entradas del usuario (número de bovinos, fracción de recolección de estiércol, temperatura media anual y número de personas en el hogar) a través de tres dimensiones secuenciales:
+La calculadora procesa las entradas del usuario (número de bovinos, fracción de recolección de estiércol, temperatura media anual y número de personas en el hogar) a través de tres dimensiones secuenciales.
+
+### 📋 Tabla de Nomenclatura y Parámetros del Modelo
+
+Para facilitar la lectura y comprensión del modelo matemático, se presenta a continuación la compilación de variables, constantes, unidades y valores de referencia adoptados en la calculadora:
+
+| Símbolo | Variable / Parámetro | Unidad de Medida | Tipo | Valor de Referencia / Fórmula | Fuente Científica |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| $N_{\text{bov}}$ | Número de bovinos en el hato | Cabezas | Entrada | Definido por usuario | Entrada de interfaz |
+| $T$ | Temperatura media anual de la zona | °C | Entrada | Definido por usuario | Entrada de interfaz |
+| $N_{\text{pers}}$ | Número de personas en el hogar | Personas | Entrada | Definido por usuario | Entrada de interfaz |
+| $f_{\text{rec}}$ | Fracción de recolección de estiércol | Adimensional | Entrada | Variable (0.0 a 1.0) | Entrada de interfaz |
+| $p_{\text{est}}$ | Producción de estiércol fresco por bovino | $\text{kg/bovino}\cdot\text{día}$ | Constante | $10.0$ | Rivera et al. (2025) |
+| $P_{e,\text{total}}$ | Producción total de estiércol disponible | $\text{kg/día}$ | Variable | $N_{\text{bov}} \times p_{\text{est}} \times f_{\text{rec}}$ | Balance de materia |
+| $x_{\text{VS}}$ | Fracción de Sólidos Volátiles (VS) | $\text{kg VS/kg est.}$ | Constante | $0.12$ ($12\%$) | Rivera et al. (2025) |
+| $\text{VS}_{\text{diario}}$ | Masa de Sólidos Volátiles cargados al día | $\text{kg VS/día}$ | Variable | $P_{e,\text{total}} \times x_{\text{VS}}$ | Balance de materia |
+| $Y_{\text{CH}_4}$ | Rendimiento específico de metano | $\text{m}^3\text{ CH}_4\text{/kg VS}$ | Constante | $0.17$ | López et al. (2025); Andrade (2020) |
+| $C_t$ | Cobertura / Coeficiente térmico de actividad | Adimensional | Variable | Función de $T$ ($0.0$ a $0.95$) | Tavera-Ruiz et al. (2023) |
+| $V_{\text{CH}_4}$ | Producción diaria de metano | $\text{m}^3\text{ CH}_4\text{/día}$ | Variable | $\text{VS}_{\text{diario}} \times Y_{\text{CH}_4} \times C_t$ | Ecuación biológica central |
+| $d_{\text{coc}}$ | Demanda diaria de cocción per cápita | $\text{kg GLP/pers}\cdot\text{día}$ | Constante | $0.166$ | Inversiones GLP (2026); UPME (2024) |
+| $\eta_{\text{GLP}}$ | Equivalencia térmica Biogás-GLP | $\text{kg GLP/m}^3\text{ CH}_4$ | Constante | $0.45$ | UPME (2024) |
+| $\%Co$ | Cobertura de cocción del hogar | Porcentaje | Variable | Función de demanda y oferta | Balance energético |
+| $A_{\text{GLP}}$ | Ahorro anual en compra de GLP | $\text{COP/año}$ | Variable | Función de $\%Co$ y precio | Evaluación económica |
+| $V_{\text{Biol}}$ | Producción diaria de biofertilizante (Biol) | $\text{L/día}$ | Variable | Equiv. a carga de agua y est. | Balance hidráulico |
+| $V_{\text{litro}}$ | Valor económico de sustitución del Biol | $\text{COP/L}$ | Variable | Función de precio de la Urea | Costo de oportunidad |
+| $\alpha_{\text{aprov}}$ | Factor de aprovechamiento agronómico real | Adimensional | Constante | $0.30$ ($30\%$) | Sinceramiento agronómico |
+| $A_{\text{Biol}}$ | Ahorro anual sincerado en fertilización | $\text{COP/año}$ | Variable | $V_{\text{Biol}} \times 365 \times V_{\text{litro}} \times \alpha_{\text{aprov}}$ | Evaluación económica |
+
+---
 
 ### 1. Dimensión Biológica y Técnica
 * **Producción Diaria de Estiércol ($P_e$):** Se asume un promedio de $10\text{ kg}$ de estiércol fresco por bovino al día bajo sistemas de pastoreo rotacional o semiestabulado en Colombia (Rivera et al., 2025).
