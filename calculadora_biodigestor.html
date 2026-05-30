@@ -822,13 +822,84 @@
 </head>
 <body>
 
+    
+    <nav class="spa-navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <span class="brand-logo">🌱</span>
+                <span class="brand-title">Calculadora de Prefactibilidad</span>
+            </div>
+            <div class="navbar-links">
+                <button class="nav-btn active" onclick="switchPage('page-home')">🏡 Inicio</button>
+                <button class="nav-btn" onclick="switchPage('page-calc')">🧮 Calculadora</button>
+                <button class="nav-btn" onclick="switchPage('page-credit')">💰 Crédito Finagro</button>
+                <button class="nav-btn" onclick="switchPage('page-report')">📊 Reporte & Urea</button>
+            </div>
+        </div>
+    </nav>
+
+
     <div class="container">
         
         
-        <header>
+        
+    <div id="page-home" class="spa-page active">
+        <div class="container">
+            <header>
             <h1>Calculadora de Prefactibilidad – Biodigestores Bovinos</h1>
             <p>Estime la viabilidad técnica, cobertura energética de cocción y ahorro económico para hogares rurales en Colombia según clima y tamaño de hato.</p>
         </header>
+            
+            <div class="card card-inputs" style="margin-bottom: 2rem; border-left: 5px solid var(--primary-green);">
+                <h3 style="font-family: 'Playfair Display', serif; color: var(--wood-dark); font-size: 1.5rem; margin-bottom: 1rem;">🏡 Bienvenido a la Herramienta de Prefactibilidad</h3>
+                <p style="line-height: 1.6; color: var(--text-dark); margin-bottom: 1rem;">
+                    Esta plataforma interactiva ha sido diseñada para apoyar a los productores ganaderos y académicos en la evaluación del potencial técnico, biológico y financiero de la incorporación de biodigestores a escala mínima viable en Colombia.
+                </p>
+                <p style="line-height: 1.6; color: var(--text-dark); margin-bottom: 1.5rem;">
+                    A través de un modelo matemático y biológico riguroso, validado con datos científicos reales, usted podrá estimar la producción de biogás, el volumen de biofertilizante líquido (Biol) obtenido, y analizar la viabilidad económica de financiar el proyecto mediante créditos de fomento.
+                </p>
+                
+                <div style="background-color: #FAF6EE; padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                    <h4 style="font-weight: 700; color: var(--wood-dark); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">📚 Autores del Proyecto de Investigación:</h4>
+                    <ul style="list-style-type: none; padding-left: 0; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <li style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600; color: var(--text-dark);"><span style="color: var(--primary-green);">•</span> Cristian Fabián Torres González</li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600; color: var(--text-dark);"><span style="color: var(--primary-green);">•</span> Luis Steven Cuevas Zambrano</li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600; color: var(--text-dark);"><span style="color: var(--primary-green);">•</span> Maicol Estiven Solano Rozo</li>
+                    </ul>
+                    <p style="font-size: 0.85rem; color: #6E6259; margin-top: 1rem; border-top: 1px solid #E8E2D5; padding-top: 0.5rem; font-weight: 500;">
+                        🏫 Universidad EAN – Facultad de Ingeniería – Ingeniería Industrial<br>
+                        📅 Fecha de Publicación: Junio 2026
+                    </p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <button class="btn-toggle-table" style="padding: 12px 24px; font-size: 1rem; border-radius: 8px; box-shadow: var(--shadow-soft);" onclick="switchPage('page-calc')">🚀 Empezar Simulación Ahora</button>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-bottom: 2rem;">
+                <h4 style="font-family: 'Playfair Display', serif; color: var(--wood-dark); font-size: 1.25rem; margin-bottom: 1rem;">📖 Guía de Navegación Rápida</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+                    <div style="background-color: #FDFBF7; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); text-align: center; cursor: pointer;" onclick="switchPage('page-calc')">
+                        <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">🧮</span>
+                        <h5 style="font-weight: 700; color: var(--wood-dark); margin-bottom: 0.25rem;">1. Datos Técnicos</h5>
+                        <p style="font-size: 0.8rem; color: #6E6259;">Ingrese bovinos, clima y personas para estimar biogás y Biol.</p>
+                    </div>
+                    <div style="background-color: #FDFBF7; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); text-align: center; cursor: pointer;" onclick="switchPage('page-credit')">
+                        <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">💰</span>
+                        <h5 style="font-weight: 700; color: var(--wood-dark); margin-bottom: 0.25rem;">2. Crédito Finagro</h5>
+                        <p style="font-size: 0.8rem; color: #6E6259;">Simule el crédito con gradiente y amortización real.</p>
+                    </div>
+                    <div style="background-color: #FDFBF7; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); text-align: center; cursor: pointer;" onclick="switchPage('page-report')">
+                        <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">📊</span>
+                        <h5 style="font-weight: 700; color: var(--wood-dark); margin-bottom: 0.25rem;">3. Reporte & Urea</h5>
+                        <p style="font-size: 0.8rem; color: #6E6259;">Ajuste el precio de la Urea y analice el ROI final.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
         
         <div class="calculator-grid">
@@ -950,7 +1021,7 @@
                         </div>
                     </div>
 
-                    <!-- Biol Producido y su Valorización Económica -->
+                    
                     <div class="stat-card" style="text-align: left; padding: 1.25rem 1.5rem; background-color: #E8F5E9; border-color: #C8E6C9; display: flex; flex-direction: column; gap: 8px;">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <div>
@@ -1014,7 +1085,7 @@
                             </div>
                         </div>
 
-                        <!-- Sliders de Control del Crédito -->
+                        
                         <div style="margin-bottom: 1rem; width: 100%;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
                                 <label for="input-credit-cuota-ini" style="font-size: 0.8rem; font-weight: 700; color: var(--wood-dark);">Ajustar Cuota Inicial:</label>
@@ -1031,7 +1102,7 @@
                             <input type="range" id="input-credit-plazo" min="1" max="10" step="1" value="10" oninput="updateCreditDisplay()" style="width: 100%; accent-color: var(--green-dark);">
                         </div>
 
-                        <!-- Resultados de la Amortización Real -->
+                        
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; width: 100%;">
                             <div style="background-color: #FAF9F6; border: 1px solid #E5D8C8; padding: 0.5rem; border-radius: 8px; text-align: center;">
                                 <div style="font-size: 0.7rem; color: var(--wood-dark); font-weight: 700; text-transform: uppercase;">Deuda a Financiar</div>
@@ -1047,7 +1118,7 @@
                             </div>
                         </div>
 
-                        <!-- Gráfico Interactivo de Amortización -->
+                        
                         <div style="width: 100%; margin-bottom: 1rem;">
                             <span style="font-size: 0.8rem; font-weight: 700; color: var(--wood-dark); display: block; margin-bottom: 0.5rem;">📈 Comportamiento del Crédito (Cuotas vs. Saldo Deudor)</span>
                             <div class="chart-container">
@@ -1055,19 +1126,19 @@
                             </div>
                         </div>
 
-                        <!-- Detalle de Sostenibilidad y Retorno -->
+                        
                         <div id="credit-sustainability-detail" style="font-size: 0.8rem; color: var(--text-muted); text-align: center; font-weight: 500; border-top: 1px dashed #D2B48C; padding-top: 0.5rem; line-height: 1.3; width: 100%; margin-bottom: 1rem;">
                             Cargando simulación financiera...
                         </div>
 
-                        <!-- Botón para ver tabla de amortización -->
+                        
                         <div style="text-align: center; width: 100%;">
                             <button type="button" class="btn-toggle-table" onclick="toggleAmortizationTable()">
                                 <span>📋 Ver Tabla de Amortización Detallada</span>
                             </button>
                         </div>
 
-                        <!-- Tabla Desplegable de Amortización -->
+                        
                         <div id="amortization-table-wrapper" class="amortization-table-wrapper" style="width: 100%;">
                             <table class="amortization-table">
                                 <thead>
@@ -1080,7 +1151,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="amortization-table-body">
-                                    <!-- Filas dinámicas por JS -->
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -1183,6 +1254,41 @@
         const GRADIENTE_FINAGRO = 0.02;
 
         // Variable global para almacenar la instancia del gráfico
+        
+        // SISTEMA DE NAVEGACIÓN MULTIPÁGINA (SPA)
+        function switchPage(pageId) {
+            // Ocultar todas las páginas
+            const pages = document.querySelectorAll('.spa-page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Desactivar todos los botones del menú
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => {
+                buttonId = btn.getAttribute('onclick');
+                if (buttonId && buttonId.includes(pageId)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Mostrar la página seleccionada
+            const activePage = document.getElementById(pageId);
+            if (activePage) {
+                activePage.classList.add('active');
+            }
+            
+            // Re-renderizar el gráfico de amortización si se entra a la página de crédito
+            if (pageId === 'page-credit' && typeof runCalculations === 'function') {
+                runCalculations();
+            }
+            
+            // Desplazar al inicio de la página suavemente
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         let creditChartInstance = null;
 
         function adjustBovinos(amount) {
@@ -1285,6 +1391,43 @@
                 wrapper.style.display = 'block';
             } else {
                 wrapper.style.display = 'none';
+            }
+        }
+
+        
+        // VARIABLES DINÁMICAS DE UREA (2026)
+        let selectedUreaPrice = 189000; // Valor por defecto (MercadoLibre)
+        let biolPricePerLiter = 180;    // Valor por defecto ($180 COP)
+
+        function updateUreaPrice() {
+            const selectEl = document.getElementById('select-urea-price');
+            if (selectEl) {
+                selectedUreaPrice = parseFloat(selectEl.value);
+                
+                // Calcular el valor del Biol según la equivalencia agronómica real:
+                // Para $170,000 COP -> $150 COP/litro (Surticampo)
+                // Para $189,000 COP -> $180 COP/litro (MercadoLibre)
+                // Para otros valores, interpolamos proporcionalmente:
+                if (selectedUreaPrice === 170000) {
+                    biolPricePerLiter = 150;
+                } else if (selectedUreaPrice === 189000) {
+                    biolPricePerLiter = 180;
+                } else if (selectedUreaPrice === 150000) {
+                    biolPricePerLiter = 130;
+                } else if (selectedUreaPrice === 220000) {
+                    biolPricePerLiter = 200;
+                } else {
+                    biolPricePerLiter = Math.round((selectedUreaPrice / 170000) * 150);
+                }
+                
+                // Actualizar la etiqueta en el reporte
+                const reportBiolValEl = document.getElementById('report-biol-value');
+                if (reportBiolValEl) {
+                    reportBiolValEl.textContent = `$ ${biolPricePerLiter} COP`;
+                }
+                
+                // Re-ejecutar los cálculos para actualizar los ahorros
+                runCalculations();
             }
         }
 
