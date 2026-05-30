@@ -1,0 +1,11 @@
+with open("/home/ubuntu/calculadora_biodigestor/calculadora_biodigestor.html", "r", encoding="utf-8") as f:
+    content = f.read()
+
+# Si no empieza con <!--, agregarlo
+if not content.strip().startswith("<!--"):
+    content = "<!--\n" + content
+
+with open("/home/ubuntu/calculadora_biodigestor/calculadora_biodigestor.html", "w", encoding="utf-8") as f:
+    f.write(content)
+
+print("¡Primera línea corregida!")

@@ -815,12 +815,111 @@
         }
     
 
+    
+        /* --- ESTILOS DE LA NAVEGACIÓN MULTIPÁGINA (SPA) --- */
+        .spa-navbar {
+            width: 100%;
+            background-color: var(--primary-green);
+            border-bottom: 4px solid var(--accent-terracota);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .navbar-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-logo {
+            font-size: 1.5rem;
+        }
+
+        .brand-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            color: #FAF6EE;
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: #E6DCD2;
+            padding: 8px 14px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s var(--ease-out);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn:hover {
+            color: #FAF6EE;
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-btn.active {
+            color: #FAF6EE;
+            background-color: var(--accent-terracota);
+            box-shadow: 0 2px 6px rgba(162, 72, 35, 0.3);
+        }
+
+        .spa-page {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.4s var(--ease-out);
+        }
+
+        .spa-page.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-container {
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px;
+            }
+            .navbar-links {
+                width: 100%;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 4px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .nav-btn {
+                flex-shrink: 0;
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+        }
+    
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-    <!-- SISTEMA DE NAVEGACIÓN MULTIPÁGINA (SPA) -->
+    
     <nav class="spa-navbar">
         <div class="navbar-container">
             <div class="navbar-brand">
@@ -828,17 +927,17 @@
                 <span class="brand-title">Calculadora de Prefactibilidad</span>
             </div>
             <div class="navbar-links">
-                <button class="nav-btn active" onclick="switchPage('page-home')">🏡 Inicio</button>
-                <button class="nav-btn" onclick="switchPage('page-calc')">🧮 Calculadora</button>
-                <button class="nav-btn" onclick="switchPage('page-credit')">💰 Crédito Finagro</button>
-                <button class="nav-btn" onclick="switchPage('page-report')">📊 Reporte & Urea</button>
+                <button type="button" class="nav-btn active" onclick="switchPage('page-home')">🏡 Inicio</button>
+                <button type="button" class="nav-btn" onclick="switchPage('page-calc')">🧮 Calculadora</button>
+                <button type="button" class="nav-btn" onclick="switchPage('page-credit')">💰 Crédito Finagro</button>
+                <button type="button" class="nav-btn" onclick="switchPage('page-report')">📊 Reporte & Urea</button>
             </div>
         </div>
     </nav>
 
     <div class="container" style="margin-top: 20px;">
 
-        <!-- PÁGINA 1: INICIO Y GUÍA -->
+        
         <div id="page-home" class="spa-page active">
             <div class="container">
                 <header>
@@ -896,7 +995,7 @@
             </div>
         </div>
 
-        <!-- PÁGINA 2: CALCULADORA TÉCNICA -->
+        
         <div id="page-calc" class="spa-page">
             <div class="container">
                 <div style="text-align: center; margin-bottom: 2rem; padding: 1.5rem; background-color: var(--primary-green); border-radius: 12px; box-shadow: var(--shadow-soft);">
@@ -905,7 +1004,7 @@
                 </div>
                 
                 <div class="calculator-grid">
-                    <!-- ENTRADAS -->
+                    
                     <div class="card card-inputs">
                         <h2 class="card-title">
                             <span>🌾 Datos de Entrada</span>
@@ -962,7 +1061,7 @@
                         </div>
                     </div>
 
-                    <!-- RESULTADOS TÉCNICOS -->
+                    
                     <div class="card card-results">
                         <h2 class="card-title">
                             <span>💡 Resultados del Análisis</span>
@@ -1000,6 +1099,7 @@
                                 <div class="progress-bar-container">
                                     <div id="res-progress-fill" class="progress-bar-fill"></div>
                                 </div>
+                                <div id="res-cobertura-desc" style="font-size: 0.85rem; color: var(--text-dark); margin-top: 6px; line-height: 1.4;"></div>
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
                                     <span id="res-viability" class="viability-badge viability-no">No Viable</span>
                                     <span id="res-needed-cows" style="font-size: 0.85rem; font-weight: 700; color: var(--accent-terracota);">Faltan vacas</span>
@@ -1019,7 +1119,7 @@
                                 </div>
                             </div>
 
-                            <!-- RESUMEN ECONÓMICO -->
+                            
                             <div style="background-color: #FAF6EE; padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.75rem;">
                                 <h4 style="font-weight: 700; color: var(--wood-dark); border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">💼 Impacto Económico Familiar</h4>
                                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; text-align: center;">
@@ -1043,7 +1143,7 @@
 
                             <div id="res-alert-insufficient" class="needed-cows-alert" style="display: none;">
                                 <span class="icon">⚠️</span>
-                                <span style="font-weight: 600; color: var(--accent-terracota);">La escala actual es insuficiente para cubrir el 100% de la demanda de cocción.</span>
+                                <span id="res-alert-text" style="font-weight: 600; color: var(--accent-terracota);">La escala actual es insuficiente para cubrir el 100% de la demanda de cocción.</span>
                             </div>
                         </div>
                     </div>
@@ -1051,7 +1151,7 @@
             </div>
         </div>
 
-        <!-- PÁGINA 3: CRÉDITO FINAGRO -->
+        
         <div id="page-credit" class="spa-page">
             <div class="container">
                 <div style="text-align: center; margin-bottom: 2rem; padding: 1.5rem; background-color: var(--accent-terracota); border-radius: 12px; box-shadow: var(--shadow-soft);">
@@ -1077,7 +1177,7 @@
                         </div>
                     </div>
 
-                    <!-- SLIDERS FINANCIEROS -->
+                    
                     <div class="input-group slider-container" style="margin-top: 1rem;">
                         <div class="input-label">
                             <span>Ajustar Cuota Inicial</span>
@@ -1094,7 +1194,7 @@
                         <input type="range" id="input-credit-plazo" class="custom-slider" min="1" max="10" value="10" step="1" oninput="runCalculations()">
                     </div>
 
-                    <!-- RESULTADOS DEL CRÉDITO -->
+                    
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; text-align: center; margin-top: 1rem;">
                         <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-color);">
                             <span style="font-size: 0.7rem; font-weight: 700; color: #887766; text-transform: uppercase;">Deuda a Financiar</span>
@@ -1110,12 +1210,12 @@
                         </div>
                     </div>
 
-                    <!-- GRÁFICO DE AMORTIZACIÓN -->
+                    
                     <div class="chart-container">
                         <canvas id="creditChart"></canvas>
                     </div>
 
-                    <!-- TABLA DESPLEGABLE -->
+                    
                     <div style="text-align: center;">
                         <button class="btn-toggle-table" onclick="toggleAmortizationTable()">
                             <span>📊 Ver Tabla de Pagos Detallada (120 meses)</span>
@@ -1142,7 +1242,7 @@
             </div>
         </div>
 
-        <!-- PÁGINA 4: REPORTE & UREA -->
+        
         <div id="page-report" class="spa-page">
             <div class="container">
                 <div style="text-align: center; margin-bottom: 2rem; padding: 1.5rem; background-color: #2E7D32; border-radius: 12px; box-shadow: var(--shadow-soft);">
@@ -1160,14 +1260,13 @@
                     </p>
                     
                     <div class="input-group">
-                        <label class="input-label" for="select-urea-price">🛒 PRECIO DE REFERENCIA DE LA UREA (BULTO 50 KG - 2026)</label>
-                        <select id="select-urea-price" class="number-control" style="width: 100%; padding: 0 15px; font-weight: 700; font-size: 1rem; color: var(--wood-dark); cursor: pointer;" onchange="updateUreaPrice()">
-                            <option value="170000">🛒 Grupo Surticampo (Precio Mayorista) — $170,000 COP</option>
-                            <option value="189000" selected>🛒 MercadoLibre Colombia (Precio Minorista) — $189,000 COP</option>
-                            <option value="150000">🛒 Escenario Económico Bajo — $150,000 COP</option>
-                            <option value="220000">🛒 Escenario Económico Alto — $220,000 COP</option>
-                        </select>
-                        <p class="input-description">Al cambiar este precio, el valor equivalente de cada litro de Biol se recalcula al instante entre $150 y $200 COP/litro.</p>
+                        <label class="input-label" for="input-urea-price">🛒 PRECIO REAL DEL BULTO DE UREA (50 KG - COP)</label>
+                        <div class="number-control" style="display: flex; align-items: center; justify-content: space-between; border: 2px solid var(--border-color); border-radius: 8px; height: 52px; background: #FFF; padding: 0 4px; box-sizing: border-box;">
+                            <button type="button" class="btn-number" onclick="adjustUreaPrice(-5000)" style="width: 44px; height: 44px; border: none; background: var(--bg-cream); color: var(--wood-dark); font-size: 1.5rem; font-weight: bold; cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">−</button>
+                            <input type="number" id="input-urea-price" class="input-number" value="189000" min="50000" max="500000" step="1000" oninput="updateUreaPrice()" style="flex: 1; border: none; text-align: center; font-size: 1.15rem; font-weight: 700; color: var(--wood-dark); outline: none; width: 100%;">
+                            <button type="button" class="btn-number" onclick="adjustUreaPrice(5000)" style="width: 44px; height: 44px; border: none; background: var(--bg-cream); color: var(--wood-dark); font-size: 1.5rem; font-weight: bold; cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">+</button>
+                        </div>
+                        <p class="input-description">Ingrese el valor real que paga por un bulto de Urea de 50 kg en su zona. El valor de equivalencia de cada litro de Biol se calculará automáticamente en base a este precio real.</p>
                     </div>
                 </div>
                 
@@ -1198,7 +1297,7 @@
             </div>
         </div>
 
-        <!-- REFERENCIAS BIBLIOGRÁFICAS -->
+        
         <div class="reference-section" style="margin-top: 2rem; margin-bottom: 2rem;">
             <h3 class="card-title" style="color: var(--accent-mustard);">
                 <span>📚 Validación de Parámetros Científicos</span>
@@ -1407,30 +1506,37 @@
         }
 
         
-        // VARIABLES DINÁMICAS DE UREA (2026)
+                // VARIABLES DINÁMICAS DE UREA (2026)
         let selectedUreaPrice = 189000; // Valor por defecto (MercadoLibre)
         let biolPricePerLiter = 180;    // Valor por defecto ($180 COP)
 
+        function adjustUreaPrice(amount) {
+            const input = document.getElementById('input-urea-price');
+            if (input) {
+                let current = parseFloat(input.value) || 189000;
+                current += amount;
+                if (current < 50000) current = 50000;
+                if (current > 500000) current = 500000;
+                input.value = current;
+                updateUreaPrice();
+            }
+        }
+
         function updateUreaPrice() {
-            const selectEl = document.getElementById('select-urea-price');
-            if (selectEl) {
-                selectedUreaPrice = parseFloat(selectEl.value);
+            const inputEl = document.getElementById('input-urea-price');
+            if (inputEl) {
+                selectedUreaPrice = parseFloat(inputEl.value) || 189000;
                 
-                // Calcular el valor del Biol según la equivalencia agronómica real:
-                // Para $170,000 COP -> $150 COP/litro (Surticampo)
+                // Equivalencia agronómica real:
+                // Para $170,000 COP -> $150 COP/litro (Grupo Surticampo)
                 // Para $189,000 COP -> $180 COP/litro (MercadoLibre)
-                // Para otros valores, interpolamos proporcionalmente:
-                if (selectedUreaPrice === 170000) {
-                    biolPricePerLiter = 150;
-                } else if (selectedUreaPrice === 189000) {
-                    biolPricePerLiter = 180;
-                } else if (selectedUreaPrice === 150000) {
-                    biolPricePerLiter = 130;
-                } else if (selectedUreaPrice === 220000) {
-                    biolPricePerLiter = 200;
-                } else {
-                    biolPricePerLiter = Math.round((selectedUreaPrice / 170000) * 150);
-                }
+                // Para otros valores, se calcula proporcionalmente en base a la dosis de sustitución:
+                // Biol (COP/L) = Precio Urea / Litros de Biol equivalentes a 1 bulto (1,050 L)
+                biolPricePerLiter = Math.round(selectedUreaPrice / 1050);
+                
+                // Forzar límites razonables de valorización basados en el mercado colombiano
+                if (biolPricePerLiter < 50) biolPricePerLiter = 50;
+                if (biolPricePerLiter > 300) biolPricePerLiter = 300;
                 
                 // Actualizar la etiqueta en el reporte
                 const reportBiolValEl = document.getElementById('report-biol-value');
@@ -1438,7 +1544,6 @@
                     reportBiolValEl.textContent = `$ ${biolPricePerLiter} COP`;
                 }
                 
-                // Re-ejecutar los cálculos para actualizar los ahorros
                 runCalculations();
             }
         }
@@ -1450,7 +1555,7 @@
             const fraccion = parseInt(document.getElementById('input-fraccion').value);
             
             const manure_per_animal = 40 * (fraccion / 100);
-            document.getElementById('res-manure-line').innerText = "Estiércol recolectable: " + manure_per_animal.toFixed(1) + " kg/animal/día";
+            document.getElementById('manure-calc-note').innerText = "Estiércol recolectable: " + manure_per_animal.toFixed(1) + " kg/animal/día";
 
             const manure_total_dia = bovinos * manure_per_animal;
             document.getElementById('res-manure-total-line').innerText = "Total recolectado: " + manure_total_dia.toFixed(1) + " kg/día";
@@ -1504,7 +1609,7 @@
             if (temp >= 10) {
                 biol_dia = manure_total_dia * 2;
                 biol_mes = biol_dia * 30;
-                biol_ahorro_anual = biol_mes * 12 * 180; // $150 COP por litro de ahorro en Urea sintética
+                biol_ahorro_anual = biol_mes * 12 * biolPricePerLiter; // Valorización dinámica basada en el precio real de la Urea
             }
             document.getElementById('res-biol').innerText = Math.round(biol_dia) + " L/día (" + Math.round(biol_mes).toLocaleString('es-CO') + " L/mes)";
             document.getElementById('res-biol-ahorro-value').innerText = "$ " + Math.round(biol_ahorro_anual).toLocaleString('es-CO') + " /año";
@@ -1713,13 +1818,20 @@
         }
 
         function renderCreditChart(labels, cuotas, saldos) {
-            const ctx = document.getElementById('creditChart').getContext('2d');
-            
-            if (creditChartInstance) {
-                creditChartInstance.destroy();
-            }
+            try {
+                if (typeof Chart === 'undefined') {
+                    console.warn("Chart.js no está cargado. Saltando renderizado de gráfico.");
+                    return;
+                }
+                const canvas = document.getElementById('creditChart');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                
+                if (creditChartInstance) {
+                    creditChartInstance.destroy();
+                }
 
-            creditChartInstance = new Chart(ctx, {
+                creditChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
@@ -1799,6 +1911,9 @@
                     }
                 }
             });
+            } catch (error) {
+                console.error("Error al inicializar Chart.js:", error);
+            }
         }
 
         function resetCalculator() {
@@ -1833,6 +1948,8 @@
             highlightReferenceRow(1);
             updateTempDisplay();
             updateFraccionDisplay();
+            updatePersonasDisplay();
+            updateUreaPrice();
         };
 
     </script>
