@@ -930,7 +930,7 @@
             <div class="navbar-links">
                 <button type="button" class="nav-btn active" onclick="switchPage('page-home')">🏡 Inicio</button>
                 <button type="button" class="nav-btn" onclick="switchPage('page-calc')">🧮 Calculadora</button>
-                <button type="button" class="nav-btn" onclick="switchPage('page-credit')">💰 Crédito Finagro</button>
+                <button type="button" class="nav-btn" onclick="switchPage('page-credit')">💰 Crédito de Fomento</button>
                 <button type="button" class="nav-btn" onclick="switchPage('page-report')">📊 Reporte & Urea</button>
             </div>
         </div>
@@ -983,8 +983,8 @@
                         </div>
                         <div style="background-color: #FDFBF7; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); text-align: center; cursor: pointer;" onclick="switchPage('page-credit')">
                             <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">💰</span>
-                            <h5 style="font-weight: 700; color: var(--wood-dark); margin-bottom: 0.25rem;">2. Crédito Finagro</h5>
-                            <p style="font-size: 0.8rem; color: #6E6259;">Simule el crédito con gradiente y amortización real.</p>
+                            <h5 style="font-weight: 700; color: var(--wood-dark); margin-bottom: 0.25rem;">2. Crédito de Fomento</h5>
+                            <p style="font-size: 0.8rem; color: #6E6259;">Simule el crédito de fomento (Línea Finagro vía Banco Agrario).</p>
                         </div>
                         <div style="background-color: #FDFBF7; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); text-align: center; cursor: pointer;" onclick="switchPage('page-report')">
                             <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">📊</span>
@@ -1156,13 +1156,13 @@
         <div id="page-credit" class="spa-page">
             <div class="container">
                 <div style="text-align: center; margin-bottom: 2rem; padding: 1.5rem; background-color: var(--accent-terracota); border-radius: 12px; box-shadow: var(--shadow-soft);">
-                    <h2 style="font-family: 'Playfair Display', serif; color: #FAF6EE; font-size: 1.8rem; margin-bottom: 0.5rem;">💰 Financiamiento de Fomento Finagro</h2>
-                    <p style="color: #F9EBEA; font-size: 0.95rem;">Simule las cuotas mensuales de amortización bajo el modelo de gradiente geométrico creciente.</p>
+                    <h2 style="font-family: 'Playfair Display', serif; color: #FAF6EE; font-size: 1.8rem; margin-bottom: 0.5rem;">💰 Financiamiento de Fomento (Línea Finagro / Banco Agrario)</h2>
+                    <p style="color: #F9EBEA; font-size: 0.95rem;">Simule las cuotas mensuales de amortización bajo el modelo de gradiente geométrico creciente adaptado al sector rural colombiano.</p>
                 </div>
                 
                 <div class="card card-results" id="res-credit-card" style="border-left: 5px solid var(--accent-terracota);">
                     <h3 class="card-title" style="color: var(--accent-terracota);">
-                        <span>🌱 Simulación de Crédito de Fomento Finagro</span>
+                        <span>🌱 Simulación de Crédito de Fomento (Línea Finagro redescontada)</span>
                     </h3>
                     
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; background-color: #FAF6EE; padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-color);">
@@ -1239,6 +1239,37 @@
                     </div>
 
                     <div id="credit-sustainability-detail" style="background-color: #FDF5E6; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent-mustard); font-size: 0.85rem; line-height: 1.4; color: var(--wood-dark); margin-top: 1rem;"></div>
+                </div>
+
+                <!-- Bloque Metodológico y de Supuestos Financieros -->
+                <div class="card" style="margin-top: 2rem; border-left: 5px solid var(--accent-terracota);">
+                    <h3 style="font-family: 'Playfair Display', serif; color: var(--wood-dark); font-size: 1.35rem; margin-bottom: 1rem;">📝 Estructura y Supuestos Financieros del Crédito</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; font-size: 0.85rem; line-height: 1.5; color: var(--text-dark);">
+                        <div style="background-color: #FAF6EE; padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                            <h4 style="font-weight: 700; color: var(--accent-terracota); margin-bottom: 0.5rem; font-size: 0.95rem;">🏛️ Mecanismo de Redescuento (Finagro vs. Banco Agrario)</h4>
+                            <p style="margin-bottom: 0.75rem;">
+                                <strong>Finagro</strong> opera como un banco de desarrollo de segundo piso en Colombia, lo que significa que provee los fondos y define las condiciones preferenciales, pero <strong>no capta recursos ni atiende directamente al público</strong>.
+                            </p>
+                            <p>
+                                Para acceder a esta financiación, el productor rural debe postularse a través de un intermediario financiero de primer piso (típicamente el <strong>Banco Agrario de Colombia</strong>, líder en colocación rural). El banco comercial evalúa el riesgo y, al aprobar el proyecto, solicita el redescuento de los recursos ante Finagro bajo la línea de fomento para Pequeños Productores.
+                            </p>
+                        </div>
+
+                        <div style="background-color: #FAF6EE; padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                            <h4 style="font-weight: 700; color: var(--accent-terracota); margin-bottom: 0.5rem; font-size: 0.95rem;">📈 Modelo de Amortización (Gradiente Geométrico Creciente)</h4>
+                            <p style="margin-bottom: 0.75rem;">
+                                En lugar de cuotas fijas tradicionales que asfixian el flujo de caja del pequeño productor en los primeros años, este simulador implementa un <strong>Gradiente Geométrico Creciente del 2% anual</strong>.
+                            </p>
+                            <p>
+                                Esto imita la inflación y el incremento del costo de vida rural en Colombia. Al iniciar con cuotas mensuales extremadamente bajas, se le da tiempo al biodigestor de estabilizar su producción biológica de gas y Biol, permitiendo que el proyecto se autofinancie progresivamente con sus propios ahorros sin comprometer la liquidez inmediata del hogar.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="background-color: #FFF9E6; padding: 1rem; border-radius: 8px; border: 1px solid #FFE0B2; margin-top: 1.25rem; font-size: 0.85rem; line-height: 1.5; color: var(--wood-dark);">
+                        ℹ️ <strong>Tasa de Interés de Fomento Aplicada:</strong> Se asume una tasa preferencial promedio del <strong>12.0% Nominal Anual Mes Vencido (NAMV)</strong>, equivalente a las condiciones históricas de fomento para Pequeños Productores (indexada al IBR + puntos adicionales autorizados por Finagro para proyectos de sostenibilidad ambiental y economía circular).
+                    </div>
                 </div>
             </div>
         </div>
