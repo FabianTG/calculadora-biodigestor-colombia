@@ -732,10 +732,9 @@
                     <div class="input-label">
                         <span>Número de Bovinos</span>
                     </div>
-                    <p class="input-description">Bovinos en pastoreo o confinamiento (el estiércol recolectable se calcula según la fracción de recolección seleccionada).</p>
                     <div class="number-control">
                         <button type="button" class="btn-number" onclick="adjustBovinos(-1)">−</button>
-                        <input type="number" id="input-bovinos" class="input-number" value="5" min="0" step="1" oninput="calculateRealtime()">
+                        <input type="number" id="input-bovinos" class="input-number" value="0" min="0" step="1" oninput="calculateRealtime()">
                         <button type="button" class="btn-number" onclick="adjustBovinos(1)">+</button>
                     </div>
                 </div>
@@ -743,34 +742,34 @@
                 <div class="input-group slider-container">
                     <div class="input-label">
                         <span>Fracción de Recolección</span>
-                        <span id="display-fraccion" class="slider-value-display">25%</span>
+                        <span id="display-fraccion" class="slider-value-display">0%</span>
                     </div>
-                    <p class="input-description">Ajuste el porcentaje de estiércol que logra recolectar diariamente según su sistema de manejo y frecuencia (ej. 25% en semiestabulado con dos recolecciones al día).</p>
-                    <input type="range" id="input-fraccion" class="custom-slider" min="0" max="100" value="25" step="1" oninput="updateFraccionDisplay()">
+                    <p class="input-description">Ajuste el porcentaje de estiércol que puede recolectar diariamente.</p>
+                    <input type="range" id="input-fraccion" class="custom-slider" min="0" max="100" value="0" step="1" oninput="updateFraccionDisplay()">
                     <p id="manure-calc-note" class="input-description" style="font-weight: 700; color: var(--primary-light); margin-top: 4px;">
-                        Estiércol recolectable: 10.0 kg/animal/día
+                        Estiércol recolectable: 0.0 kg/animal/día
                     </p>
                     <p class="input-description" style="font-size: 0.8rem; font-style: italic; color: var(--accent-terracota); margin-top: 2px;">
-                        * El valor del 25% corresponds al sistema semiestabulado (referencia del artículo). Ajuste según su capacidad de recolección diaria.
+                        Ajuste según su capacidad de recolección diaria.
                     </p>
                 </div>
 
                 <div class="input-group slider-container">
                     <div class="input-label">
                         <span>Personas en el Hogar</span>
-                        <span id="display-personas" class="slider-value-display">4 personas</span>
+                        <span id="display-personas" class="slider-value-display">1 persona</span>
                     </div>
                     <p class="input-description">Determina la demanda energética útil para cocción basada en el consumo estándar de 0.166 kg GLP/persona/día.</p>
-                    <input type="range" id="input-personas" class="custom-slider" min="1" max="10" value="4" step="1" oninput="updatePersonasDisplay()">
+                    <input type="range" id="input-personas" class="custom-slider" min="1" max="10" value="1" step="1" oninput="updatePersonasDisplay()">
                 </div>
 
                 <div class="input-group slider-container">
                     <div class="input-label">
                         <span>Temperatura Media Anual</span>
-                        <span id="display-temp" class="slider-value-display">16.0 °C</span>
+                        <span id="display-temp" class="slider-value-display">20.0 °C</span>
                     </div>
                     <p class="input-description">La temperatura ambiente regula la velocidad de digestión bacteriana psicrófila/mesófila en sistemas tubulares de bajo costo.</p>
-                    <input type="range" id="input-temp" class="custom-slider" min="-5" max="40" value="16" step="0.5" oninput="updateTempDisplay()">
+                    <input type="range" id="input-temp" class="custom-slider" min="-5" max="40" value="20" step="0.5" oninput="updateTempDisplay()">
                     <div id="badge-clima" class="climate-badge badge-cold">
                         ❄️ Clima Frío (&lt;18°C) – factor 0.55
                     </div>
@@ -794,7 +793,7 @@
                 
                 <div id="results-placeholder" class="results-placeholder">
                     <div class="placeholder-icon">🐄</div>
-                    <p class="placeholder-text">Modifique los parámetros de la izquierda y haga clic en <strong>Calcular viabilidad</strong> para ver el análisis de prefactibilidad técnica y económica.</p>
+                    <p class="placeholder-text">Modifique los parámetros de la izquierda y haga clic en <strong>Calcular viabilidad</strong>.</p>
                 </div>
 
                 
@@ -804,12 +803,14 @@
                     <div class="stats-row">
                         <div class="stat-card">
                             <div class="stat-label">Clima Detectado</div>
-                            <div id="res-clima" class="stat-value" style="font-size: 1.15rem; color: var(--primary-green); font-weight: 700;">Frío</div>
+                            <div style="margin-top: 4px; display: flex; justify-content: center;">
+                                <span id="res-clima-badge" class="climate-badge" style="font-size: 0.95rem; font-weight: 700; padding: 6px 12px; border-radius: 12px; display: inline-block;">-</span>
+                            </div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-label">Biogás Estimado</div>
                             <div id="res-biogas" class="stat-value">0.00 m³/día</div>
-                            <div id="res-manure-line" style="font-size: 0.85rem; color: #665544; margin-top: 4px; font-weight: 500;">Estiércol recolectable: 10.0 kg/animal/día</div>
+                            <div id="res-manure-line" style="font-size: 0.85rem; color: #665544; margin-top: 4px; font-weight: 500;">Estiércol recolectable: 0.0 kg/animal/día</div>
                         </div>
                     </div>
 
@@ -1001,11 +1002,11 @@
 
         function getClimateParams(temp) {
             if (temp > 24) {
-                return { name: "Cálido (>24°C)", factor: 1.00, rendimiento: 0.1700 };
+                return { name: "🔥 Cálido (>24°C)", factor: 1.00, rendimiento: 0.1700, class: "climate-badge badge-warm" };
             } else if (temp >= 18) {
-                return { name: "Templado (18–24°C)", factor: 0.75, rendimiento: 0.1275 };
+                return { name: "🍃 Templado (18–24°C)", factor: 0.75, rendimiento: 0.1275, class: "climate-badge badge-temperate" };
             } else {
-                return { name: "Frío (<18°C)", factor: 0.55, rendimiento: 0.0935 };
+                return { name: "❄️ Frío (<18°C)", factor: 0.55, rendimiento: 0.0935, class: "climate-badge badge-cold" };
             }
         }
 
@@ -1036,9 +1037,12 @@
             document.getElementById('res-manure-line').innerText = "Estiércol recolectable: " + manure_per_animal.toFixed(1) + " kg/animal/día";
 
             const clima = getClimateParams(temp);
+            const resClimaBadge = document.getElementById('res-clima-badge');
+            resClimaBadge.innerText = clima.name;
+            resClimaBadge.className = clima.class;
+
             const biogas_dia = bovinos * manure_per_animal * VS_FRACCION * clima.rendimiento;
             document.getElementById('res-biogas').innerText = biogas_dia.toFixed(2) + " m³/día";
-            document.getElementById('res-clima').innerText = clima.name + " (f: " + clima.factor.toFixed(2) + ")";
 
             const demanda_hogar = 4.20 * personas;
             const oferta_por_bovino = manure_per_animal * VS_FRACCION * clima.rendimiento * PCI_METANO * EFICIENCIA_FOGON;
@@ -1116,10 +1120,10 @@
         }
 
         function resetCalculator() {
-            document.getElementById('input-bovinos').value = 5;
-            document.getElementById('input-fraccion').value = 25;
-            document.getElementById('input-personas').value = 4;
-            document.getElementById('input-temp').value = 16;
+            document.getElementById('input-bovinos').value = 0;
+            document.getElementById('input-fraccion').value = 0;
+            document.getElementById('input-personas').value = 1;
+            document.getElementById('input-temp').value = 20;
             
             updatePersonasDisplay();
             updateTempDisplay();
@@ -1130,7 +1134,12 @@
         }
 
         window.onload = function() {
-            highlightReferenceRow(4);
+            document.getElementById('input-bovinos').value = 0;
+            document.getElementById('input-fraccion').value = 0;
+            document.getElementById('input-personas').value = 1;
+            document.getElementById('input-temp').value = 20;
+            
+            highlightReferenceRow(1);
             updateTempDisplay();
             updateFraccionDisplay();
         };

@@ -29,7 +29,7 @@ def main():
     # Elementos clave de salida
     outputs = [
         ('res-biogas', 'div'),
-        ('res-clima', 'div'),
+        ('res-clima-badge', 'span'),
         ('res-cobertura-pct', 'span'),
         ('res-progress-fill', 'div'),
         ('res-viability', 'span'),
