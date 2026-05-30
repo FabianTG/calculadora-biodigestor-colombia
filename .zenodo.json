@@ -1,0 +1,36 @@
+{
+  "title": "Calculadora de Prefactibilidad Técnico-Económica para Biodigestores Bovinos en Colombia",
+  "description": "Herramienta interactiva basada en modelos matemáticos y biológicos validados para estimar la prefactibilidad técnico-económica de biodigestores tubulares de pequeña escala en el sector rural colombiano. Desarrollada como producto de divulgación para el artículo de investigación homónimo.",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Torres González, Cristian Fabián",
+      "affiliation": "Universidad EAN"
+    },
+    {
+      "name": "Cuevas Zambrano, Luis Steven",
+      "affiliation": "Universidad EAN"
+    },
+    {
+      "name": "Solano Rozo, Maicol Estiven",
+      "affiliation": "Universidad EAN"
+    }
+  ],
+  "keywords": [
+    "biodigestores",
+    "biogás",
+    "biol",
+    "prefactibilidad",
+    "economía circular",
+    "Colombia",
+    "crédito de fomento",
+    "desarrollo rural"
+  ],
+  "communities": [
+    {
+      "identifier": "zenodo"
+    }
+  ],
+  "upload_type": "software",
+  "publication_date": "2026-05-30"
+}
