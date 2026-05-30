@@ -28,7 +28,19 @@ elements_to_check = {
     "res-savings-anual-value": "div",
     "res-savings-detail": "div",
     "res-recommendation": "div",
-    "res-alert-insufficient": "div"
+    "res-alert-insufficient": "div",
+    # Nuevos elementos del módulo financiero
+    "res-credit-card": "div",
+    "credit-vp-val": "div",
+    "credit-cuota-ini-val": "div",
+    "input-credit-cuota-ini": "input",
+    "display-credit-cuota-ini": "span",
+    "input-credit-plazo": "input",
+    "display-credit-plazo": "span",
+    "credit-deuda-val": "div",
+    "credit-cuota-1-val": "div",
+    "credit-cuota-final-val": "div",
+    "credit-sustainability-detail": "div"
 }
 
 all_ok = True
