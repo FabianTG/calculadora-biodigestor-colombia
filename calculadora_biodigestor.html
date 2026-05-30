@@ -1,3 +1,27 @@
+<!--
+
+    Título:
+    Análisis de Prefactibilidad Técnico-Económica para la Incorporación de Biodigestores
+    a Escala Mínima Viable en Sistemas Ganaderos Bovinos en Colombia
+
+    Autores:
+    Cristian Fabián Torres González
+    Luis Steven Cuevas Zambrano
+    Maicol Estiven Solano Rozo
+
+    Institución:
+    Universidad EAN – Facultad de Ingeniería – Ingeniería Industrial
+
+    Fecha:
+    Mayo 2026
+
+    Descripción:
+    Herramienta de apoyo basada en el artículo de investigación homónimo.
+    Calcula la prefactibilidad técnico-económica de biodigestores bovinos.
+    Parámetros validados con fuentes: Rivera et al. (2025), López et al. (2025),
+    Andrade et al. (2020), Inversiones GLP (2026).
+
+-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -810,7 +834,9 @@
                         <div class="stat-card">
                             <div class="stat-label">Biogás Estimado</div>
                             <div id="res-biogas" class="stat-value">0.00 m³/día</div>
-                            <div id="res-manure-line" style="font-size: 0.85rem; color: #665544; margin-top: 4px; font-weight: 500;">Estiércol recolectable: 0.0 kg/animal/día</div>
+                            <div id="res-biogas-mes" style="font-size: 1.1rem; font-weight: 700; color: var(--primary-light); margin-top: 4px;">0.00 m³/mes</div>
+                            <div id="res-glp-equiv-mes" style="font-size: 0.9rem; color: var(--accent-terracota); font-weight: 700; margin-top: 4px;">Equivale a 0.0 lb GLP/mes</div>
+                            <div id="res-manure-line" style="font-size: 0.8rem; color: #665544; margin-top: 4px; font-weight: 500;">Estiércol recolectable: 0.0 kg/animal/día</div>
                         </div>
                     </div>
 
@@ -838,6 +864,12 @@
                             <div class="stat-label">Hato Requerido (100%)</div>
                             <div id="res-needed-cows" class="stat-value">0 bovinos</div>
                         </div>
+                    </div>
+
+                    <div class="stat-card" style="text-align: left; padding: 1.25rem 1.5rem; background-color: #E8F5E9; border-color: #C8E6C9;">
+                        <div class="stat-label" style="color: #2E7D32; margin-bottom: 0.25rem;">Biol Producido (Abono Líquido)</div>
+                        <div id="res-biol" style="font-size: 1.35rem; font-weight: 700; color: #1B5E20;">0 L/día (0 L/mes)</div>
+                        <span style="font-size: 0.8rem; color: #388E3C;">Biofertilizante orgánico obtenido a partir de la mezcla de estiércol y agua (relación 1:1)</span>
                     </div>
 
                     
@@ -871,9 +903,7 @@
             <p class="input-description" style="margin-top: 6px; font-size: 0.9rem;">
                 Número mínimo de bovinos requeridos para alcanzar el 100% de cobertura de cocción familiar, según el tamaño del hogar y el piso térmico (Tabla 6 del artículo de investigación).
             </p>
-            <p class="input-description" style="margin-top: 6px; font-size: 0.9rem; font-style: italic; color: var(--accent-terracota);">
-                * Nota: Los umbrales consideran una fracción de recolección del 25% (semiestabulado). Ajuste la fracción en los parámetros para otros sistemas.
-            </p>
+
 
             <div class="table-container">
                 <table>
@@ -1038,11 +1068,30 @@
 
             const clima = getClimateParams(temp);
             const resClimaBadge = document.getElementById('res-clima-badge');
-            resClimaBadge.innerText = clima.name;
+            let clima_nombre_simple = "";
+            if (temp > 24) {
+                clima_nombre_simple = "🔥 Cálido";
+            } else if (temp >= 18) {
+                clima_nombre_simple = "🍃 Templado";
+            } else {
+                clima_nombre_simple = "❄️ Frío";
+            }
+            resClimaBadge.innerText = clima_nombre_simple + " (" + temp.toFixed(1) + " °C)";
             resClimaBadge.className = clima.class;
 
             const biogas_dia = bovinos * manure_per_animal * VS_FRACCION * clima.rendimiento;
             document.getElementById('res-biogas').innerText = biogas_dia.toFixed(2) + " m³/día";
+            
+            const biogas_mes = biogas_dia * 30;
+            document.getElementById('res-biogas-mes').innerText = biogas_mes.toFixed(2) + " m³/mes";
+            
+            const glp_equiv_kg_mes = (biogas_mes * PCI_METANO) / PCI_GLP;
+            const glp_equiv_lb_mes = glp_equiv_kg_mes * 2.20462;
+            document.getElementById('res-glp-equiv-mes').innerText = "Equivale a " + glp_equiv_lb_mes.toFixed(1) + " lb GLP/mes";
+
+            const biol_dia = bovinos * manure_per_animal * 2;
+            const biol_mes = biol_dia * 30;
+            document.getElementById('res-biol').innerText = Math.round(biol_dia) + " L/día (" + Math.round(biol_mes).toLocaleString('es-CO') + " L/mes)";
 
             const demanda_hogar = 4.20 * personas;
             const oferta_por_bovino = manure_per_animal * VS_FRACCION * clima.rendimiento * PCI_METANO * EFICIENCIA_FOGON;
