@@ -1008,7 +1008,7 @@
             runCalculations();
         }
 
-                function updateTempDisplay() {
+        function updateTempDisplay() {
             const temp = parseFloat(document.getElementById('input-temp').value);
             document.getElementById('display-temp').innerText = temp.toFixed(1) + " °C";
             const badge = document.getElementById('badge-clima');
@@ -1032,14 +1032,6 @@
                 badge.className = "climate-badge badge-cold";
                 badge.style.backgroundColor = "";
                 badge.style.color = "";
-            }
-            runCalculations();
-        } else if (temp >= 18) {
-                badge.innerText = "❄️ Clima Frío (<18°C) – factor 0.55";
-                badge.className = "climate-badge badge-cold";
-            } else {
-                badge.innerText = "❄️ Clima Frío (<18°C) – factor 0.55";
-                badge.className = "climate-badge badge-cold";
             }
             runCalculations();
         }
@@ -1067,7 +1059,7 @@
             }
         }
 
-                function getClimateParams(temp) {
+        function getClimateParams(temp) {
             if (temp < 10) {
                 return { name: "🥶 Congelado / Inhibido", factor: 0.00, rendimiento: 0.00, class: "climate-badge badge-cold" };
             } else if (temp > 24) {
@@ -1077,19 +1069,10 @@
             } else {
                 return { name: "❄️ Frío (<18°C)", factor: 0.55, rendimiento: 0.0935, class: "climate-badge badge-cold" };
             }
-        };
-            } else if (temp >= 18) {
-                return { name: "🍃 Templado (18–24°C)", factor: 0.75, rendimiento: 0.1275, class: "climate-badge badge-cold" };
-            } else {
-                return { name: "❄️ Frío (<18°C)", factor: 0.55, rendimiento: 0.0935, class: "climate-badge badge-cold" };
-            }
         }
 
-        function calculateRealtime() { runCalculations();
-            const container = document.getElementById('results-container');
-            if (container.style.display === 'flex') {
-                runCalculations();
-            }
+        function calculateRealtime() {
+            runCalculations();
         }
 
         function triggerCalculation() {
@@ -1097,12 +1080,9 @@
             const container = document.getElementById('results-container');
             container.style.display = 'flex';
             runCalculations();
-            if (window.innerWidth < 850) {
-                container.scrollIntoView({ behavior: 'smooth' });
-            }
         }
 
-                function runCalculations() {
+        function runCalculations() {
             const bovinos = Math.max(0, parseInt(document.getElementById('input-bovinos').value) || 0);
             const personas = parseInt(document.getElementById('input-personas').value);
             const temp = parseFloat(document.getElementById('input-temp').value);
@@ -1268,7 +1248,9 @@
             } else {
                 document.getElementById('res-alert-insufficient').style.display = 'none';
             }
-        }        function resetCalculator() {
+        }
+
+        function resetCalculator() {
             document.getElementById('input-bovinos').value = 0;
             document.getElementById('input-fraccion').value = 0;
             document.getElementById('input-personas').value = 1;
@@ -1283,7 +1265,7 @@
             document.getElementById('results-placeholder').style.display = 'flex';
         }
 
-                window.onload = function() {
+        window.onload = function() {
             document.getElementById('input-bovinos').value = 0;
             document.getElementById('input-fraccion').value = 0;
             document.getElementById('input-personas').value = 1;
@@ -1293,7 +1275,7 @@
             updateTempDisplay();
             updateFraccionDisplay();
         };
-    </script>
+</script>
 
 </body>
 </html>
