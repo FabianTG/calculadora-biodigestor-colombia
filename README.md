@@ -3,6 +3,7 @@
 ### Herramienta de Apoyo Científico y Toma de Decisiones para Sistemas Ganaderos de Pequeña Escala
 
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Active-blue?style=flat-square&logo=github)](https://fabiantg.github.io/calculadora-biodigestor-colombia/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20457190.svg?style=flat-square)](https://doi.org/10.5281/zenodo.20457190)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Tecnologías](https://img.shields.io/badge/Tecnolog%C3%ADas-HTML5%20%2F%20JS-orange?style=flat-square)](https://developer.mozilla.org/es/docs/Web/HTML)
 
@@ -93,5 +94,5 @@ Este proyecto está bajo la **Licencia MIT**. Esto significa que eres libre de c
 
 Si utilizas esta calculadora, el modelo matemático o los datos recopilados en tu investigación, por favor utiliza la función de citación automática de GitHub en la barra lateral derecha ("Cite this repository") o utiliza la siguiente referencia en formato APA 7.ª edición:
 
-> Torres González, C. F., Cuevas Zambrano, L. S., & Solano Rozo, M. E. (2026). *Calculadora de Prefactibilidad Técnico-Económica para Biodigestores Bovinos en Colombia* (Versión 1.0.0) [Software de computación]. GitHub. https://github.com/FabianTG/calculadora-biodigestor-colombia
+> Torres González, C. F., Cuevas Zambrano, L. S., & Solano Rozo, M. E. (2026). *Calculadora de Prefactibilidad Técnico-Económica para Biodigestores Bovinos en Colombia* (Versión 1.0.0) [Software de computación]. Zenodo. https://doi.org/10.5281/zenodo.20457190
 
