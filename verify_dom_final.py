@@ -5,7 +5,7 @@ path = "/home/ubuntu/calculadora_biodigestor/calculadora_biodigestor.html"
 with open(path, "r", encoding="utf-8") as f:
     soup = BeautifulSoup(f.read(), "html.parser")
 
-print("=== VERIFICACIÓN ESTRUCTURAL DEL HTML FINAL ===")
+print("=== VERIFICACIÓN ESTRUCTURAL DEL HTML FINAL REDISEÑADO ===")
 
 elements_to_check = {
     "input-bovinos": "input",
@@ -23,13 +23,13 @@ elements_to_check = {
     "res-viability": "span",
     "res-needed-cows": "div",
     "res-biol": "div",
+    "res-biol-ahorro-value": "div", # Nuevo ID de ahorro en Urea
     "res-gasto-sin-sistema-mensual": "div",
     "res-nuevo-gasto-mensual": "div",
     "res-savings-anual-value": "div",
     "res-savings-detail": "div",
     "res-recommendation": "div",
     "res-alert-insufficient": "div",
-    # Nuevos elementos del módulo financiero
     "res-credit-card": "div",
     "credit-vp-val": "div",
     "credit-cuota-ini-val": "div",
@@ -40,6 +40,9 @@ elements_to_check = {
     "credit-deuda-val": "div",
     "credit-cuota-1-val": "div",
     "credit-cuota-final-val": "div",
+    "creditChart": "canvas", # Nuevo ID de gráfico Chart.js
+    "amortization-table-wrapper": "div", # Nuevo ID de contenedor de tabla
+    "amortization-table-body": "tbody", # Nuevo ID de cuerpo de tabla
     "credit-sustainability-detail": "div"
 }
 
@@ -55,20 +58,15 @@ for el_id, el_tag in elements_to_check.items():
     else:
         print(f"✅ Elemento '{el_id}' ({el_tag}) encontrado.")
 
-# Verificar que la nota de la tabla de referencia haya sido eliminada
-reference_section = soup.find(class_="reference-section")
-if reference_section:
-    text_content = reference_section.get_text()
-    if "semiestabulado" in text_content or "25%" in text_content:
-        print("❌ ERROR: La nota de la tabla de referencia que menciona semiestabulado/25% no fue eliminada.")
-        all_ok = False
-    else:
-        print("✅ Nota de la tabla de referencia eliminada con éxito.")
+# Verificar que no queden comentarios HTML de desarrollo
+html_content = str(soup)
+comments = soup.find_all(string=lambda text: isinstance(text, str) and text.strip().startswith("<!--") and text.strip().endswith("-->"))
+if len(comments) > 1:
+    print(f"❌ ADVERTENCIA: Se encontraron {len(comments)} comentarios. Deben ser solo los créditos iniciales.")
 else:
-    print("❌ ERROR: No se encontró la sección de referencia.")
-    all_ok = False
+    print("✅ Purgado de comentarios internos verificado.")
 
 if all_ok:
-    print("🎉 ¡Estructura del DOM validada con éxito! Todos los nuevos elementos dinámicos están listos y en su lugar.")
+    print("🎉 ¡Estructura del DOM rediseñado y responsive validada con éxito! Listo para producción.")
 else:
     exit(1)

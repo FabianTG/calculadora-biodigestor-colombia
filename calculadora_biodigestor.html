@@ -117,17 +117,103 @@
         }
 
         
-        .calculator-grid {
+                .calculator-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 24px;
+            gap: 28px;
             margin-bottom: 32px;
+            align-items: start;
         }
 
-        @media (min-width: 850px) {
+        @media (min-width: 1024px) {
             .calculator-grid {
-                grid-template-columns: 1.1fr 1.2fr;
+                grid-template-columns: 1fr 1.2fr;
+                gap: 36px;
             }
+        }
+
+        /* Ajustes de espaciado y visualización para sliders y campos */
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .slider-row input {
+            flex: 1;
+        }
+
+        .slider-row span {
+            min-width: 80px;
+            text-align: right;
+        }
+
+        /* Estilos del gráfico y tabla desplegable */
+        .chart-container {
+            position: relative;
+            margin: 1.5rem 0;
+            height: 250px;
+            width: 100%;
+            background-color: #FFFFFF;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-toggle-table {
+            background-color: var(--primary-green);
+            color: #FAF6EE;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .btn-toggle-table:hover {
+            background-color: var(--green-dark);
+        }
+
+        .amortization-table-wrapper {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: none;
+            background-color: #FFFFFF;
+        }
+
+        .amortization-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            text-align: left;
+        }
+
+        .amortization-table th {
+            background-color: var(--bg-cream);
+            color: var(--wood-dark);
+            font-weight: 700;
+            padding: 8px 10px;
+            position: sticky;
+            top: 0;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .amortization-table td {
+            padding: 6px 10px;
+            border-bottom: 1px solid #E6DCD2;
+        }
+
+        .amortization-table tr:hover {
+            background-color: #FAF6EE;
         }
 
         
@@ -732,6 +818,7 @@
         }
     
 </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -863,10 +950,21 @@
                         </div>
                     </div>
 
-                    <div class="stat-card" style="text-align: left; padding: 1.25rem 1.5rem; background-color: #E8F5E9; border-color: #C8E6C9;">
-                        <div class="stat-label" style="color: #2E7D32; margin-bottom: 0.25rem;">Biol Producido (Abono Líquido)</div>
-                        <div id="res-biol" style="font-size: 1.35rem; font-weight: 700; color: #1B5E20;">0 L/día (0 L/mes)</div>
-                        <span style="font-size: 0.8rem; color: #388E3C;">Biofertilizante orgánico obtenido a partir de la mezcla de estiércol y agua (relación 1:1)</span>
+                    <!-- Biol Producido y su Valorización Económica -->
+                    <div class="stat-card" style="text-align: left; padding: 1.25rem 1.5rem; background-color: #E8F5E9; border-color: #C8E6C9; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <div class="stat-label" style="color: #2E7D32; margin-bottom: 0.15rem;">Biol Producido (Abono Líquido)</div>
+                                <div id="res-biol" style="font-size: 1.3rem; font-weight: 700; color: #1B5E20;">0 L/día (0 L/mes)</div>
+                            </div>
+                            <div style="text-align: right; background-color: #C8E6C9; padding: 4px 10px; border-radius: 6px; border: 1px solid #A9DFBF;">
+                                <div style="font-size: 0.65rem; color: #196F3D; font-weight: 700; text-transform: uppercase;">Ahorro en Fertilizante</div>
+                                <div id="res-biol-ahorro-value" style="font-size: 1rem; color: #145A32; font-weight: 800;">$ 0 /año</div>
+                            </div>
+                        </div>
+                        <span style="font-size: 0.8rem; color: #388E3C; line-height: 1.3;">
+                            Biofertilizante orgánico obtenido que sustituye la compra de Urea química. Valorizado a <strong>$150 COP por litro</strong> (ahorro directo en insumos agrícolas para pastos).
+                        </span>
                     </div>
 
                     
@@ -900,8 +998,8 @@
                         </div>
                     </div>
                     
-                    <div id="res-credit-card" class="savings-block" style="background: linear-gradient(135deg, #FAF6EE, #F2EADF); border: 1px solid #D2B48C; padding: 1.5rem; border-radius: 12px; margin-top: 1rem; display: none;">
-                        <span class="savings-label" style="color: #8B4513; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; display: block; margin-bottom: 1rem; text-align: center;">🌱 Simulación de Crédito de Fomento Finagro</span>
+                    <div id="res-credit-card" class="savings-block" style="background: linear-gradient(135deg, #FAF6EE, #F2EADF); border: 1px solid #D2B48C; padding: 1.5rem; border-radius: 12px; margin-top: 1rem; display: none; align-items: stretch; text-align: left; flex-direction: column;">
+                        <span class="savings-label" style="color: #8B4513; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; display: block; margin-bottom: 1rem; text-align: center; width: 100%;">🌱 Simulación de Crédito de Fomento Finagro</span>
                         
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; font-size: 0.85rem; color: var(--wood-dark);">
                             <div>
@@ -915,6 +1013,78 @@
                                 <span style="font-size: 0.75rem; color: var(--text-muted);">Aporte inicial del productor</span>
                             </div>
                         </div>
+
+                        <!-- Sliders de Control del Crédito -->
+                        <div style="margin-bottom: 1rem; width: 100%;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                                <label for="input-credit-cuota-ini" style="font-size: 0.8rem; font-weight: 700; color: var(--wood-dark);">Ajustar Cuota Inicial:</label>
+                                <span id="display-credit-cuota-ini" style="font-size: 0.85rem; font-weight: 700; color: var(--green-dark);">$ 0</span>
+                            </div>
+                            <input type="range" id="input-credit-cuota-ini" min="0" max="5000000" step="50000" value="100000" oninput="updateCreditDisplay()" style="width: 100%; accent-color: var(--green-dark);">
+                        </div>
+
+                        <div style="margin-bottom: 1.25rem; width: 100%;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                                <label for="input-credit-plazo" style="font-size: 0.8rem; font-weight: 700; color: var(--wood-dark);">Plazo de Financiamiento:</label>
+                                <span id="display-credit-plazo" style="font-size: 0.85rem; font-weight: 700; color: var(--green-dark);">10 años (120 meses)</span>
+                            </div>
+                            <input type="range" id="input-credit-plazo" min="1" max="10" step="1" value="10" oninput="updateCreditDisplay()" style="width: 100%; accent-color: var(--green-dark);">
+                        </div>
+
+                        <!-- Resultados de la Amortización Real -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; width: 100%;">
+                            <div style="background-color: #FAF9F6; border: 1px solid #E5D8C8; padding: 0.5rem; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 0.7rem; color: var(--wood-dark); font-weight: 700; text-transform: uppercase;">Deuda a Financiar</div>
+                                <div id="credit-deuda-val" style="font-size: 1rem; color: #7E5109; font-weight: 700;">$ 0</div>
+                            </div>
+                            <div style="background-color: #FAF9F6; border: 1px solid #E5D8C8; padding: 0.5rem; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 0.7rem; color: var(--wood-dark); font-weight: 700; text-transform: uppercase;">Cuota 1 (Inicial)</div>
+                                <div id="credit-cuota-1-val" style="font-size: 1rem; color: var(--green-dark); font-weight: 700;">$ 0</div>
+                            </div>
+                            <div style="background-color: #FAF9F6; border: 1px solid #E5D8C8; padding: 0.5rem; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 0.7rem; color: var(--wood-dark); font-weight: 700; text-transform: uppercase;">Cuota Final (Mes N)</div>
+                                <div id="credit-cuota-final-val" style="font-size: 1rem; color: #C0392B; font-weight: 700;">$ 0</div>
+                            </div>
+                        </div>
+
+                        <!-- Gráfico Interactivo de Amortización -->
+                        <div style="width: 100%; margin-bottom: 1rem;">
+                            <span style="font-size: 0.8rem; font-weight: 700; color: var(--wood-dark); display: block; margin-bottom: 0.5rem;">📈 Comportamiento del Crédito (Cuotas vs. Saldo Deudor)</span>
+                            <div class="chart-container">
+                                <canvas id="creditChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Detalle de Sostenibilidad y Retorno -->
+                        <div id="credit-sustainability-detail" style="font-size: 0.8rem; color: var(--text-muted); text-align: center; font-weight: 500; border-top: 1px dashed #D2B48C; padding-top: 0.5rem; line-height: 1.3; width: 100%; margin-bottom: 1rem;">
+                            Cargando simulación financiera...
+                        </div>
+
+                        <!-- Botón para ver tabla de amortización -->
+                        <div style="text-align: center; width: 100%;">
+                            <button type="button" class="btn-toggle-table" onclick="toggleAmortizationTable()">
+                                <span>📋 Ver Tabla de Amortización Detallada</span>
+                            </button>
+                        </div>
+
+                        <!-- Tabla Desplegable de Amortización -->
+                        <div id="amortization-table-wrapper" class="amortization-table-wrapper" style="width: 100%;">
+                            <table class="amortization-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mes</th>
+                                        <th>Cuota</th>
+                                        <th>Interés</th>
+                                        <th>Amortización</th>
+                                        <th>Saldo Deudor</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="amortization-table-body">
+                                    <!-- Filas dinámicas por JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
                         
                         <div style="margin-bottom: 1rem;">
@@ -1049,6 +1219,9 @@
         const I_MENSUAL_FINAGRO = Math.pow(1 + TEA_FINAGRO, 1/12) - 1;
         const GRADIENTE_FINAGRO = 0.02;
 
+        // Variable global para almacenar la instancia del gráfico
+        let creditChartInstance = null;
+
         function adjustBovinos(amount) {
             const input = document.getElementById('input-bovinos');
             let val = parseInt(input.value) || 0;
@@ -1143,6 +1316,15 @@
             runCalculations();
         }
 
+        function toggleAmortizationTable() {
+            const wrapper = document.getElementById('amortization-table-wrapper');
+            if (wrapper.style.display === 'none' || wrapper.style.display === '') {
+                wrapper.style.display = 'block';
+            } else {
+                wrapper.style.display = 'none';
+            }
+        }
+
         function runCalculations() {
             const bovinos = Math.max(0, parseInt(document.getElementById('input-bovinos').value) || 0);
             const personas = parseInt(document.getElementById('input-personas').value);
@@ -1200,11 +1382,14 @@
 
             let biol_dia = 0;
             let biol_mes = 0;
+            let biol_ahorro_anual = 0;
             if (temp >= 10) {
                 biol_dia = manure_total_dia * 2;
                 biol_mes = biol_dia * 30;
+                biol_ahorro_anual = biol_mes * 12 * 150; // $150 COP por litro de ahorro en Urea sintética
             }
             document.getElementById('res-biol').innerText = Math.round(biol_dia) + " L/día (" + Math.round(biol_mes).toLocaleString('es-CO') + " L/mes)";
+            document.getElementById('res-biol-ahorro-value').innerText = "$ " + Math.round(biol_ahorro_anual).toLocaleString('es-CO') + " /año";
 
             const demanda_hogar = 4.20 * personas;
             const oferta_por_bovino = manure_per_animal * VS_FRACCION * clima.rendimiento * PCI_METANO * EFICIENCIA_FOGON;
@@ -1306,7 +1491,7 @@
                     cuotaIniSlider.value = Math.round(valor_proyecto * 0.1); // 10% por defecto si se desborda
                 }
                 
-                calculateCreditAmortization(valor_proyecto, ahorro_anual);
+                calculateCreditAmortization(valor_proyecto, ahorro_anual, biol_ahorro_anual);
             } else {
                 document.getElementById('res-credit-card').style.display = 'none';
             }
@@ -1316,7 +1501,7 @@
             runCalculations();
         }
 
-        function calculateCreditAmortization(vp, ahorro_anual) {
+        function calculateCreditAmortization(vp, ahorro_anual, biol_ahorro_anual) {
             const cuota_ini = parseInt(document.getElementById('input-credit-cuota-ini').value) || 0;
             const plazo_yrs = parseInt(document.getElementById('input-credit-plazo').value) || 10;
             const n = plazo_yrs * 12;
@@ -1332,6 +1517,13 @@
                 document.getElementById('credit-cuota-1-val').innerText = "$ 0";
                 document.getElementById('credit-cuota-final-val').innerText = "$ 0";
                 document.getElementById('credit-sustainability-detail').innerHTML = "<strong>¡Proyecto pagado de contado!</strong> No requiere financiamiento externo.";
+                
+                // Limpiar gráfico si existe
+                if (creditChartInstance) {
+                    creditChartInstance.destroy();
+                    creditChartInstance = null;
+                }
+                document.getElementById('amortization-table-body').innerHTML = "";
                 return;
             }
 
@@ -1348,19 +1540,147 @@
             document.getElementById('credit-cuota-1-val').innerText = "$ " + Math.round(cuota_1).toLocaleString('es-CO');
             document.getElementById('credit-cuota-final-val').innerText = "$ " + Math.round(cuota_final).toLocaleString('es-CO');
 
-            // Análisis de sostenibilidad: Cruzar cuota mensual con ahorro mensual en GLP
-            const ahorro_mensual = ahorro_anual / 12;
-            const cobertura_cuota_pct = (ahorro_mensual / cuota_1) * 100;
+            // Generar tabla de amortización y vectores para el gráfico
+            let saldo = deuda;
+            let table_html = "";
+            let meses_labels = [];
+            let cuotas_data = [];
+            let saldos_data = [];
+
+            for (let mes = 1; mes <= n; mes++) {
+                const cuota_mes = cuota_1 * Math.pow(1 + g, mes - 1);
+                const interes_mes = saldo * i;
+                const amort_mes = cuota_mes - interes_mes;
+                saldo -= amort_mes;
+                
+                const display_saldo = Math.max(0, saldo);
+
+                // Agregar datos al gráfico (muestreo cada 6 meses o al final para no saturar)
+                if (mes === 1 || mes % 6 === 0 || mes === n) {
+                    meses_labels.push("Mes " + mes);
+                    cuotas_data.push(Math.round(cuota_mes));
+                    saldos_data.push(Math.round(display_saldo));
+                }
+
+                // Generar fila HTML para la tabla
+                table_html += "<tr>" +
+                    "<td>" + mes + "</td>" +
+                    "<td>$ " + Math.round(cuota_mes).toLocaleString('es-CO') + "</td>" +
+                    "<td>$ " + Math.round(interes_mes).toLocaleString('es-CO') + "</td>" +
+                    "<td>$ " + Math.round(amort_mes).toLocaleString('es-CO') + "</td>" +
+                    "<td>$ " + Math.round(display_saldo).toLocaleString('es-CO') + "</td>" +
+                    "</tr>";
+            }
+
+            document.getElementById('amortization-table-body').innerHTML = table_html;
+
+            // Renderizar o actualizar gráfico Chart.js
+            renderCreditChart(meses_labels, cuotas_data, saldos_data);
+
+            // Análisis de sostenibilidad cruzando ahorro de GLP + Biol vs Cuota
+            const ahorro_mensual_glp = ahorro_anual / 12;
+            const ahorro_mensual_biol = biol_ahorro_anual / 12;
+            const ahorro_mensual_total = ahorro_mensual_glp + ahorro_mensual_biol;
+            const cobertura_cuota_pct = (ahorro_mensual_total / cuota_1) * 100;
             
             let detail_text = "";
             if (cobertura_cuota_pct >= 100) {
-                detail_text = "<strong>¡Crédito Sostenible y Autofinanciable!</strong> El ahorro mensual de gas (<strong>$ " + Math.round(ahorro_mensual).toLocaleString('es-CO') + "</strong>) supera el valor de la primera cuota (<strong>$ " + Math.round(cuota_1).toLocaleString('es-CO') + "</strong>). ¡El biodigestor se paga solo desde el primer mes!";
+                detail_text = "<strong>¡Crédito Sostenible y Autofinanciable!</strong> El ahorro mensual total (<strong>$ " + Math.round(ahorro_mensual_total).toLocaleString('es-CO') + "</strong>, que incluye $ " + Math.round(ahorro_mensual_glp).toLocaleString('es-CO') + " en GLP y $ " + Math.round(ahorro_mensual_biol).toLocaleString('es-CO') + " en Biol) supera la cuota inicial (<strong>$ " + Math.round(cuota_1).toLocaleString('es-CO') + "</strong>). ¡El biodigestor se paga solo y genera excedentes desde el primer mes!";
             } else {
-                const excedente = cuota_1 - ahorro_mensual;
-                detail_text = "<strong>Sostenibilidad Parcial.</strong> El ahorro mensual de gas (<strong>$ " + Math.round(ahorro_mensual).toLocaleString('es-CO') + "</strong>) cubre el <strong>" + Math.round(cobertura_cuota_pct) + "%</strong> de la primera cuota. El productor debe aportar un excedente mensual de <strong>$ " + Math.round(excedente).toLocaleString('es-CO') + "</strong> de su bolsillo.";
+                const excedente = cuota_1 - ahorro_mensual_total;
+                detail_text = "<strong>Sostenibilidad Parcial.</strong> El ahorro mensual total (<strong>$ " + Math.round(ahorro_mensual_total).toLocaleString('es-CO') + "</strong>, que incluye $ " + Math.round(ahorro_mensual_glp).toLocaleString('es-CO') + " en GLP y $ " + Math.round(ahorro_mensual_biol).toLocaleString('es-CO') + " en Biol) cubre el <strong>" + Math.round(cobertura_cuota_pct) + "%</strong> de la primera cuota. El productor debe aportar un excedente mensual de <strong>$ " + Math.round(excedente).toLocaleString('es-CO') + "</strong> de su bolsillo.";
             }
             
             document.getElementById('credit-sustainability-detail').innerHTML = detail_text;
+        }
+
+        function renderCreditChart(labels, cuotas, saldos) {
+            const ctx = document.getElementById('creditChart').getContext('2d');
+            
+            if (creditChartInstance) {
+                creditChartInstance.destroy();
+            }
+
+            creditChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Valor Cuota Mensual ($)',
+                            data: cuotas,
+                            borderColor: '#A24823',
+                            backgroundColor: 'rgba(162, 72, 35, 0.1)',
+                            borderWidth: 2,
+                            yAxisID: 'yCuota',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Saldo Deudor ($)',
+                            data: saldos,
+                            borderColor: '#2E7D32',
+                            backgroundColor: 'rgba(46, 125, 50, 0.05)',
+                            borderWidth: 2,
+                            yAxisID: 'ySaldo',
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: { size: 10, family: 'sans-serif', weight: 'bold' },
+                                boxWidth: 12
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) label += ': ';
+                                    if (context.parsed.y !== null) {
+                                        label += '$ ' + context.parsed.y.toLocaleString('es-CO');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 9 } }
+                        },
+                        yCuota: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: 'Cuota ($)', font: { size: 9, weight: 'bold' } },
+                            ticks: {
+                                font: { size: 8 },
+                                callback: function(value) { return '$' + (value/1000) + 'k'; }
+                            }
+                        },
+                        ySaldo: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: { display: true, text: 'Saldo ($)', font: { size: 9, weight: 'bold' } },
+                            grid: { drawOnChartArea: false },
+                            ticks: {
+                                font: { size: 8 },
+                                callback: function(value) { return '$' + (value/1000000) + 'M'; }
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         function resetCalculator() {
@@ -1380,6 +1700,10 @@
             document.getElementById('res-savings-detail').innerText = "Equivalente a 0.0 cilindros de GLP (35 lb) evitados al año";
             
             document.getElementById('res-credit-card').style.display = 'none';
+            if (creditChartInstance) {
+                creditChartInstance.destroy();
+                creditChartInstance = null;
+            }
         }
 
         window.onload = function() {
