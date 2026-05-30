@@ -340,7 +340,7 @@
             border: 1px solid #FADBD8;
         }
 
-        .badge-temperate {
+        .badge-cold {
             background-color: #FEF9E7;
             color: #B7950B;
             border: 1px solid #FCF3CF;
@@ -790,20 +790,17 @@
                 <div class="input-group slider-container">
                     <div class="input-label">
                         <span>Temperatura Media Anual</span>
-                        <span id="display-temp" class="slider-value-display">20.0 °C</span>
+                        <span id="display-temp" class="slider-value-display">0.0 °C</span>
                     </div>
                     <p class="input-description">La temperatura ambiente regula la velocidad de digestión bacteriana psicrófila/mesófila en sistemas tubulares de bajo costo.</p>
-                    <input type="range" id="input-temp" class="custom-slider" min="-5" max="40" value="20" step="0.5" oninput="updateTempDisplay()">
+                    <input type="range" id="input-temp" class="custom-slider" min="-5" max="40" value="0" step="0.5" oninput="updateTempDisplay()">
                     <div id="badge-clima" class="climate-badge badge-cold">
                         ❄️ Clima Frío (&lt;18°C) – factor 0.55
                     </div>
                 </div>
 
-                <div class="button-group-row">
-                    <button type="button" class="btn-calculate" onclick="triggerCalculation()">
-                        <span>📊 Calcular Viabilidad</span>
-                    </button>
-                    <button type="button" class="btn-reset" onclick="resetCalculator()">
+                <div style="margin-top: 1.5rem;">
+                    <button type="button" class="btn-reset" style="width: 100%; height: 52px; font-size: 1.15rem; background-color: transparent; border: 2px solid var(--border-color); color: var(--wood-dark);" onclick="resetCalculator()">
                         <span>🧹 Limpiar todo</span>
                     </button>
                 </div>
@@ -815,28 +812,28 @@
                 </h2>
 
                 
-                <div id="results-placeholder" class="results-placeholder">
-                    <div class="placeholder-icon">🐄</div>
-                    <p class="placeholder-text">Modifique los parámetros de la izquierda y haga clic en <strong>Calcular viabilidad</strong>.</p>
-                </div>
+
 
                 
-                <div id="results-container" class="results-container">
+                <div id="results-container" class="results-container" style="display: flex;">
                     
                     
                     <div class="stats-row">
-                        <div class="stat-card">
-                            <div class="stat-label">Clima Detectado</div>
-                            <div style="margin-top: 4px; display: flex; justify-content: center;">
-                                <span id="res-clima-badge" class="climate-badge" style="font-size: 0.95rem; font-weight: 700; padding: 6px 12px; border-radius: 12px; display: inline-block;">-</span>
+                        <div id="card-clima-dynamic" class="climate-card-dynamic climate-card-cold">
+                            <div class="stat-label" style="color: inherit; opacity: 0.8;">Clima Detectado</div>
+                            <div id="res-clima-icon" style="font-size: 2.5rem; margin: 0.5rem 0;">❄️</div>
+                            <div style="display: flex; justify-content: center;">
+                                <span id="res-clima-badge" style="font-size: 1.1rem; font-weight: 700; padding: 4px 8px; border-radius: 8px; display: inline-block;">-</span>
                             </div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Biogás Estimado</div>
-                            <div id="res-biogas" class="stat-value">0.00 m³/día</div>
-                            <div id="res-biogas-mes" style="font-size: 1.1rem; font-weight: 700; color: var(--primary-light); margin-top: 4px;">0.00 m³/mes</div>
-                            <div id="res-glp-equiv-mes" style="font-size: 0.9rem; color: var(--accent-terracota); font-weight: 700; margin-top: 4px;">Equivale a 0.0 lb GLP/mes</div>
-                            <div id="res-manure-line" style="font-size: 0.8rem; color: #665544; margin-top: 4px; font-weight: 500;">Estiércol recolectable: 0.0 kg/animal/día</div>
+                        <div class="biogas-card-dynamic">
+                            <div class="stat-label" style="color: var(--wood-dark); opacity: 0.8;">Biogás Estimado</div>
+                            <div class="biogas-icon-flame">🔥</div>
+                            <div id="res-biogas" class="stat-value" style="font-size: 2rem; color: var(--primary-green);">0.00 m³/día</div>
+                            <div id="res-biogas-mes" style="font-size: 1.15rem; font-weight: 700; color: var(--primary-light); margin-top: 4px;">0.00 m³/mes</div>
+                            <div id="res-glp-equiv-mes" style="font-size: 0.95rem; color: var(--accent-terracota); font-weight: 700; margin-top: 4px;">Equivale a 0.0 lb GLP/mes</div>
+                            <div id="res-manure-line" style="font-size: 0.8rem; color: #665544; margin-top: 6px; font-weight: 500;">Estiércol recolectable: 0.0 kg/animal/día</div>
+                            <div id="res-manure-total-line" style="font-size: 0.85rem; color: var(--primary-green); margin-top: 4px; font-weight: 700; border-top: 1px dashed var(--border-color); padding-top: 4px;">Total recolectado: 0.0 kg/día</div>
                         </div>
                     </div>
 
@@ -873,10 +870,17 @@
                     </div>
 
                     
-                    <div id="res-savings-card" class="savings-block">
-                        <span class="savings-label">Ahorro Anual Estimado</span>
-                        <span id="res-savings-value" class="savings-value">$ 0 COP</span>
-                        <span id="res-savings-detail" class="savings-detail">Equivalente a 0 cilindros de GLP de 35 lb evitados</span>
+                    <div id="res-savings-card" class="savings-block" style="background: linear-gradient(135deg, #FDFEFE, #EBF5FB); border: 1px solid #AED6F1; padding: 1.5rem; border-radius: 12px;">
+                        <span class="savings-label" style="color: #2874A6; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">Ahorro Económico Estimado</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #AED6F1; padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
+                            <span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">Gasto sin biodigestor:</span>
+                            <span id="res-gasto-sin-sistema" style="font-size: 1rem; color: var(--accent-terracota); font-weight: 700; text-decoration: line-through;">$ 0 COP/año</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;">
+                            <span style="font-size: 1.1rem; color: var(--primary-green); font-weight: 700;">Ahorro Anual Neto:</span>
+                            <span id="res-savings-value" class="savings-value" style="font-size: 2rem; color: var(--primary-green); font-family: 'Playfair Display', Georgia, serif; font-weight: 700;">$ 0 COP</span>
+                        </div>
+                        <span id="res-savings-detail" class="savings-detail" style="font-size: 0.85rem; color: var(--text-muted); display: block; font-weight: 500;">Equivalente a 0.0 cilindros de GLP (35 lb) evitados al año</span>
                     </div>
 
                     
@@ -975,7 +979,7 @@
             let val = parseInt(input.value) || 0;
             val = Math.max(0, val + amount);
             input.value = val;
-            calculateRealtime();
+            runCalculations();
         }
 
         function updatePersonasDisplay() {
@@ -987,7 +991,7 @@
                 display.innerText = val + (parseInt(val) === 1 ? " persona" : " personas");
             }
             highlightReferenceRow(parseInt(val));
-            calculateRealtime();
+            runCalculations();
         }
 
         function updateTempDisplay() {
@@ -998,13 +1002,13 @@
                 badge.innerText = "🔥 Clima Cálido (>24°C) – factor 1.00";
                 badge.className = "climate-badge badge-warm";
             } else if (temp >= 18) {
-                badge.innerText = "🍃 Clima Templado (18–24°C) – factor 0.75";
-                badge.className = "climate-badge badge-temperate";
+                badge.innerText = "❄️ Clima Frío (<18°C) – factor 0.55";
+                badge.className = "climate-badge badge-cold";
             } else {
                 badge.innerText = "❄️ Clima Frío (<18°C) – factor 0.55";
                 badge.className = "climate-badge badge-cold";
             }
-            calculateRealtime();
+            runCalculations();
         }
 
         function updateFraccionDisplay() {
@@ -1013,7 +1017,7 @@
             document.getElementById('display-fraccion').innerText = val + "%";
             const manure = 40 * (val / 100);
             document.getElementById('manure-calc-note').innerText = "Estiércol recolectable: " + manure.toFixed(1) + " kg/animal/día";
-            calculateRealtime();
+            runCalculations();
         }
 
         function highlightReferenceRow(personas) {
@@ -1034,13 +1038,13 @@
             if (temp > 24) {
                 return { name: "🔥 Cálido (>24°C)", factor: 1.00, rendimiento: 0.1700, class: "climate-badge badge-warm" };
             } else if (temp >= 18) {
-                return { name: "🍃 Templado (18–24°C)", factor: 0.75, rendimiento: 0.1275, class: "climate-badge badge-temperate" };
+                return { name: "🍃 Templado (18–24°C)", factor: 0.75, rendimiento: 0.1275, class: "climate-badge badge-cold" };
             } else {
                 return { name: "❄️ Frío (<18°C)", factor: 0.55, rendimiento: 0.0935, class: "climate-badge badge-cold" };
             }
         }
 
-        function calculateRealtime() {
+        function calculateRealtime() { runCalculations();
             const container = document.getElementById('results-container');
             if (container.style.display === 'flex') {
                 runCalculations();
@@ -1066,18 +1070,29 @@
             const manure_per_animal = 40 * (fraccion / 100);
             document.getElementById('res-manure-line').innerText = "Estiércol recolectable: " + manure_per_animal.toFixed(1) + " kg/animal/día";
 
+            const manure_total_dia = bovinos * manure_per_animal;
+            document.getElementById('res-manure-total-line').innerText = "Total recolectado: " + manure_total_dia.toFixed(1) + " kg/día";
+
             const clima = getClimateParams(temp);
             const resClimaBadge = document.getElementById('res-clima-badge');
+            const resClimaIcon = document.getElementById('res-clima-icon');
+            const cardClima = document.getElementById('card-clima-dynamic');
+            
             let clima_nombre_simple = "";
             if (temp > 24) {
                 clima_nombre_simple = "🔥 Cálido";
+                resClimaIcon.innerText = "🔥";
+                cardClima.className = "climate-card-dynamic climate-card-warm";
             } else if (temp >= 18) {
                 clima_nombre_simple = "🍃 Templado";
+                resClimaIcon.innerText = "🍃";
+                cardClima.className = "climate-card-dynamic climate-card-temperate";
             } else {
                 clima_nombre_simple = "❄️ Frío";
+                resClimaIcon.innerText = "❄️";
+                cardClima.className = "climate-card-dynamic climate-card-cold";
             }
             resClimaBadge.innerText = clima_nombre_simple + " (" + temp.toFixed(1) + " °C)";
-            resClimaBadge.className = clima.class;
 
             const biogas_dia = bovinos * manure_per_animal * VS_FRACCION * clima.rendimiento;
             document.getElementById('res-biogas').innerText = biogas_dia.toFixed(2) + " m³/día";
@@ -1089,7 +1104,7 @@
             const glp_equiv_lb_mes = glp_equiv_kg_mes * 2.20462;
             document.getElementById('res-glp-equiv-mes').innerText = "Equivale a " + glp_equiv_lb_mes.toFixed(1) + " lb GLP/mes";
 
-            const biol_dia = bovinos * manure_per_animal * 2;
+            const biol_dia = manure_total_dia * 2;
             const biol_mes = biol_dia * 30;
             document.getElementById('res-biol').innerText = Math.round(biol_dia) + " L/día (" + Math.round(biol_mes).toLocaleString('es-CO') + " L/mes)";
 
@@ -1135,6 +1150,15 @@
             const bovinos_necesarios = Math.ceil(demanda_hogar / oferta_por_bovino);
             document.getElementById('res-needed-cows').innerText = isFinite(bovinos_necesarios) && bovinos_necesarios > 0 ? bovinos_necesarios + (bovinos_necesarios === 1 ? " bovino" : " bovinos") : "0 bovinos";
 
+            const gasto_sin_sistema_anual = personas * DEMANDA_GLP_PERSONA * 365 * PRECIO_GLP_KG;
+            const formattedGasto = new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(gasto_sin_sistema_anual);
+            document.getElementById('res-gasto-sin-sistema').innerText = formattedGasto + "/año";
+
             const cobertura_efectiva = Math.min(cobertura, 100);
             const consumo_glp_evitado_anual = (cobertura_efectiva / 100) * personas * DEMANDA_GLP_PERSONA * 365;
             const ahorro_anual_cop = consumo_glp_evitado_anual * PRECIO_GLP_KG;
@@ -1146,7 +1170,7 @@
                 maximumFractionDigits: 0
             }).format(ahorro_anual_cop);
             
-            document.getElementById('res-savings-value').innerText = formattedSavings + " / año";
+            document.getElementById('res-savings-value').innerText = formattedSavings;
 
             const cilindros_evitados = consumo_glp_evitado_anual / GLP_CILINDRO_KG;
             document.getElementById('res-savings-detail').innerText = "Equivalente a " + cilindros_evitados.toFixed(1) + " cilindros de GLP (35 lb) evitados al año";
@@ -1172,21 +1196,18 @@
             document.getElementById('input-bovinos').value = 0;
             document.getElementById('input-fraccion').value = 0;
             document.getElementById('input-personas').value = 1;
-            document.getElementById('input-temp').value = 20;
+            document.getElementById('input-temp').value = 0;
             
             updatePersonasDisplay();
             updateTempDisplay();
             updateFraccionDisplay();
-            
-            document.getElementById('results-container').style.display = 'none';
-            document.getElementById('results-placeholder').style.display = 'flex';
         }
 
         window.onload = function() {
             document.getElementById('input-bovinos').value = 0;
             document.getElementById('input-fraccion').value = 0;
             document.getElementById('input-personas').value = 1;
-            document.getElementById('input-temp').value = 20;
+            document.getElementById('input-temp').value = 0;
             
             highlightReferenceRow(1);
             updateTempDisplay();
