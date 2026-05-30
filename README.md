@@ -65,10 +65,14 @@ Para facilitar la lectura y comprensión del modelo matemático, se presenta a c
 
 ### 1. Dimensión Biológica y Técnica
 * **Producción Diaria de Estiércol ($P_e$):** Se asume un promedio de $10\text{ kg}$ de estiércol fresco por bovino al día bajo sistemas de pastoreo rotacional o semiestabulado en Colombia (Rivera et al., 2025).
-  $$P_{e,\text{total}} = N_{\text{bov}} \times p_{\text{est}} \times f_{\text{rec}}$$
+```math
+P_{e,\text{total}} = N_{\text{bov}} \times p_{\text{est}} \times f_{\text{rec}}
+```
   Donde $N_{\text{bov}}$ es el número de bovinos, $p_{\text{est}}$ es la producción de estiércol fresco ($10\text{ kg/bovino}\cdot\text{día}$) y $f_{\text{rec}}$ es la fracción de recolección en pastoreo.
 * **Sólidos Volátiles (VS):** Representan la fracción biodegradable del estiércol, establecida en el $12\%$ del estiércol fresco (Rivera et al., 2025).
-  $$\text{VS}_{\text{diario}} = P_{e,\text{total}} \times x_{\text{VS}}$$
+```math
+\text{VS}_{\text{diario}} = P_{e,\text{total}} \times x_{\text{VS}}
+```
   Donde $x_{\text{VS}}$ es la fracción de Sólidos Volátiles sobre estiércol fresco ($0.12\text{ kg VS/kg estiércol}$).
 * **Rendimiento Específico de Metano ($Y_{\text{CH}_4}$):** Se adopta un factor conservador de $0.17\text{ m}^3\text{ CH}_4\text{/kg VS}$ alimentado (Andrade et al., 2020; López et al., 2025).
 * **Efecto de la Temperatura (Coeficiente de Actividad Biológica $C_t$):** La digestión anaeróbica psicrofílica/mesofílica se ve afectada críticamente por la temperatura media anual ($T$ en °C) (Tavera-Ruiz et al., 2023):
@@ -77,19 +81,25 @@ Para facilitar la lectura y comprensión del modelo matemático, se presenta a c
   * Si $20\text{ °C} \le T < 30\text{ °C}$: Actividad moderada ($C_t = 0.70 + (T - 20) \times 0.025$).
   * Si $T \ge 30\text{ °C}$: Actividad óptima mesofílica ($C_t = 0.95$).
 * **Producción Diaria de Metano ($V_{\text{CH}_4}$):**
-  $$V_{\text{CH}_4} = \text{VS}_{\text{diario}} \times Y_{\text{CH}_4} \times C_t$$
+```math
+V_{\text{CH}_4} = \text{VS}_{\text{diario}} \times Y_{\text{CH}_4} \times C_t
+```
 
 ### 2. Dimensión de Cobertura Energética
 * **Demanda de Cocción del Hogar ($D_c$):** Basada en el consumo promedio rural colombiano de $0.166\text{ kg}$ de Gas Licuado de Petróleo (GLP) por persona al día (Inversiones GLP, 2026; UPME, 2024).
 * **Equivalencia Energética:** $1\text{ m}^3$ de biogás purificado equivale térmicamente a $0.45\text{ kg}$ de GLP.
 * **Porcentaje de Cobertura de Cocción ($\%Co$):**
-  $$\%Co = \min\left(100\%, \frac{V_{\text{CH}_4} \times \eta_{\text{GLP}}}{N_{\text{pers}} \times d_{\text{coc}}}\right) \times 100\%$$
+```math
+\%Co = \min\left(100\%, \frac{V_{\text{CH}_4} \times \eta_{\text{GLP}}}{N_{\text{pers}} \times d_{\text{coc}}}\right) \times 100\%
+```
   Donde $\eta_{\text{GLP}}$ es el factor de equivalencia volumétrica ($0.45\text{ kg GLP/m}^3\text{ CH}_4$), $N_{\text{pers}}$ es el número de personas en el hogar y $d_{\text{coc}}$ es la demanda de cocción per cápita ($0.166\text{ kg GLP/persona}\cdot\text{día}$).
 
 ### 3. Dimensión Económica y Financiera
 * **Ahorro Anual en GLP ($A_{\text{GLP}}$):** Calculado según la tarifa promedio ponderada de GLP rural para la zona Cundinamarca-Boyacá a febrero de 2026 ($2,800\text{ COP/kg}$ en cilindro de 40 lb) (Inversiones GLP, 2026).
 * **Sinceramiento del Ahorro en Biol ($A_{\text{Biol}}$):** El Biol (abono líquido orgánico) se valoriza mediante el costo de oportunidad de sustitución de la Urea química comercial de 50 kg. Para evitar datos inflados y mantener el rigor, el modelo aplica un **Factor de Aprovechamiento Agronómico Real del 30%**, reconociendo pérdidas por volatilización de nitrógeno y escorrentía en sistemas reales:
-  $$A_{\text{Biol}} = V_{\text{Biol}} \times 365 \times V_{\text{litro}} \times \alpha_{\text{aprov}}$$
+```math
+A_{\text{Biol}} = V_{\text{Biol}} \times 365 \times V_{\text{litro}} \times \alpha_{\text{aprov}}
+```
   Donde $V_{\text{Biol}}$ es la producción diaria de Biol en litros (equivalente al volumen de agua y estiércol ingresado), $V_{\text{litro}}$ es el valor económico de sustitución de un litro de Biol basado en la Urea comercial ($143\text{ COP/L}$) y $\alpha_{\text{aprov}}$ es el Factor de Aprovechamiento Agronómico Real ($0.30$).
 * **Amortización del Crédito de Fomento (Finagro / Banco Agrario):** Se modela un crédito redescontado de fomento para Pequeño Productor a una tasa preferencial del **12% Nominal Anual Mes Vencido (NAMV)** bajo un **Gradiente Geométrico Creciente del 2% anual**, permitiendo cuotas iniciales bajas y protegiendo el flujo de caja de la finca durante los primeros años del proyecto.
 
