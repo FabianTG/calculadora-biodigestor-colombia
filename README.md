@@ -3,7 +3,7 @@
 ### Herramienta de Apoyo Científico y Toma de Decisiones para Sistemas Ganaderos de Pequeña Escala
 
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Active-blue?style=flat-square&logo=github)](https://fabiantg.github.io/calculadora-biodigestor-colombia/)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20457190.svg?style=flat-square)](https://doi.org/10.5281/zenodo.20457190)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20457293.svg?style=flat-square)](https://doi.org/10.5281/zenodo.20457293)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Tecnologías](https://img.shields.io/badge/Tecnolog%C3%ADas-HTML5%20%2F%20JS-orange?style=flat-square)](https://developer.mozilla.org/es/docs/Web/HTML)
 
@@ -45,41 +45,41 @@ Para facilitar la lectura y comprensión del modelo matemático, se presenta a c
 | $T$ | Temperatura media anual de la zona | °C | Entrada | Definido por usuario | Entrada de interfaz |
 | $N_{\text{pers}}$ | Número de personas en el hogar | Personas | Entrada | Definido por usuario | Entrada de interfaz |
 | $f_{\text{rec}}$ | Fracción de recolección de estiércol | Adimensional | Entrada | Variable (0.0 a 1.0) | Entrada de interfaz |
-| $p_{\text{est}}$ | Producción de estiércol fresco por bovino | $\text{kg/bovino}\cdot\text{día}$ | Constante | $10.0$ | Rivera et al. (2025) |
-| $P_{e,\text{total}}$ | Producción total de estiércol disponible | $\text{kg/día}$ | Variable | $N_{\text{bov}} \times p_{\text{est}} \times f_{\text{rec}}$ | Balance de materia |
+| $p_{\text{est}}$ | Producción fecal total de estiércol fresco por bovino | $\text{kg/bovino}\cdot\text{día}$ | Constante | $40.0$ | Rivera et al. (2025) |
+| $P_{e,\text{total}}$ | Producción total de estiércol recolectado disponible | $\text{kg/día}$ | Variable | $N_{\text{bov}} \times p_{\text{est}} \times f_{\text{rec}}$ | Balance de materia |
 | $x_{\text{VS}}$ | Fracción de Sólidos Volátiles (VS) | $\text{kg VS/kg est.}$ | Constante | $0.12$ ($12\%$) | Rivera et al. (2025) |
 | $\text{VS}_{\text{diario}}$ | Masa de Sólidos Volátiles cargados al día | $\text{kg VS/día}$ | Variable | $P_{e,\text{total}} \times x_{\text{VS}}$ | Balance de materia |
 | $Y_{\text{CH}_4}$ | Rendimiento específico de metano | $\text{m}^3\text{ CH}_4\text{/kg VS}$ | Constante | $0.17$ | López et al. (2025); Andrade (2020) |
-| $C_t$ | Cobertura / Coeficiente térmico de actividad | Adimensional | Variable | Función de $T$ ($0.0$ a $0.95$) | Tavera-Ruiz et al. (2023) |
+| $C_t$ | Cobertura / Coeficiente térmico de actividad | Adimensional | Variable | Discreto: 0,00 / 0,55 / 0,75 / 1,00 según banda climática | Tavera-Ruiz et al. (2023) |
 | $V_{\text{CH}_4}$ | Producción diaria de metano | $\text{m}^3\text{ CH}_4\text{/día}$ | Variable | $\text{VS}_{\text{diario}} \times Y_{\text{CH}_4} \times C_t$ | Ecuación biológica central |
 | $d_{\text{coc}}$ | Demanda diaria de cocción per cápita | $\text{kg GLP/pers}\cdot\text{día}$ | Constante | $0.166$ | Inversiones GLP (2026); UPME (2024) |
 | $\eta_{\text{GLP}}$ | Equivalencia térmica Biogás-GLP | $\text{kg GLP/m}^3\text{ CH}_4$ | Constante | $0.45$ | UPME (2024) |
 | $\%Co$ | Cobertura de cocción del hogar | Porcentaje | Variable | Función de demanda y oferta | Balance energético |
 | $A_{\text{GLP}}$ | Ahorro anual en compra de GLP | $\text{COP/año}$ | Variable | Función de $\%Co$ y precio | Evaluación económica |
 | $V_{\text{Biol}}$ | Producción diaria de biofertilizante (Biol) | $\text{L/día}$ | Variable | Equiv. a carga de agua y est. | Balance hidráulico |
-| $V_{\text{litro}}$ | Valor económico de sustitución del Biol | $\text{COP/L}$ | Variable | Función de precio de la Urea | Costo de oportunidad |
+| $V_{\text{litro}}$ | Valor económico de sustitución del Biol | $\text{COP/L}$ | Variable | $\approx180\text{ COP/L}$ (= Urea $189,000 / 1050$) | Costo de oportunidad |
 | $\alpha_{\text{aprov}}$ | Factor de aprovechamiento agronómico real | Adimensional | Constante | $0.30$ ($30\%$) | Sinceramiento agronómico |
 | $A_{\text{Biol}}$ | Ahorro anual sincerado en fertilización | $\text{COP/año}$ | Variable | $V_{\text{Biol}} \times 365 \times V_{\text{litro}} \times \alpha_{\text{aprov}}$ | Evaluación económica |
 
 ---
 
 ### 1. Dimensión Biológica y Técnica
-* **Producción Diaria de Estiércol ($P_e$):** Se asume un promedio de $10\text{ kg}$ de estiércol fresco por bovino al día bajo sistemas de pastoreo rotacional o semiestabulado en Colombia (Rivera et al., 2025).
+* **Producción Diaria de Estiércol ($P_e$):** Se asume una producción fecal total de $40\text{ kg}$ por bovino al día bajo sistemas de pastoreo rotacional o semiestabulado en Colombia (Rivera et al., 2025), de los cuales se recolecta una fracción $f_{\text{rec}}$ según el sistema de manejo.
 ```math
 P_{e,\text{total}} = N_{\text{bov}} \times p_{\text{est}} \times f_{\text{rec}}
 ```
-  Donde $N_{\text{bov}}$ es el número de bovinos, $p_{\text{est}}$ es la producción de estiércol fresco ($10\text{ kg/bovino}\cdot\text{día}$) y $f_{\text{rec}}$ es la fracción de recolección en pastoreo.
+  Donde $N_{\text{bov}}$ es el número de bovinos, $p_{\text{est}}$ es la producción fecal total ($40\text{ kg/bovino}\cdot\text{día}$) y $f_{\text{rec}}$ es la fracción de recolección en pastoreo.
 * **Sólidos Volátiles (VS):** Representan la fracción biodegradable del estiércol, establecida en el $12\%$ del estiércol fresco (Rivera et al., 2025).
 ```math
 \text{VS}_{\text{diario}} = P_{e,\text{total}} \times x_{\text{VS}}
 ```
   Donde $x_{\text{VS}}$ es la fracción de Sólidos Volátiles sobre estiércol fresco ($0.12\text{ kg VS/kg estiércol}$).
 * **Rendimiento Específico de Metano ($Y_{\text{CH}_4}$):** Se adopta un factor conservador de $0.17\text{ m}^3\text{ CH}_4\text{/kg VS}$ alimentado (Andrade et al., 2020; López et al., 2025).
-* **Efecto de la Temperatura (Coeficiente de Actividad Biológica $C_t$):** La digestión anaeróbica psicrofílica/mesofílica se ve afectada críticamente por la temperatura media anual ($T$ en °C) (Tavera-Ruiz et al., 2023):
-  * Si $T < 10\text{ °C}$: El sistema se inhibe por completo ($C_t = 0$, producción nula).
-  * Si $10\text{ °C} \le T < 20\text{ °C}$: Actividad reducida por frío ($C_t = 0.35 + (T - 10) \times 0.035$).
-  * Si $20\text{ °C} \le T < 30\text{ °C}$: Actividad moderada ($C_t = 0.70 + (T - 20) \times 0.025$).
-  * Si $T \ge 30\text{ °C}$: Actividad óptima mesofílica ($C_t = 0.95$).
+* **Efecto de la Temperatura (Coeficiente de Actividad Biológica $C_t$):** La digestión anaeróbica se ve afectada críticamente por la temperatura media anual ($T$ en °C) y se clasifica en tres bandas climáticas discretas de actividad (Tavera-Ruiz et al., 2023):
+  * **Inhibido por Frío ($T < 10\text{ °C}$):** El sistema se inhibe por completo ($C_t = 0.00$, producción nula).
+  * **Clima Frío ($10\text{ °C} \le T < 18\text{ °C}$):** Actividad reducida por frío ($C_t = 0.55$, rendimiento neto de $0.0935\text{ m}^3\text{ CH}_4\text{/kg VS}$).
+  * **Clima Templado ($18\text{ °C} \le T \le 24\text{ °C}$):** Actividad moderada ($C_t = 0.75$, rendimiento neto de $0.1275\text{ m}^3\text{ CH}_4\text{/kg VS}$).
+  * **Clima Cálido ($T > 24\text{ °C}$):** Actividad óptima mesofílica ($C_t = 1.00$, rendimiento neto de $0.1700\text{ m}^3\text{ CH}_4\text{/kg VS}$).
 * **Producción Diaria de Metano ($V_{\text{CH}_4}$):**
 ```math
 V_{\text{CH}_4} = \text{VS}_{\text{diario}} \times Y_{\text{CH}_4} \times C_t
@@ -95,13 +95,13 @@ V_{\text{CH}_4} = \text{VS}_{\text{diario}} \times Y_{\text{CH}_4} \times C_t
   Donde $\eta_{\text{GLP}}$ es el factor de equivalencia volumétrica ($0.45\text{ kg GLP/m}^3\text{ CH}_4$), $N_{\text{pers}}$ es el número de personas en el hogar y $d_{\text{coc}}$ es la demanda de cocción per cápita ($0.166\text{ kg GLP/persona}\cdot\text{día}$).
 
 ### 3. Dimensión Económica y Financiera
-* **Ahorro Anual en GLP ($A_{\text{GLP}}$):** Calculado según la tarifa promedio ponderada de GLP rural para la zona Cundinamarca-Boyacá a febrero de 2026 ($2,800\text{ COP/kg}$ en cilindro de 40 lb) (Inversiones GLP, 2026).
+* **Ahorro Anual en GLP ($A_{\text{GLP}}$):** Calculado según la tarifa promedio ponderada de GLP rural para la zona Cundinamarca-Boyacá a febrero de 2026 ($6,000\text{ COP/kg}$ en cilindro de 40 lb) (Inversiones GLP, 2026).
 * **Sinceramiento del Ahorro en Biol ($A_{\text{Biol}}$):** El Biol (abono líquido orgánico) se valoriza mediante el costo de oportunidad de sustitución de la Urea química comercial de 50 kg. Para evitar datos inflados y mantener el rigor, el modelo aplica un **Factor de Aprovechamiento Agronómico Real del 30%**, reconociendo pérdidas por volatilización de nitrógeno y escorrentía en sistemas reales:
 ```math
 A_{\text{Biol}} = V_{\text{Biol}} \times 365 \times V_{\text{litro}} \times \alpha_{\text{aprov}}
 ```
-  Donde $V_{\text{Biol}}$ es la producción diaria de Biol en litros (equivalente al volumen de agua y estiércol ingresado), $V_{\text{litro}}$ es el valor económico de sustitución de un litro de Biol basado en la Urea comercial ($143\text{ COP/L}$) y $\alpha_{\text{aprov}}$ es el Factor de Aprovechamiento Agronómico Real ($0.30$).
-* **Amortización del Crédito de Fomento (Finagro / Banco Agrario):** Se modela un crédito redescontado de fomento para Pequeño Productor a una tasa preferencial del **12% Nominal Anual Mes Vencido (NAMV)** bajo un **Gradiente Geométrico Creciente del 2% anual**, permitiendo cuotas iniciales bajas y protegiendo el flujo de caja de la finca durante los primeros años del proyecto.
+  Donde $V_{\text{Biol}}$ es la producción diaria de Biol en litros (equivalente al volumen de agua y estiércol ingresado), $V_{\text{litro}}$ es el valor económico de sustitución de un litro de Biol basado en la Urea comercial ($\approx180\text{ COP/L}$) y $\alpha_{\text{aprov}}$ es el Factor de Aprovechamiento Agronómico Real ($0.30$).
+* **Amortización del Crédito de Fomento (Finagro / Banco Agrario):** Se modela un crédito redescontado de fomento para Pequeño Productor a una tasa preferencial del **13% Efectivo Anual (EA)** (unificada con el artículo y el simulador de la calculadora) bajo un **Gradiente Geométrico Creciente del 2% anual**, permitiendo cuotas iniciales bajas y protegiendo el flujo de caja de la finca durante los primeros años del proyecto.
 
 ---
 
@@ -136,5 +136,4 @@ Este proyecto está bajo la **Licencia MIT**. Esto significa que eres libre de c
 
 Si utilizas esta calculadora, el modelo matemático o los datos recopilados en tu investigación, por favor utiliza la función de citación automática de GitHub en la barra lateral derecha ("Cite this repository") o utiliza la siguiente referencia en formato APA 7.ª edición:
 
-> Torres-González, C. F., Cuevas-Zambrano, L. S., & Solano-Rozo, M. E. (2026). *Calculadora de Prefactibilidad Técnico-Económica para Biodigestores Bovinos en Colombia* (Versión 1.0.2) [Software de computación]. Zenodo. https://doi.org/10.5281/zenodo.20457190
-
+> Torres-González, C. F., Cuevas-Zambrano, L. S., & Solano-Rozo, M. E. (2026). *Calculadora de Prefactibilidad Técnico-Económica para Biodigestores Bovinos en Colombia* (Versión 1.0.2) [Software de computación]. Zenodo. https://doi.org/10.5281/zenodo.20457293

@@ -12,7 +12,7 @@ authors:
     affiliation: "Universidad EAN"
 title: "Calculadora de Prefactibilidad Técnico-Económica para Biodigestores Bovinos en Colombia"
 version: 1.0.2
-doi: "10.5281/zenodo.20457190"
+doi: "10.5281/zenodo.20457293"
 date-released: 2026-05-30
 url: "https://fabiantg.github.io/calculadora-biodigestor-colombia/"
 repository-code: "https://github.com/FabianTG/calculadora-biodigestor-colombia"
