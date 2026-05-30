@@ -101,7 +101,7 @@ V_{\text{CH}_4} = \text{VS}_{\text{diario}} \times Y_{\text{CH}_4} \times C_t
 A_{\text{Biol}} = V_{\text{Biol}} \times 365 \times V_{\text{litro}} \times \alpha_{\text{aprov}}
 ```
   Donde $V_{\text{Biol}}$ es la producción diaria de Biol en litros (equivalente al volumen de agua y estiércol ingresado), $V_{\text{litro}}$ es el valor económico de sustitución de un litro de Biol basado en la Urea comercial ($\approx180\text{ COP/L}$) y $\alpha_{\text{aprov}}$ es el Factor de Aprovechamiento Agronómico Real ($0.30$).
-* **Amortización del Crédito de Fomento (Finagro / Banco Agrario):** Se modela un crédito redescontado de fomento para Pequeño Productor a una tasa preferencial del **13% Efectivo Anual (EA)** (unificada con el artículo y el simulador de la calculadora) bajo un **Gradiente Geométrico Creciente del 2% anual**, permitiendo cuotas iniciales bajas y protegiendo el flujo de caja de la finca durante los primeros años del proyecto.
+* **Amortización del Crédito de Fomento (Finagro / Banco Agrario):** Se modela un crédito redescontado de fomento para Pequeño Productor a una tasa preferencial del **12% Efectivo Anual (EA)** (unificada con el artículo y el simulador de la calculadora) bajo un **Gradiente Geométrico Creciente del 2% anual**, permitiendo cuotas iniciales bajas y protegiendo el flujo de caja de la finca durante los primeros años del proyecto.
 
 ---
 
