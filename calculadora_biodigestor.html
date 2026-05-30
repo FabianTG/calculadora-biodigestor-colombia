@@ -1251,22 +1251,22 @@
                 </div>
                 
                 <div class="card card-inputs" style="margin-bottom: 2rem;">
-                    <h3 style="font-family: 'Playfair Display', serif; color: var(--wood-dark); font-size: 1.35rem; margin-bottom: 0.5rem;">🧪 Claridad Científica: ¿Por qué valorizamos el Biol?</h3>
+                    <h3 style="font-family: 'Playfair Display', serif; color: var(--wood-dark); font-size: 1.35rem; margin-bottom: 0.5rem;">🌱 Valorización Agronómica del Biol como Fertilizante</h3>
                     <p style="line-height: 1.5; font-size: 0.9rem; color: var(--text-dark); margin-bottom: 1rem;">
-                        <strong>El Biol no es Urea química.</strong> El Biol es un abono líquido orgánico completo obtenido de la digestión anaerobia, que contiene nitrógeno, fósforo, potasio, micronutrientes y hormonas vegetales. La Urea, por su parte, es un fertilizante químico sintético concentrado al 46% de Nitrógeno.
+                        El <strong>Biol</strong> es un abono líquido de origen orgánico que resulta del proceso de fermentación anaeróbica dentro del biodigestor. A diferencia de los fertilizantes de síntesis química como la Urea, el Biol aporta una amplia gama de macro y micronutrientes, materia orgánica y fitohormonas que mejoran la estructura del suelo y la salud de los cultivos a largo plazo.
                     </p>
                     <p style="line-height: 1.5; font-size: 0.9rem; color: var(--text-dark); margin-bottom: 1.5rem;">
-                        Sin embargo, agronómicamente se valoriza el Biol calculando cuántos litros de Biol se necesitan para reemplazar la efectividad de un bulto de Urea en pasturas (debido a la alta absorción foliar del Biol). Como el precio de la Urea varía según el mercado, este selector le permite calcular el ahorro real en su zona.
+                        Para estimar su valor económico de manera práctica, la literatura académica establece una equivalencia basada en el costo de oportunidad: el uso de Biol en las pasturas permite sustituir o reducir la compra de fertilizantes comerciales. Al ingresar el precio local del bulto de Urea, la calculadora determina el ahorro económico equivalente por cada litro de Biol producido en su finca.
                     </p>
                     
                     <div class="input-group">
-                        <label class="input-label" for="input-urea-price">🛒 PRECIO REAL DEL BULTO DE UREA (50 KG - COP)</label>
+                        <label class="input-label" for="input-urea-price">🛒 PRECIO LOCAL DEL BULTO DE UREA (50 KG - COP)</label>
                         <div class="number-control" style="display: flex; align-items: center; justify-content: space-between; border: 2px solid var(--border-color); border-radius: 8px; height: 52px; background: #FFF; padding: 0 4px; box-sizing: border-box;">
                             <button type="button" class="btn-number" onclick="adjustUreaPrice(-5000)" style="width: 44px; height: 44px; border: none; background: var(--bg-cream); color: var(--wood-dark); font-size: 1.5rem; font-weight: bold; cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">−</button>
                             <input type="number" id="input-urea-price" class="input-number" value="189000" min="50000" max="500000" step="1000" oninput="updateUreaPrice()" style="flex: 1; border: none; text-align: center; font-size: 1.15rem; font-weight: 700; color: var(--wood-dark); outline: none; width: 100%;">
                             <button type="button" class="btn-number" onclick="adjustUreaPrice(5000)" style="width: 44px; height: 44px; border: none; background: var(--bg-cream); color: var(--wood-dark); font-size: 1.5rem; font-weight: bold; cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">+</button>
                         </div>
-                        <p class="input-description">Ingrese el valor real que paga por un bulto de Urea de 50 kg en su zona. El valor de equivalencia de cada litro de Biol se calculará automáticamente en base a este precio real.</p>
+                        <p class="input-description">Ingrese el precio real que paga actualmente por un bulto de Urea de 50 kg en su región para ajustar automáticamente el valor de sustitución del Biol.</p>
                     </div>
                 </div>
                 
@@ -1553,6 +1553,18 @@
             const personas = parseInt(document.getElementById('input-personas').value);
             const temp = parseFloat(document.getElementById('input-temp').value);
             const fraccion = parseInt(document.getElementById('input-fraccion').value);
+            
+            const placeholder = document.getElementById('results-placeholder');
+            const container = document.getElementById('results-container');
+            
+            if (bovinos > 0) {
+                if (placeholder) placeholder.style.display = 'none';
+                if (container) container.style.display = 'flex';
+            } else {
+                if (placeholder) placeholder.style.display = 'flex';
+                if (container) container.style.display = 'none';
+                return; // Si no hay bovinos, detenemos el cálculo para evitar errores en elementos no visibles
+            }
             
             const manure_per_animal = 40 * (fraccion / 100);
             document.getElementById('manure-calc-note').innerText = "Estiércol recolectable: " + manure_per_animal.toFixed(1) + " kg/animal/día";

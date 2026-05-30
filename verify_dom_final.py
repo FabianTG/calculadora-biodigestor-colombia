@@ -43,7 +43,7 @@ elements_to_check = {
     "creditChart": "canvas",
     "amortization-table-body": "tbody",
     "credit-sustainability-detail": "div",
-    "select-urea-price": "select",
+    "input-urea-price": "input",
     "report-biol-value": "div",
     "report-glp-savings": "div",
     "report-biol-savings": "div",
