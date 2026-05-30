@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "Si utiliza esta herramienta o el modelo matemático asociado en su investigación académica, por favor cítelo de la siguiente manera:"
+authors:
+  - family-names: "Torres González"
+    given-names: "Cristian Fabián"
+    affiliation: "Universidad EAN"
+  - family-names: "Cuevas Zambrano"
+    given-names: "Luis Steven"
+    affiliation: "Universidad EAN"
+  - family-names: "Solano Rozo"
+    given-names: "Maicol Estiven"
+    affiliation: "Universidad EAN"
+title: "Calculadora de Prefactibilidad Técnico-Económica para Biodigestores Bovinos en Colombia"
+version: 1.0.0
+doi: "10.5281/zenodo.xxxxxxx" # Marcador de posición para cuando se registre en Zenodo
+date-released: 2026-05-30
+url: "https://fabiantg.github.io/calculadora-biodigestor-colombia/"
+repository-code: "https://github.com/FabianTG/calculadora-biodigestor-colombia"
+keywords:
+  - "biodigestor tubular"
+  - "biogás"
+  - "biol"
+  - "prefactibilidad"
+  - "economía circular"
+  - "Colombia"
+  - "crédito de fomento"
+license: MIT

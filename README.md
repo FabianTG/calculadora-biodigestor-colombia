@@ -2,6 +2,10 @@
 
 ### Herramienta de Apoyo Científico y Toma de Decisiones para Sistemas Ganaderos de Pequeña Escala
 
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Active-blue?style=flat-square&logo=github)](https://fabiantg.github.io/calculadora-biodigestor-colombia/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Tecnologías](https://img.shields.io/badge/Tecnolog%C3%ADas-HTML5%20%2F%20JS-orange?style=flat-square)](https://developer.mozilla.org/es/docs/Web/HTML)
+
 ---
 
 ## 🏛️ Información Académica e Institucional
@@ -82,3 +86,12 @@ La calculadora es una **Single Page Application (SPA)** estática, diseñada par
 ## 📄 Licencia
 
 Este proyecto está bajo la **Licencia MIT**. Esto significa que eres libre de copiar, modificar, distribuir y utilizar el software con fines académicos o comerciales, siempre y cuando se otorgue el crédito correspondiente a los autores originales de la Universidad EAN. Consulta el archivo `LICENSE` adjunto para más detalles.
+
+---
+
+## 🎓 Cómo Citar este Trabajo
+
+Si utilizas esta calculadora, el modelo matemático o los datos recopilados en tu investigación, por favor utiliza la función de citación automática de GitHub en la barra lateral derecha ("Cite this repository") o utiliza la siguiente referencia en formato APA 7.ª edición:
+
+> Torres González, C. F., Cuevas Zambrano, L. S., & Solano Rozo, M. E. (2026). *Calculadora de Prefactibilidad Técnico-Económica para Biodigestores Bovinos en Colombia* (Versión 1.0.0) [Software de computación]. GitHub. https://github.com/FabianTG/calculadora-biodigestor-colombia
+
