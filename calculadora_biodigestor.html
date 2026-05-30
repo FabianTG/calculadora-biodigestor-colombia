@@ -870,21 +870,35 @@
                     </div>
 
                     
-                    <div id="res-savings-card" class="savings-block" style="background: linear-gradient(135deg, #FDFEFE, #EBF5FB); border: 1px solid #AED6F1; padding: 1.5rem; border-radius: 12px;">
-                        <span class="savings-label" style="color: #2874A6; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">Ahorro Económico Estimado</span>
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #AED6F1; padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
-                            <span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">Gasto sin biodigestor:</span>
-                            <span id="res-gasto-sin-sistema" style="font-size: 1rem; color: var(--accent-terracota); font-weight: 700; text-decoration: line-through;">$ 0 COP/año</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;">
-                            <span style="font-size: 1.1rem; color: var(--primary-green); font-weight: 700;">Ahorro Anual Neto:</span>
-                            <span id="res-savings-value" class="savings-value" style="font-size: 2rem; color: var(--primary-green); font-family: 'Playfair Display', Georgia, serif; font-weight: 700;">$ 0 COP</span>
-                        </div>
-                        <span id="res-savings-detail" class="savings-detail" style="font-size: 0.85rem; color: var(--text-muted); display: block; font-weight: 500;">Equivalente a 0.0 cilindros de GLP (35 lb) evitados al año</span>
-                    </div>
+                    <div id="res-savings-card" class="savings-block" style="background: linear-gradient(135deg, #FAF9F6, #F4F6F7); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 12px; margin-top: 1rem;">
+                        <span class="savings-label" style="color: var(--wood-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; display: block; margin-bottom: 1rem; text-align: center;">💼 Resumen de Impacto Económico Familiar</span>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                            
+                            <div style="background-color: #FDEDEC; border: 1px solid #FADBD8; padding: 0.75rem; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 0.75rem; color: #78281F; font-weight: 700; text-transform: uppercase; margin-bottom: 0.25rem;">Gasto Mensual Sin Biodigestor</div>
+                                <div id="res-gasto-sin-sistema-mensual" style="font-size: 1.15rem; color: #C0392B; font-weight: 700;">$ 0</div>
+                                <div style="font-size: 0.7rem; color: #922B21;">En gas comercial (GLP)</div>
+                            </div>
 
-                    
-                    <div id="res-recommendation" class="recommendation-block">
+                            <div style="background-color: #E8F8F5; border: 1px solid #A3E4D7; padding: 0.75rem; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 0.75rem; color: #117A65; font-weight: 700; text-transform: uppercase; margin-bottom: 0.25rem;">Ahorro Mensual Neto</div>
+                                <div id="res-savings-mensual-value" style="font-size: 1.25rem; color: #16A085; font-weight: 800; font-family: 'Playfair Display', Georgia, serif;">$ 0</div>
+                                <div style="font-size: 0.7rem; color: #138D75;">Alivio al bolsillo</div>
+                            </div>
+
+                            <div style="background-color: #FEF9E7; border: 1px solid #F9E79F; padding: 0.75rem; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 0.75rem; color: #7D6608; font-weight: 700; text-transform: uppercase; margin-bottom: 0.25rem;">Ahorro a 5 Años</div>
+                                <div id="res-savings-5anos-value" style="font-size: 1.25rem; color: #B7950B; font-weight: 800; font-family: 'Playfair Display', Georgia, serif;">$ 0</div>
+                                <div style="font-size: 0.7rem; color: #9A7D0A;">Impacto proyectado</div>
+                            </div>
+
+                        </div>
+                        
+                        <div id="res-savings-detail" style="font-size: 0.8rem; color: var(--text-muted); text-align: center; font-weight: 500; border-top: 1px dashed var(--border-color); padding-top: 0.5rem;">
+                            Equivalente a 0.0 cilindros de GLP (35 lb) evitados al año
+                        </div>
+                    </div><div id="res-recommendation" class="recommendation-block">
                         Recomendación.
                     </div>
 
@@ -994,14 +1008,33 @@
             runCalculations();
         }
 
-        function updateTempDisplay() {
+                function updateTempDisplay() {
             const temp = parseFloat(document.getElementById('input-temp').value);
             document.getElementById('display-temp').innerText = temp.toFixed(1) + " °C";
             const badge = document.getElementById('badge-clima');
-            if (temp > 24) {
+            if (temp < 10) {
+                badge.innerText = "🥶 Congelado / Inhibido (<10°C) – factor 0.00";
+                badge.className = "climate-badge badge-cold";
+                badge.style.backgroundColor = "#D4E6F1";
+                badge.style.color = "#1B4F72";
+            } else if (temp > 24) {
                 badge.innerText = "🔥 Clima Cálido (>24°C) – factor 1.00";
                 badge.className = "climate-badge badge-warm";
+                badge.style.backgroundColor = "";
+                badge.style.color = "";
             } else if (temp >= 18) {
+                badge.innerText = "🍃 Clima Templado (18–24°C) – factor 0.75";
+                badge.className = "climate-badge badge-temperate";
+                badge.style.backgroundColor = "";
+                badge.style.color = "";
+            } else {
+                badge.innerText = "❄️ Clima Frío (<18°C) – factor 0.55";
+                badge.className = "climate-badge badge-cold";
+                badge.style.backgroundColor = "";
+                badge.style.color = "";
+            }
+            runCalculations();
+        } else if (temp >= 18) {
                 badge.innerText = "❄️ Clima Frío (<18°C) – factor 0.55";
                 badge.className = "climate-badge badge-cold";
             } else {
@@ -1034,9 +1067,17 @@
             }
         }
 
-        function getClimateParams(temp) {
-            if (temp > 24) {
+                function getClimateParams(temp) {
+            if (temp < 10) {
+                return { name: "🥶 Congelado / Inhibido", factor: 0.00, rendimiento: 0.00, class: "climate-badge badge-cold" };
+            } else if (temp > 24) {
                 return { name: "🔥 Cálido (>24°C)", factor: 1.00, rendimiento: 0.1700, class: "climate-badge badge-warm" };
+            } else if (temp >= 18) {
+                return { name: "🍃 Templado (18–24°C)", factor: 0.75, rendimiento: 0.1275, class: "climate-badge badge-temperate" };
+            } else {
+                return { name: "❄️ Frío (<18°C)", factor: 0.55, rendimiento: 0.0935, class: "climate-badge badge-cold" };
+            }
+        };
             } else if (temp >= 18) {
                 return { name: "🍃 Templado (18–24°C)", factor: 0.75, rendimiento: 0.1275, class: "climate-badge badge-cold" };
             } else {
@@ -1061,7 +1102,7 @@
             }
         }
 
-        function runCalculations() {
+                function runCalculations() {
             const bovinos = Math.max(0, parseInt(document.getElementById('input-bovinos').value) || 0);
             const personas = parseInt(document.getElementById('input-personas').value);
             const temp = parseFloat(document.getElementById('input-temp').value);
@@ -1079,18 +1120,30 @@
             const cardClima = document.getElementById('card-clima-dynamic');
             
             let clima_nombre_simple = "";
-            if (temp > 24) {
+            if (temp < 10) {
+                clima_nombre_simple = "🥶 Congelado / Inhibido";
+                resClimaIcon.innerText = "🥶";
+                cardClima.className = "climate-card-dynamic climate-card-cold";
+                cardClima.style.background = "linear-gradient(135deg, #EBF5FB, #D4E6F1)";
+                cardClima.style.borderColor = "#A9DFBF";
+            } else if (temp > 24) {
                 clima_nombre_simple = "🔥 Cálido";
                 resClimaIcon.innerText = "🔥";
                 cardClima.className = "climate-card-dynamic climate-card-warm";
+                cardClima.style.background = "";
+                cardClima.style.borderColor = "";
             } else if (temp >= 18) {
                 clima_nombre_simple = "🍃 Templado";
                 resClimaIcon.innerText = "🍃";
                 cardClima.className = "climate-card-dynamic climate-card-temperate";
+                cardClima.style.background = "";
+                cardClima.style.borderColor = "";
             } else {
                 clima_nombre_simple = "❄️ Frío";
                 resClimaIcon.innerText = "❄️";
                 cardClima.className = "climate-card-dynamic climate-card-cold";
+                cardClima.style.background = "";
+                cardClima.style.borderColor = "";
             }
             resClimaBadge.innerText = clima_nombre_simple + " (" + temp.toFixed(1) + " °C)";
 
@@ -1113,7 +1166,7 @@
             const oferta_total = bovinos * oferta_por_bovino;
 
             let cobertura = 0;
-            if (demanda_hogar > 0) {
+            if (demanda_hogar > 0 && temp >= 10) {
                 cobertura = (oferta_total / demanda_hogar) * 100;
             }
             
@@ -1124,7 +1177,10 @@
             const fill = document.getElementById('res-progress-fill');
             fill.style.width = fillWidth + "%";
 
-            if (cobertura >= 100) {
+            if (temp < 10) {
+                fill.style.width = "0%";
+                document.getElementById('res-cobertura-desc').innerHTML = "<strong>🥶 Sistema Inhibido por Frío Extremo.</strong> La temperatura por debajo de 10 °C congela el agua o detiene por completo la digestión anaeróbica anaerobia bacteriana.";
+            } else if (cobertura >= 100) {
                 fill.style.backgroundColor = "var(--primary-green)";
                 document.getElementById('res-cobertura-desc').innerHTML = "<strong>¡Suficiencia energética alcanzada!</strong> El biogás generado cubre la demanda total de cocción.";
             } else if (cobertura >= 50) {
@@ -1136,7 +1192,10 @@
             }
 
             const viabilityBadge = document.getElementById('res-viability');
-            if (cobertura >= 100) {
+            if (temp < 10) {
+                viabilityBadge.innerText = "NO";
+                viabilityBadge.className = "viability-badge viability-no";
+            } else if (cobertura >= 100) {
                 viabilityBadge.innerText = "SÍ";
                 viabilityBadge.className = "viability-badge viability-si";
             } else if (cobertura >= 50) {
@@ -1148,62 +1207,83 @@
             }
 
             const bovinos_necesarios = Math.ceil(demanda_hogar / oferta_por_bovino);
-            document.getElementById('res-needed-cows').innerText = isFinite(bovinos_necesarios) && bovinos_necesarios > 0 ? bovinos_necesarios + (bovinos_necesarios === 1 ? " bovino" : " bovinos") : "0 bovinos";
+            if (temp < 10) {
+                document.getElementById('res-needed-cows').innerText = "Inviable";
+            } else {
+                document.getElementById('res-needed-cows').innerText = isFinite(bovinos_necesarios) && bovinos_necesarios > 0 ? bovinos_necesarios + (bovinos_necesarios === 1 ? " bovino" : " bovinos") : "0 bovinos";
+            }
 
             const gasto_sin_sistema_anual = personas * DEMANDA_GLP_PERSONA * 365 * PRECIO_GLP_KG;
-            const formattedGasto = new Intl.NumberFormat('es-CO', {
+            const gasto_sin_sistema_mensual = gasto_sin_sistema_anual / 12;
+            
+            const formattedGastoMensual = new Intl.NumberFormat('es-CO', {
                 style: 'currency',
                 currency: 'COP',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0
-            }).format(gasto_sin_sistema_anual);
-            document.getElementById('res-gasto-sin-sistema').innerText = formattedGasto + "/año";
+            }).format(gasto_sin_sistema_mensual);
+            
+            document.getElementById('res-gasto-sin-sistema-mensual').innerText = formattedGastoMensual;
 
             const cobertura_efectiva = Math.min(cobertura, 100);
             const consumo_glp_evitado_anual = (cobertura_efectiva / 100) * personas * DEMANDA_GLP_PERSONA * 365;
             const ahorro_anual_cop = consumo_glp_evitado_anual * PRECIO_GLP_KG;
+            const ahorro_mensual_cop = ahorro_anual_cop / 12;
+            const ahorro_5anos_cop = ahorro_anual_cop * 5;
             
-            const formattedSavings = new Intl.NumberFormat('es-CO', {
+            const formattedAhorroMensual = new Intl.NumberFormat('es-CO', {
                 style: 'currency',
                 currency: 'COP',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0
-            }).format(ahorro_anual_cop);
+            }).format(ahorro_mensual_cop);
             
-            document.getElementById('res-savings-value').innerText = formattedSavings;
+            const formattedAhorro5Anos = new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(ahorro_5anos_cop);
+            
+            document.getElementById('res-savings-mensual-value').innerText = formattedAhorroMensual;
+            document.getElementById('res-savings-5anos-value').innerText = formattedAhorro5Anos;
 
             const cilindros_evitados = consumo_glp_evitado_anual / GLP_CILINDRO_KG;
             document.getElementById('res-savings-detail').innerText = "Equivalente a " + cilindros_evitados.toFixed(1) + " cilindros de GLP (35 lb) evitados al año";
 
             const recBlock = document.getElementById('res-recommendation');
             let recText = "";
-            if (bovinos < 15) {
-                recText = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor tubular de bajo costo</strong> (tipo de manga flexible plástica). Es ideal para el autoconsumo familiar, requiere baja inversión inicial y es de fácil mantenimiento por el propio productor.";
+            if (temp < 10) {
+                recText = "<strong>Recomendación Crítica:</strong> Inviable implementar biodigestor de bajo costo al aire libre en este piso térmico. La temperatura por debajo de 10 °C congela el digestor o detiene por completo la digestión anaeróbica. Se requiere invernadero, aislamiento térmico extremo o calefacción auxiliar activa.";
+            } else if (bovinos < 15) {
+                recText = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor familiar de bajo costo (tipo tubular flexible)</strong>. Su escala es ideal para pequeños productores, requiere baja inversión inicial y cubre perfectamente la demanda doméstica de cocción si se cuenta con el hato sugerido.";
             } else {
-                recText = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor comercial preensamblado</strong>. Su escala justifica una estructura más robusta, que aunque exige mayor inversión inicial, ofrece mayor vida útil, mejor retención térmica y facilidad de operación a mediano plazo.";
+                recText = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor comercial preensamblado o semi-industrial</strong>. Su escala justifica una estructura más robusta, que aunque exige mayor inversión inicial, ofrece mayor vida útil, mejor retención térmica y facilidad de operación a mediano plazo.";
             }
             recBlock.innerHTML = recText;
 
-            const alertBlock = document.getElementById('res-alert-insufficient');
-            if (cobertura < 50) {
-                alertBlock.style.display = "flex";
+            if (temp >= 10 && cobertura < 100 && bovinos > 0) {
+                document.getElementById('res-alert-insufficient').style.display = 'block';
+                document.getElementById('res-alert-text').innerText = "La escala actual es insuficiente para cubrir el 100% de la demanda del hogar; requiere " + bovinos_necesarios + " bovinos en total o aumentar la fracción de recolección.";
             } else {
-                alertBlock.style.display = "none";
+                document.getElementById('res-alert-insufficient').style.display = 'none';
             }
-        }
-
-        function resetCalculator() {
+        }        function resetCalculator() {
             document.getElementById('input-bovinos').value = 0;
             document.getElementById('input-fraccion').value = 0;
             document.getElementById('input-personas').value = 1;
             document.getElementById('input-temp').value = 0;
             
+            highlightReferenceRow(1);
             updatePersonasDisplay();
             updateTempDisplay();
             updateFraccionDisplay();
+            
+            document.getElementById('results-container').style.display = 'none';
+            document.getElementById('results-placeholder').style.display = 'flex';
         }
 
-        window.onload = function() {
+                window.onload = function() {
             document.getElementById('input-bovinos').value = 0;
             document.getElementById('input-fraccion').value = 0;
             document.getElementById('input-personas').value = 1;
