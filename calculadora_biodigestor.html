@@ -13,7 +13,7 @@
     Universidad EAN – Facultad de Ingeniería – Ingeniería Industrial
 
     Fecha:
-    Mayo 2026
+    Junio 2026
 
     Descripción:
     Herramienta de apoyo basada en el artículo de investigación homónimo.
@@ -963,7 +963,7 @@
                             </div>
                         </div>
                         <span style="font-size: 0.8rem; color: #388E3C; line-height: 1.3;">
-                            Biofertilizante orgánico obtenido que sustituye la compra de Urea química. Valorizado a <strong>$150 COP por litro</strong> (ahorro directo en insumos agrícolas para pastos).
+                            Biofertilizante orgánico obtenido que sustituye la compra de Urea química. Valorizado según precio de mercado de 2026 a <strong>$180 COP por litro</strong> (equivalente agronómico basado en contenido de Nitrógeno para pasturas).
                         </span>
                     </div>
 
@@ -1087,44 +1087,7 @@
                     </div>
 
                         
-                        <div style="margin-bottom: 1rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
-                                <label for="input-credit-cuota-ini" style="font-size: 0.8rem; font-weight: 700; color: var(--wood-dark);">Ajustar Cuota Inicial:</label>
-                                <span id="display-credit-cuota-ini" style="font-size: 0.85rem; font-weight: 700; color: var(--green-dark);">$ 0</span>
-                            </div>
-                            <input type="range" id="input-credit-cuota-ini" min="0" max="5000000" step="50000" value="100000" oninput="updateCreditDisplay()" style="width: 100%; accent-color: var(--green-dark);">
-                        </div>
-
-                        <div style="margin-bottom: 1.25rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
-                                <label for="input-credit-plazo" style="font-size: 0.8rem; font-weight: 700; color: var(--wood-dark);">Plazo de Financiamiento:</label>
-                                <span id="display-credit-plazo" style="font-size: 0.85rem; font-weight: 700; color: var(--green-dark);">10 años (120 meses)</span>
-                            </div>
-                            <input type="range" id="input-credit-plazo" min="1" max="10" step="1" value="10" oninput="updateCreditDisplay()" style="width: 100%; accent-color: var(--green-dark);">
-                        </div>
-
-                        
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin-bottom: 1rem;">
-                            <div style="background-color: #FAF9F6; border: 1px solid #E5D8C8; padding: 0.5rem; border-radius: 8px; text-align: center;">
-                                <div style="font-size: 0.7rem; color: var(--wood-dark); font-weight: 700; text-transform: uppercase;">Deuda a Financiar</div>
-                                <div id="credit-deuda-val" style="font-size: 1rem; color: #7E5109; font-weight: 700;">$ 0</div>
-                            </div>
-                            <div style="background-color: #FAF9F6; border: 1px solid #E5D8C8; padding: 0.5rem; border-radius: 8px; text-align: center;">
-                                <div style="font-size: 0.7rem; color: var(--wood-dark); font-weight: 700; text-transform: uppercase;">Cuota 1 (Inicial)</div>
-                                <div id="credit-cuota-1-val" style="font-size: 1rem; color: var(--green-dark); font-weight: 700;">$ 0</div>
-                            </div>
-                            <div style="background-color: #FAF9F6; border: 1px solid #E5D8C8; padding: 0.5rem; border-radius: 8px; text-align: center;">
-                                <div style="font-size: 0.7rem; color: var(--wood-dark); font-weight: 700; text-transform: uppercase;">Cuota Final (Mes N)</div>
-                                <div id="credit-cuota-final-val" style="font-size: 1rem; color: #C0392B; font-weight: 700;">$ 0</div>
-                            </div>
-                        </div>
-
-                        
-                        <div id="credit-sustainability-detail" style="font-size: 0.8rem; color: var(--text-muted); text-align: center; font-weight: 500; border-top: 1px dashed #D2B48C; padding-top: 0.5rem; line-height: 1.3;">
-                            Cargando simulación financiera...
-                        </div>
-                    </div>
-<div id="res-recommendation" class="recommendation-block">
+                        <div id="res-recommendation" class="recommendation-block">
                         Recomendación.
                     </div>
 
@@ -1386,7 +1349,7 @@
             if (temp >= 10) {
                 biol_dia = manure_total_dia * 2;
                 biol_mes = biol_dia * 30;
-                biol_ahorro_anual = biol_mes * 12 * 150; // $150 COP por litro de ahorro en Urea sintética
+                biol_ahorro_anual = biol_mes * 12 * 180; // $150 COP por litro de ahorro en Urea sintética
             }
             document.getElementById('res-biol').innerText = Math.round(biol_dia) + " L/día (" + Math.round(biol_mes).toLocaleString('es-CO') + " L/mes)";
             document.getElementById('res-biol-ahorro-value').innerText = "$ " + Math.round(biol_ahorro_anual).toLocaleString('es-CO') + " /año";
