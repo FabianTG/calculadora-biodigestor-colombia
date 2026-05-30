@@ -1,17 +1,17 @@
 cff-version: 1.2.0
 message: "Si utiliza esta herramienta o el modelo matemático asociado en su investigación académica, por favor cítelo de la siguiente manera:"
 authors:
-  - family-names: "Torres González"
-    given-names: "Cristian Fabián"
+  - family-names: "Torres-González"
+    given-names: "Cristian F."
     affiliation: "Universidad EAN"
-  - family-names: "Cuevas Zambrano"
-    given-names: "Luis Steven"
+  - family-names: "Cuevas-Zambrano"
+    given-names: "Luis S."
     affiliation: "Universidad EAN"
-  - family-names: "Solano Rozo"
-    given-names: "Maicol Estiven"
+  - family-names: "Solano-Rozo"
+    given-names: "Maicol E."
     affiliation: "Universidad EAN"
 title: "Calculadora de Prefactibilidad Técnico-Económica para Biodigestores Bovinos en Colombia"
-version: 1.0.0
+version: 1.0.2
 doi: "10.5281/zenodo.20457190"
 date-released: 2026-05-30
 url: "https://fabiantg.github.io/calculadora-biodigestor-colombia/"

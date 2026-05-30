@@ -13,9 +13,9 @@
 
 * **Título del Artículo de Referencia:** *Análisis de Prefactibilidad Técnico-Económica para la Incorporación de Biodigestores a Escala Mínima Viable en Sistemas Ganaderos Bovinos en Colombia*
 * **Autores:** 
-  * Cristian Fabián Torres González
-  * Luis Steven Cuevas Zambrano
-  * Maicol Estiven Solano Rozo
+  * Cristian F. Torres-González
+  * Luis S. Cuevas-Zambrano
+  * Maicol E. Solano-Rozo
 * **Institución:** Universidad EAN – Facultad de Ingeniería – Programa de Ingeniería Industrial
 * **Fecha de Publicación:** Junio 2026
 * **Licencia de Software:** MIT License (Código Abierto Académico)
@@ -126,5 +126,5 @@ Este proyecto está bajo la **Licencia MIT**. Esto significa que eres libre de c
 
 Si utilizas esta calculadora, el modelo matemático o los datos recopilados en tu investigación, por favor utiliza la función de citación automática de GitHub en la barra lateral derecha ("Cite this repository") o utiliza la siguiente referencia en formato APA 7.ª edición:
 
-> Torres González, C. F., Cuevas Zambrano, L. S., & Solano Rozo, M. E. (2026). *Calculadora de Prefactibilidad Técnico-Económica para Biodigestores Bovinos en Colombia* (Versión 1.0.0) [Software de computación]. Zenodo. https://doi.org/10.5281/zenodo.20457190
+> Torres-González, C. F., Cuevas-Zambrano, L. S., & Solano-Rozo, M. E. (2026). *Calculadora de Prefactibilidad Técnico-Económica para Biodigestores Bovinos en Colombia* (Versión 1.0.2) [Software de computación]. Zenodo. https://doi.org/10.5281/zenodo.20457190
 
