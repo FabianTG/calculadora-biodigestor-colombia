@@ -23,8 +23,10 @@ elements_to_check = {
     "res-viability": "span",
     "res-needed-cows": "div",
     "res-biol": "div",
-    "res-savings-value": "span",
-    "res-savings-detail": "span",
+    "res-gasto-sin-sistema-mensual": "div",
+    "res-nuevo-gasto-mensual": "div",
+    "res-savings-anual-value": "div",
+    "res-savings-detail": "div",
     "res-recommendation": "div",
     "res-alert-insufficient": "div"
 }
