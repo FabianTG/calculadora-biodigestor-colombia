@@ -3,24 +3,19 @@
     Título:
     Análisis de Prefactibilidad Técnico-Económica para la Incorporación de Biodigestores
     a Escala Mínima Viable en Sistemas Ganaderos Bovinos en Colombia
-
     Autores:
-    Cristian F. Torres-González
-    Luis S. Cuevas-Zambrano
-    Maicol E. Solano-Rozo
-
+    Cristian Fabián Torres González
+    Luis Steven Cuevas Zambrano
+    Maicol Estiven Solano Rozo
     Institución:
     Universidad EAN – Facultad de Ingeniería – Ingeniería Industrial
-
     Fecha:
-    Junio 2026
-
+    Mayo 2026
     Descripción:
     Herramienta de apoyo basada en el artículo de investigación homónimo.
     Calcula la prefactibilidad técnico-económica de biodigestores bovinos.
     Parámetros validados con fuentes: Rivera et al. (2025), López et al. (2025),
     Andrade et al. (2020), Inversiones GLP (2026).
-
 -->
 <!DOCTYPE html>
 <html lang="es">
@@ -1461,24 +1456,13 @@
             const temp = parseFloat(document.getElementById('input-temp').value);
             document.getElementById('display-temp').innerText = temp.toFixed(1) + " °C";
             const badge = document.getElementById('badge-clima');
+            const params = getClimateParams(temp);
+            badge.innerText = params.badgeText;
+            badge.className = params.class;
             if (temp < 10) {
-                badge.innerText = "Inhibido por Frío (<10°C) – factor 0.00";
-                badge.className = "climate-badge badge-cold";
                 badge.style.backgroundColor = "#D4E6F1";
                 badge.style.color = "#1B4F72";
-            } else if (temp > 24) {
-                badge.innerText = "Clima Cálido (>24°C) – factor 1.00";
-                badge.className = "climate-badge badge-warm";
-                badge.style.backgroundColor = "";
-                badge.style.color = "";
-            } else if (temp >= 18) {
-                badge.innerText = "Clima Templado (18–24°C) – factor 0.75";
-                badge.className = "climate-badge badge-temperate";
-                badge.style.backgroundColor = "";
-                badge.style.color = "";
             } else {
-                badge.innerText = "Clima Frío (<18°C) – factor 0.55";
-                badge.className = "climate-badge badge-cold";
                 badge.style.backgroundColor = "";
                 badge.style.color = "";
             }
@@ -1509,15 +1493,45 @@
         }
 
         function getClimateParams(temp) {
-            if (temp < 10) {
-                return { name: "Inhibido por Frío", factor: 0.00, rendimiento: 0.00, class: "climate-badge badge-cold" };
-            } else if (temp > 24) {
-                return { name: "Cálido (>24°C)", factor: 1.00, rendimiento: 0.1700, class: "climate-badge badge-warm" };
-            } else if (temp >= 18) {
-                return { name: "Templado (18–24°C)", factor: 0.75, rendimiento: 0.1275, class: "climate-badge badge-temperate" };
+            let factor = 0;
+            let name = "";
+            let cssClass = "";
+            let badgeText = "";
+
+            if (temp < -5) {
+                factor = 0.00;
+                name = "Congelación Extrema";
+                cssClass = "climate-badge badge-cold";
+                badgeText = "❄️ Congelación Extrema (< -5°C) – factor 0.00";
+            } else if (temp < 10) {
+                // Interpolación lineal entre -5°C (factor 0.0) y 10°C (factor 0.30)
+                factor = 0.00 + ((temp - (-5)) / (10 - (-5))) * (0.30 - 0.00);
+                name = "Inhibición por Frío";
+                cssClass = "climate-badge badge-cold";
+                badgeText = "⚠️ Inhibición por Frío (<10°C) – factor " + factor.toFixed(2);
+            } else if (temp < 18) {
+                // Interpolación lineal entre 10°C (factor 0.30) y 18°C (factor 0.75)
+                factor = 0.30 + ((temp - 10) / (18 - 10)) * (0.75 - 0.30);
+                name = "Clima Frío";
+                cssClass = "climate-badge badge-cold";
+                badgeText = "❄️ Clima Frío (<18°C) – factor " + factor.toFixed(2);
+            } else if (temp <= 24) {
+                // Interpolación lineal entre 18°C (factor 0.75) y 24°C (factor 1.00)
+                factor = 0.75 + ((temp - 18) / (24 - 18)) * (1.00 - 0.75);
+                name = "Clima Templado";
+                cssClass = "climate-badge badge-temperate";
+                badgeText = "🍃 Clima Templado (18–24°C) – factor " + factor.toFixed(2);
             } else {
-                return { name: "Frío (<18°C)", factor: 0.55, rendimiento: 0.0935, class: "climate-badge badge-cold" };
+                factor = 1.00;
+                name = "Clima Cálido";
+                cssClass = "climate-badge badge-warm";
+                badgeText = "🔥 Clima Cálido (>24°C) – factor 1.00";
             }
+
+            // El rendimiento máximo de biogás de estiércol bovino a 1.00 de factor es de 0.1700 m³ biogás/kg SV cargado (Rivera et al., 2025)
+            const rendimiento = factor * 0.1700;
+
+            return { name: name, factor: factor, rendimiento: rendimiento, class: cssClass, badgeText: badgeText };
         }
 
         function calculateRealtime() {
@@ -1623,8 +1637,8 @@
                 clima_nombre_simple = "Inhibido por Frío";
                 resClimaIcon.innerText = "❄️";
                 cardClima.className = "climate-card-dynamic climate-card-cold";
-                cardClima.style.background = "linear-gradient(135deg, #EBF5FB, #D4E6F1)";
-                cardClima.style.borderColor = "#AED6F1";
+                cardClima.style.background = "linear-gradient(135deg, #FADBD8, #FDEDEC)"; // Color rojizo/rosado suave para advertencia de frío
+                cardClima.style.borderColor = "#F1948A";
             } else if (temp > 24) {
                 clima_nombre_simple = "Cálido";
                 resClimaIcon.innerText = "🔥";
@@ -1665,12 +1679,11 @@
             // limitaciones de área de aplicación y absorción del suelo en sistemas reales.
             const FACTOR_APROVECHAMIENTO_BIOL = 0.30; 
             
-            if (temp >= 10) {
-                biol_dia = manure_total_dia * 2;
-                biol_mes = biol_dia * 30;
-                // Se aplica el factor del 30% para reflejar un ahorro neto realista en sustitución de fertilizantes
-                biol_ahorro_anual = biol_mes * 12 * biolPricePerLiter * FACTOR_APROVECHAMIENTO_BIOL; 
-            }
+            // El Biol se produce de manera física por la dilución de estiércol y agua, independientemente de la temperatura, aunque a bajas temperaturas el proceso microbiológico de estabilización es más lento.
+            biol_dia = manure_total_dia * 2;
+            biol_mes = biol_dia * 30;
+            // Se aplica el factor del 30% para reflejar un ahorro neto realista en sustitución de fertilizantes
+            biol_ahorro_anual = biol_mes * 12 * biolPricePerLiter * FACTOR_APROVECHAMIENTO_BIOL;
             document.getElementById('res-biol').innerText = Math.round(biol_dia) + " L/día (" + Math.round(biol_mes).toLocaleString('es-CO') + " L/mes)";
             document.getElementById('res-biol-ahorro-value').innerText = "$ " + Math.round(biol_ahorro_anual).toLocaleString('es-CO') + " /año";
 
@@ -1679,7 +1692,7 @@
             const oferta_total = bovinos * oferta_por_bovino;
 
             let cobertura = 0;
-            if (demanda_hogar > 0 && temp >= 10) {
+            if (demanda_hogar > 0) {
                 cobertura = (oferta_total / demanda_hogar) * 100;
             }
             
@@ -1695,24 +1708,15 @@
             const resNeededCows = document.getElementById('res-needed-cows');
             const recommendation = document.getElementById('res-recommendation');
 
-            if (temp < 10) {
-                desc.innerHTML = "Sistema Inhibido por Frío Extremo. La temperatura por debajo de 10 °C congela el agua o detiene por completo la digestión anaerobia bacteriana.";
-                alertBox.style.display = 'none';
-                resViability.innerText = "Inviable";
-                resViability.className = "viability-badge viability-no";
-                resNeededCows.innerText = "Inviable";
-                recommendation.innerHTML = "<strong>Recomendación Crítica:</strong> En temperaturas menores a 10 °C no es viable operar un biodigestor tubular convencional de bajo costo sin un sistema de calefacción auxiliar o un invernadero térmico industrial cerrado que mantenga la fosa por encima de 15 °C.";
-                
-                document.getElementById('res-gasto-sin-sistema-mensual').innerText = "$ " + Math.round(personas * CONSUMO_GLP_PERSONA_DIA * 30 * PRECIO_GLP_KG).toLocaleString('es-CO');
-                document.getElementById('res-nuevo-gasto-mensual').innerText = "$ " + Math.round(personas * CONSUMO_GLP_PERSONA_DIA * 30 * PRECIO_GLP_KG).toLocaleString('es-CO');
-                document.getElementById('res-savings-anual-value').innerText = "$ 0";
-                document.getElementById('res-savings-detail').innerText = "Equivalente a 0.0 cilindros de GLP (35 lb) evitados al año";
-                
-                document.getElementById('res-credit-card').style.display = 'none';
-                return;
-            }
+            // Ya no bloqueamos los cálculos por debajo de 10°C, sino que calculamos la producción real continua (mínima pero existente) y mostramos advertencias constructivas.
 
-            if (cobertura >= 100) {
+            if (temp < 10) {
+                desc.innerHTML = "<strong>⚠️ Inhibición severa por frío.</strong> La temperatura por debajo de 10 °C reduce la actividad metabólica de las bacterias metanogénicas a un ritmo mínimo. Se produce biogás de forma muy lenta, requiriendo aislamiento térmico.";
+                alertBox.style.display = 'flex';
+                document.getElementById('res-alert-text').innerText = "La baja temperatura reduce drásticamente el biogás; el sistema requiere protección térmica (invernadero o cobertizo).";
+                resViability.innerText = "Crítica";
+                resViability.className = "viability-badge viability-parcial";
+            } else if (cobertura >= 100) {
                 desc.innerHTML = "<strong>¡Suficiencia energética alcanzada!</strong> El biogás generado cubre la demanda total de cocción.";
                 alertBox.style.display = 'none';
                 resViability.innerText = "Sí";
@@ -1754,13 +1758,25 @@
             let valor_proyecto = 0;
             if (bovinos >= 15) {
                 valor_proyecto = 8340000; // Biodigestor comercial preensamblado (coincide con Excel!)
-                recommendation.innerHTML = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor comercial preensamblado</strong>. Su escala justifica una estructura más robusta, que aunque exige mayor inversión inicial, ofrece mayor vida útil, mejor retención térmica y facilidad de operación a mediano plazo.";
+                if (temp < 10) {
+                    recommendation.innerHTML = "<strong>Recomendación (Frío Extremo):</strong> A temperaturas menores a 10 °C, se sugiere implementar un <strong>Biodigestor comercial preensamblado</strong> pero equipado obligatoriamente con <strong>aislamiento térmico industrial (poliuretano)</strong> o un sistema de recirculación de Biol caliente para evitar la caída extrema de producción de biogás.";
+                } else {
+                    recommendation.innerHTML = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor comercial preensamblado</strong>. Su escala justifica una estructura más robusta, que aunque exige mayor inversión inicial, ofrece mayor vida útil, mejor retención térmica y facilidad de operación a mediano plazo.";
+                }
             } else if (bovinos >= 5) {
                 valor_proyecto = 4500000; // Biodigestor de fosa revestida mediano
-                recommendation.innerHTML = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor de fosa revestida con domo flotante</strong> o tubular de formato mediano, ideal para fincas medianas con manejo semiestabulado.";
+                if (temp < 10) {
+                    recommendation.innerHTML = "<strong>Recomendación (Frío Extremo):</strong> Se sugiere implementar un <strong>Biodigestor de fosa revestida mediano</strong> pero incorporando un <strong>invernadero de plástico sobre la fosa</strong> para capturar radiación solar y mantener el lodo por encima de los 15 °C de temperatura interna.";
+                } else {
+                    recommendation.innerHTML = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor de fosa revestida con domo flotante</strong> o tubular de formato mediano, ideal para fincas medianas con manejo semiestabulado.";
+                }
             } else {
                 valor_proyecto = 1500000; // Biodigestor tubular de bajo costo
-                recommendation.innerHTML = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor tubular de bajo costo tipo modelo de trinchera (plástico de invernadero o geomembrana flexible)</strong>, el cual es económico, fácil de autoconstruir y mantener por la misma familia.";
+                if (temp < 10) {
+                    recommendation.innerHTML = "<strong>Recomendación (Frío Extremo):</strong> Se sugiere un <strong>Biodigestor tubular de bajo costo (geomembrana flexible)</strong> pero requiere ser instalado bajo un **cobertizo semicerrado con láminas transparentes** (efecto invernadero) y cubierto con paja o mulch para conservar el calor mínimo.";
+                } else {
+                    recommendation.innerHTML = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor tubular de bajo costo tipo modelo de trinchera (plástico de invernadero o geomembrana flexible)</strong>, el cual es económico, fácil de autoconstruir y mantener por la misma familia.";
+                }
             }
 
             // Actualizar la página de Reporte & Urea en tiempo real
