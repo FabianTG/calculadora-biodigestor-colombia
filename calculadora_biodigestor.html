@@ -1115,6 +1115,29 @@
                                 </div>
                             </div>
 
+                            <!-- Control Interactivo de Aprovechamiento del Biol y Guía de Uso -->
+                            <div style="background-color: #FAF6EE; padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.75rem;">
+                                <h4 style="font-weight: 700; color: var(--wood-dark); border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">🌱 Aprovechamiento Real del Biol (Fertilizante)</h4>
+                                
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <span style="font-size: 0.8rem; font-weight: 700; color: #6E6259;">Uso Efectivo del Biol Producido:</span>
+                                    <span id="display-aprovechamiento-biol" style="font-size: 1rem; font-weight: 800; color: var(--primary-green); background-color: #E8F5E9; padding: 2px 8px; border-radius: 4px;">30%</span>
+                                </div>
+                                <input type="range" id="input-aprovechamiento-biol" min="0" max="100" value="30" step="5" oninput="updateBiolAprovechamientoDisplay()" style="width: 100%; accent-color: var(--primary-green);">
+                                <span style="font-size: 0.68rem; color: #6E6259; line-height: 1.2; display: block;">
+                                    Ajuste qué porcentaje del Biol generado aplicará realmente en sus pastos o cultivos para sustituir fertilizantes químicos.
+                                </span>
+
+                                <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color); margin-top: 4px;">
+                                    <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block; margin-bottom: 4px;">💡 Guía Práctica de Aplicación en Campo:</span>
+                                    <ul style="font-size: 0.68rem; color: #554433; margin: 0; padding-left: 14px; line-height: 1.35; display: flex; flex-direction: column; gap: 4px;">
+                                        <li><strong>Dilución recomendada:</strong> Mezclar 1 parte de Biol por cada 4 partes de agua (20% de concentración) para evitar quemaduras por nitrógeno en las hojas.</li>
+                                        <li><strong>Frecuencia de aplicación:</strong> Aplicar cada 15 a 20 días en pastos de corte o potreros después de cada ciclo de pastoreo (bombeado o con aspersores).</li>
+                                        <li><strong>Uso en cultivos:</strong> Ideal para hortalizas, frutales y café. Evite aplicarlo directamente sobre las partes comestibles antes de la cosecha por higiene.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
                             
                             <div style="background-color: #FAF6EE; padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.75rem;">
                                 <h4 style="font-weight: 700; color: var(--wood-dark); border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">💼 Impacto Económico Familiar</h4>
@@ -1164,6 +1187,12 @@
                                     <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block;">📦 Equivalencia en Recipientes Caseros</span>
                                     <div id="res-recipientes-val" style="font-size: 0.85rem; font-weight: 700; color: var(--wood-dark); line-height: 1.4;">Cargando...</div>
                                 </div>
+
+                                <!-- Desglose de Costos de Proyecto Transparente -->
+                                <div id="res-cost-breakdown" style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color); font-size: 0.75rem; line-height: 1.35; color: var(--wood-dark);">
+                                    <strong>Costo Total Estimado (VP): $ 1.500.000 COP</strong>
+                                </div>
+
                                 <div style="font-size: 0.75rem; color: #6E6259; line-height: 1.4; background-color: #FFFDF9; padding: 8px; border-radius: 6px; border-left: 3px solid var(--accent-terracota);">
                                     💡 <strong>Consejo de Campo:</strong> Para acelerar la colonización bacteriana inicial, reemplace un 20% del agua del primer llenado por <strong>inóculo activo</strong> (lodo de otro biodigestor o estiércol de cerdo fresco). Mantenga la válvula de gas cerrada durante el reposo inicial.
                                 </div>
@@ -1592,6 +1621,17 @@
                 // VARIABLES DINÁMICAS DE UREA (2026)
         let selectedUreaPrice = 189000; // Valor por defecto (MercadoLibre)
         let biolPricePerLiter = 180;    // Valor por defecto ($180 COP)
+        let selectedBiolAprovechamiento = 30; // Valor por defecto (30% agronómico conservador)
+
+        function updateBiolAprovechamientoDisplay() {
+            const slider = document.getElementById('input-aprovechamiento-biol');
+            const display = document.getElementById('display-aprovechamiento-biol');
+            if (slider && display) {
+                selectedBiolAprovechamiento = parseInt(slider.value) || 0;
+                display.textContent = selectedBiolAprovechamiento + "%";
+                runCalculations();
+            }
+        }
 
         function adjustUreaPrice(amount) {
             const input = document.getElementById('input-urea-price');
@@ -1708,16 +1748,11 @@
             let biol_mes = 0;
             let biol_ahorro_anual = 0;
             
-            // Constante de aprovechamiento agronómico real y conservador (30%)
-            // Justificación académica: pérdidas por volatilización de nitrógeno, escorrentía, 
-            // limitaciones de área de aplicación y absorción del suelo en sistemas reales.
-            const FACTOR_APROVECHAMIENTO_BIOL = 0.30; 
-            
             // El Biol se produce de manera física por la dilución de estiércol y agua, independientemente de la temperatura, aunque a bajas temperaturas el proceso microbiológico de estabilización es más lento.
             biol_dia = manure_total_dia * 2;
             biol_mes = biol_dia * 30;
-            // Se aplica el factor del 30% para reflejar un ahorro neto realista en sustitución de fertilizantes
-            biol_ahorro_anual = biol_mes * 12 * biolPricePerLiter * FACTOR_APROVECHAMIENTO_BIOL;
+            // Se aplica el factor interactivo seleccionado por el usuario para reflejar un ahorro neto realista en sustitución de fertilizantes
+            biol_ahorro_anual = biol_mes * 12 * biolPricePerLiter * (selectedBiolAprovechamiento / 100);
             document.getElementById('res-biol').innerText = Math.round(biol_dia) + " L/día (" + Math.round(biol_mes).toLocaleString('es-CO') + " L/mes)";
             document.getElementById('res-biol-ahorro-value').innerText = "$ " + Math.round(biol_ahorro_anual).toLocaleString('es-CO') + " /año";
 
@@ -1841,9 +1876,16 @@
 
             // Lógica de estimación de costo del proyecto (VP) según el tamaño del hato (Escalas adaptadas a la realidad colombiana)
             let valor_proyecto = 0;
+            let cost_breakdown_html = "";
+
             if (bovinos >= 30) {
                 // Gran Escala / Comercial
                 valor_proyecto = 8340000; // Biodigestor comercial preensamblado (coincide con Excel!)
+                cost_breakdown_html = `
+                    • <strong>Biodigestor Comercial Preensamblado:</strong> $ 6.200.000 COP<br>
+                    • <strong>Aislamiento térmico industrial (Poliuretano):</strong> $ 1.140.000 COP<br>
+                    • <strong>Accesorios, tuberías de conducción y filtros de H2S:</strong> $ 1.000.000 COP
+                `;
                 if (temp < 10) {
                     recommendation.innerHTML = "<strong>Recomendación (Escala Comercial - Frío Extremo):</strong> A temperaturas menores a 10 °C, se sugiere implementar un <strong>Biodigestor comercial preensamblado</strong> equipado obligatoriamente con <strong>aislamiento térmico industrial (poliuretano)</strong> o recirculación de Biol caliente para evitar la caída extrema de producción de biogás.";
                 } else {
@@ -1852,6 +1894,11 @@
             } else if (bovinos >= 10) {
                 // Mediana Escala
                 valor_proyecto = 4500000; // Biodigestor de fosa revestida mediano
+                cost_breakdown_html = `
+                    • <strong>Geomembrana de PVC/EPDM and Domo Flotante:</strong> $ 2.800.000 COP<br>
+                    • <strong>Excavación y Revestimiento de Fosa:</strong> $ 1.000.000 COP<br>
+                    • <strong>Accesorios de carga, descarga y válvulas de seguridad:</strong> $ 700.000 COP
+                `;
                 if (temp < 10) {
                     recommendation.innerHTML = "<strong>Recomendación (Mediana Escala - Frío Extremo):</strong> Se sugiere implementar un <strong>Biodigestor de fosa revestida mediano</strong> incorporando un <strong>invernadero de plástico sobre la fosa</strong> para capturar radiación solar y mantener el lodo por encima de los 15 °C de temperatura interna.";
                 } else {
@@ -1862,6 +1909,13 @@
                 // Costo adaptado a soluciones de autoconstrucción modular casera (IBCs o canecas) o tubulares pequeños
                 if (vol_total_m3 <= 1.2) {
                     valor_proyecto = 450000; // Autoconstrucción casera con canecas de 200L (muy económico!)
+                    const canecas_cnt = Math.ceil(vol_total_m3 / 0.2);
+                    cost_breakdown_html = `
+                        • <strong>${canecas_cnt} Canecas plásticas de 200L (de segunda mano):</strong> $ ${canecas_cnt * 60000} COP ($ 60.000 c/u)<br>
+                        • <strong>Tuberías de conexión, bridas, empaques y sellado:</strong> $ 120.000 COP<br>
+                        • <strong>Filtro de gas casero (lana de hierro) y mangueras:</strong> $ 80.000 COP<br>
+                        • <strong>Mano de obra familiar (Autoconstrucción):</strong> $ 0 COP
+                    `;
                     if (temp < 10) {
                         recommendation.innerHTML = "<strong>Recomendación (Pequeña Escala / Casero - Frío Extremo):</strong> Se sugiere un <strong>Biodigestor modular de canecas plásticas de 200L en serie</strong>. Al ser portátil, es muy fácil de aislar térmicamente cubriéndolo con paja, aserrín o instalándolo dentro de la cocina o un cobertizo cerrado.";
                     } else {
@@ -1869,6 +1923,14 @@
                     }
                 } else if (vol_total_m3 <= 4.0) {
                     valor_proyecto = 950000; // Autoconstrucción modular con contenedores IBC de 1000L (1 TON)
+                    const ibc_cnt = Math.ceil(vol_total_m3 / 1.0);
+                    cost_breakdown_html = `
+                        • <strong>${ibc_cnt} Contenedores IBC de 1000L (lavados):</strong> $ ${ibc_cnt * 280000} COP ($ 280.000 c/u)<br>
+                        • <strong>Conexiones de PVC, válvulas de bola y uniones rápidas:</strong> $ 150.000 COP<br>
+                        • <strong>Filtro de sulfuro de hidrógeno y manómetro:</strong> $ 120.000 COP<br>
+                        • <strong>Herramientas menores y selladores de poliuretano:</strong> $ 80.000 COP<br>
+                        • <strong>Mano de obra familiar (Autoconstrucción):</strong> $ 0 COP
+                    `;
                     if (temp < 10) {
                         recommendation.innerHTML = "<strong>Recomendación (Pequeña Escala / Modular - Frío Extremo):</strong> Se sugiere un <strong>Biodigestor modular con contenedores IBC de 1000L</strong>. Requiere ser forrado con plástico de invernadero (efecto térmico) o cubierto con paja para mantener el calor mínimo en zonas de frío extremo.";
                     } else {
@@ -1876,12 +1938,29 @@
                     }
                 } else {
                     valor_proyecto = 1500000; // Biodigestor tubular de geomembrana de bajo costo
+                    cost_breakdown_html = `
+                        • <strong>Rollo de Plástico de invernadero o Geomembrana flexible:</strong> $ 650.000 COP<br>
+                        • <strong>Tuberías de entrada/salida y campana de gas:</strong> $ 250.000 COP<br>
+                        • <strong>Excavación manual de trinchera y nivelación:</strong> $ 300.000 COP<br>
+                        • <strong>Accesorios de conducción de gas y quemador simple:</strong> $ 300.000 COP
+                    `;
                     if (temp < 10) {
                         recommendation.innerHTML = "<strong>Recomendación (Pequeña Escala - Frío Extremo):</strong> Se sugiere un <strong>Biodigestor tubular de bajo costo (geomembrana flexible)</strong>. Requiere ser instalado bajo un **cobertizo semicerrado con láminas transparentes** (efecto invernadero) para conservar el calor mínimo.";
                     } else {
                         recommendation.innerHTML = "<strong>Recomendación (Pequeña Escala):</strong> Se sugiere implementar un <strong>Biodigestor tubular de bajo costo tipo modelo de trinchera (plástico de invernadero o geomembrana flexible)</strong>, el cual es económico, fácil de autoconstruir y mantener.";
                     }
                 }
+            }
+
+            // Actualizar el desglose de costos en la UI
+            const costBreakdownEl = document.getElementById('res-cost-breakdown');
+            if (costBreakdownEl) {
+                costBreakdownEl.innerHTML = `
+                    <strong>Costo Total Estimado (VP): $ ${valor_proyecto.toLocaleString('es-CO')} COP</strong><br>
+                    <div style="margin-top: 4px; font-size: 0.72rem; color: #555;">
+                        ${cost_breakdown_html}
+                    </div>
+                `;
             }
 
             // Actualizar la página de Reporte & Urea en tiempo real
@@ -2132,6 +2211,12 @@
             document.getElementById('input-personas').value = 1;
             document.getElementById('input-temp').value = 0;
             
+            const biolSlider = document.getElementById('input-aprovechamiento-biol');
+            if (biolSlider) biolSlider.value = 30;
+            selectedBiolAprovechamiento = 30;
+            const displayBiol = document.getElementById('display-aprovechamiento-biol');
+            if (displayBiol) displayBiol.textContent = "30%";
+            
             highlightReferenceRow(1);
             updateTempDisplay();
             updateFraccionDisplay();
@@ -2154,6 +2239,12 @@
             document.getElementById('input-fraccion').value = 0;
             document.getElementById('input-personas').value = 1;
             document.getElementById('input-temp').value = 0;
+            
+            const biolSlider = document.getElementById('input-aprovechamiento-biol');
+            if (biolSlider) biolSlider.value = 30;
+            selectedBiolAprovechamiento = 30;
+            const displayBiol = document.getElementById('display-aprovechamiento-biol');
+            if (displayBiol) displayBiol.textContent = "30%";
             
             highlightReferenceRow(1);
             updateTempDisplay();
