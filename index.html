@@ -1341,17 +1341,28 @@
                         Para estimar su valor económico de manera práctica, la literatura académica establece una equivalencia basada en el costo de oportunidad: el uso de Biol en las pasturas permite sustituir o reducir la compra de fertilizantes comerciales. Al ingresar el precio local del bulto de Urea, la calculadora determina el ahorro económico equivalente por cada litro de Biol producido en su finca.
                     </p>
                     <p style="line-height: 1.5; font-size: 0.9rem; color: var(--text-dark); margin-bottom: 1.5rem; background-color: #F1F8E9; padding: 0.75rem 1rem; border-radius: 6px; border-left: 4px solid #81C784;">
-                        ⚠️ <strong>Nota de rigor científico:</strong> En sistemas reales, no todo el Biol producido es asimilado por el suelo debido a pérdidas por volatilización del nitrógeno, escorrentía o limitaciones físicas de aplicación. Por ello, esta calculadora aplica un <strong>Factor de Aprovechamiento Agronómico conservador del 30%</strong> sobre la producción total, garantizando una estimación financiera realista y defendible ante pares académicos o entidades de crédito.
+                        ⚠️ <strong>Nota de rigor científico:</strong> En sistemas reales, no todo el Biol producido es asimilado por el suelo debido a pérdidas por volatilización del nitrógeno, escorrentía o limitaciones físicas de aplicación. Por ello, esta calculadora le permite ajustar de forma interactiva el <strong>Porcentaje de Aprovechamiento Agronómico</strong> para garantizar una estimación financiera realista y adaptada a su finca.
                     </p>
                     
-                    <div class="input-group">
-                        <label class="input-label" for="input-urea-price">🛒 PRECIO LOCAL DEL BULTO DE UREA (50 KG - COP)</label>
-                        <div class="number-control" style="display: flex; align-items: center; justify-content: space-between; border: 2px solid var(--border-color); border-radius: 8px; height: 52px; background: #FFF; padding: 0 4px; box-sizing: border-box;">
-                            <button type="button" class="btn-number" onclick="adjustUreaPrice(-5000)" style="width: 44px; height: 44px; border: none; background: var(--bg-cream); color: var(--wood-dark); font-size: 1.5rem; font-weight: bold; cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">−</button>
-                            <input type="number" id="input-urea-price" class="input-number" value="189000" min="50000" max="500000" step="1000" oninput="updateUreaPrice()" style="flex: 1; border: none; text-align: center; font-size: 1.15rem; font-weight: 700; color: var(--wood-dark); outline: none; width: 100%;">
-                            <button type="button" class="btn-number" onclick="adjustUreaPrice(5000)" style="width: 44px; height: 44px; border: none; background: var(--bg-cream); color: var(--wood-dark); font-size: 1.5rem; font-weight: bold; cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">+</button>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div class="input-group" style="margin-bottom: 0;">
+                            <label class="input-label" for="input-urea-price">🛒 PRECIO LOCAL DEL BULTO DE UREA (50 KG - COP)</label>
+                            <div class="number-control" style="display: flex; align-items: center; justify-content: space-between; border: 2px solid var(--border-color); border-radius: 8px; height: 52px; background: #FFF; padding: 0 4px; box-sizing: border-box;">
+                                <button type="button" class="btn-number" onclick="adjustUreaPrice(-5000)" style="width: 44px; height: 44px; border: none; background: var(--bg-cream); color: var(--wood-dark); font-size: 1.5rem; font-weight: bold; cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">−</button>
+                                <input type="number" id="input-urea-price" class="input-number" value="189000" min="50000" max="500000" step="1000" oninput="updateUreaPrice()" style="flex: 1; border: none; text-align: center; font-size: 1.15rem; font-weight: 700; color: var(--wood-dark); outline: none; width: 100%;">
+                                <button type="button" class="btn-number" onclick="adjustUreaPrice(5000)" style="width: 44px; height: 44px; border: none; background: var(--bg-cream); color: var(--wood-dark); font-size: 1.5rem; font-weight: bold; cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">+</button>
+                            </div>
+                            <p class="input-description">Ingrese el precio real que paga actualmente por un bulto de Urea de 50 kg en su región para ajustar automáticamente el valor de sustitución del Biol.</p>
                         </div>
-                        <p class="input-description">Ingrese el precio real que paga actualmente por un bulto de Urea de 50 kg en su región para ajustar automáticamente el valor de sustitución del Biol.</p>
+
+                        <div class="input-group" style="margin-bottom: 0;">
+                            <label class="input-label">🌱 APROVECHAMIENTO REAL DEL BIOL EN CAMPO</label>
+                            <div style="display: flex; justify-content: space-between; align-items: center; border: 2px solid var(--border-color); border-radius: 8px; height: 52px; background: #FFF; padding: 0 1rem; box-sizing: border-box;">
+                                <input type="range" id="input-aprovechamiento-biol-report" min="0" max="100" value="30" step="5" oninput="updateBiolAprovechamientoReportDisplay()" style="flex: 1; accent-color: var(--primary-green); margin-right: 12px;">
+                                <span id="display-aprovechamiento-biol-report" style="font-size: 1.1rem; font-weight: 800; color: var(--primary-green); background-color: #E8F5E9; padding: 4px 8px; border-radius: 4px; min-width: 44px; text-align: center;">30%</span>
+                            </div>
+                            <p class="input-description">Ajuste qué porcentaje del Biol generado aplicará realmente en sus pastos o cultivos para sustituir fertilizantes químicos.</p>
+                        </div>
                     </div>
                 </div>
                 
@@ -1621,6 +1632,30 @@
             if (slider && display) {
                 selectedBiolAprovechamiento = parseInt(slider.value) || 0;
                 display.textContent = selectedBiolAprovechamiento + "%";
+                
+                // Sincronizar el slider de la pestaña de Reporte
+                const reportSlider = document.getElementById('input-aprovechamiento-biol-report');
+                const reportDisplay = document.getElementById('display-aprovechamiento-biol-report');
+                if (reportSlider) reportSlider.value = selectedBiolAprovechamiento;
+                if (reportDisplay) reportDisplay.textContent = selectedBiolAprovechamiento + "%";
+                
+                runCalculations();
+            }
+        }
+
+        function updateBiolAprovechamientoReportDisplay() {
+            const slider = document.getElementById('input-aprovechamiento-biol-report');
+            const display = document.getElementById('display-aprovechamiento-biol-report');
+            if (slider && display) {
+                selectedBiolAprovechamiento = parseInt(slider.value) || 0;
+                display.textContent = selectedBiolAprovechamiento + "%";
+                
+                // Sincronizar el slider de la pestaña de la Calculadora
+                const calcSlider = document.getElementById('input-aprovechamiento-biol');
+                const calcDisplay = document.getElementById('display-aprovechamiento-biol');
+                if (calcSlider) calcSlider.value = selectedBiolAprovechamiento;
+                if (calcDisplay) calcDisplay.textContent = selectedBiolAprovechamiento + "%";
+                
                 runCalculations();
             }
         }
@@ -2206,9 +2241,14 @@
             const biolSlider = document.getElementById('input-aprovechamiento-biol');
             if (biolSlider) {
                 biolSlider.value = 30;
-                selectedBiolAprovechamiento = 30;
                 document.getElementById('display-aprovechamiento-biol').textContent = "30%";
             }
+            const reportSlider = document.getElementById('input-aprovechamiento-biol-report');
+            if (reportSlider) {
+                reportSlider.value = 30;
+                document.getElementById('display-aprovechamiento-biol-report').textContent = "30%";
+            }
+            selectedBiolAprovechamiento = 30;
             
             highlightReferenceRow(1);
             updateTempDisplay();
@@ -2236,9 +2276,14 @@
             const biolSlider = document.getElementById('input-aprovechamiento-biol');
             if (biolSlider) {
                 biolSlider.value = 30;
-                selectedBiolAprovechamiento = 30;
                 document.getElementById('display-aprovechamiento-biol').textContent = "30%";
             }
+            const reportSlider = document.getElementById('input-aprovechamiento-biol-report');
+            if (reportSlider) {
+                reportSlider.value = 30;
+                document.getElementById('display-aprovechamiento-biol-report').textContent = "30%";
+            }
+            selectedBiolAprovechamiento = 30;
             
             highlightReferenceRow(1);
             updateTempDisplay();
