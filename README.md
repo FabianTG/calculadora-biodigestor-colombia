@@ -3,7 +3,7 @@
 ### Herramienta de Apoyo Científico y Toma de Decisiones para Sistemas Ganaderos de Pequeña Escala
 
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Active-blue?style=flat-square&logo=github)](https://fabiantg.github.io/calculadora-biodigestor-colombia/)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20457293.svg?style=flat-square)](https://doi.org/10.5281/zenodo.20457293)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20457293-blue?style=flat-square&logo=academia)](https://doi.org/10.5281/zenodo.20457293)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Tecnologías](https://img.shields.io/badge/Tecnolog%C3%ADas-HTML5%20%2F%20JS-orange?style=flat-square)](https://developer.mozilla.org/es/docs/Web/HTML)
 
