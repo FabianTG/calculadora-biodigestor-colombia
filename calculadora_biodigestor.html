@@ -1160,6 +1160,10 @@
                                         <span style="font-size: 0.65rem; color: #6E6259; display: block; margin-top: 2px;">Fase de reposo anaerobio</span>
                                     </div>
                                 </div>
+                                <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px solid #D7CCC8; grid-column: span 2; display: flex; flex-direction: column; gap: 4px;">
+                                    <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block;">📦 Equivalencia en Recipientes Caseros</span>
+                                    <div id="res-recipientes-val" style="font-size: 0.85rem; font-weight: 700; color: var(--wood-dark); line-height: 1.4;">Cargando...</div>
+                                </div>
                                 <div style="font-size: 0.75rem; color: #6E6259; line-height: 1.4; background-color: #FFFDF9; padding: 8px; border-radius: 6px; border-left: 3px solid var(--accent-terracota);">
                                     💡 <strong>Consejo de Campo:</strong> Para acelerar la colonización bacteriana inicial, reemplace un 20% del agua del primer llenado por <strong>inóculo activo</strong> (lodo de otro biodigestor o estiércol de cerdo fresco). Mantenga la válvula de gas cerrada durante el reposo inicial.
                                 </div>
@@ -1799,11 +1803,29 @@
             // 4. Tiempo sellado y quieto (fase de latencia y estabilización anaerobia antes de cargar continuo)
             const tiempo_quieto_dias = trh_dias; // El tiempo de reposo inicial es igual al TRH para asegurar colonización completa
 
+            // 5. Equivalencia en recipientes caseros (Canecas de 200L e IBC de 1000L / 1 TON)
+            let recipientes_html = "";
+            if (vol_total_m3 <= 0.05) {
+                recipientes_html = "Escala insignificante para recipientes físicos.";
+            } else if (vol_total_m3 <= 1.2) {
+                // Sugerir canecas de 200L
+                const canecas = Math.ceil(vol_total_m3 / 0.2);
+                recipientes_html = `Equivale a conectar <strong>${canecas} ${canecas === 1 ? 'caneca' : 'canecas'} azul ${canecas === 1 ? 'plástica' : 'plásticas'} de 200 Litros</strong> en serie. Ideal para autoconstrucción casera.`;
+            } else if (vol_total_m3 <= 4.0) {
+                // Sugerir tanques IBC de 1000L (1 TON)
+                const ibcs = Math.ceil(vol_total_m3 / 1.0);
+                recipientes_html = `Equivale a conectar <strong>${ibcs} ${ibcs === 1 ? 'contenedor IBC' : 'contenedores IBC'} de 1.000 Litros (1 TON)</strong> en serie. Solución modular económica y de fácil instalación.`;
+            } else {
+                // Sugerir biodigestor tubular de geomembrana o fosa revestida
+                recipientes_html = `Requiere un <strong>biodigestor tubular de geomembrana flexible</strong> o fosa revestida de <strong>${vol_total_m3.toFixed(1)} m³</strong>. Escala demasiado grande para recipientes plásticos portátiles.`;
+            }
+
             // Actualizar la interfaz de usuario con los datos de dimensionamiento y arranque
             document.getElementById('res-trh-val').innerText = trh_dias + " días";
             document.getElementById('res-vol-val').innerText = vol_total_m3.toFixed(1) + " m³";
             document.getElementById('res-arranque-val').innerText = estiercol_arranque_kg.toLocaleString('es-CO') + " kg";
             document.getElementById('res-quieto-val').innerText = tiempo_quieto_dias + " días";
+            document.getElementById('res-recipientes-val').innerHTML = recipientes_html;
 
             const gasto_mensual_sin = personas * CONSUMO_GLP_PERSONA_DIA * 30 * PRECIO_GLP_KG;
             const ahorro_mensual = gasto_mensual_sin * Math.min(cobertura / 100, 1.0);
@@ -1817,28 +1839,48 @@
             const cilindros_evitados = (ahorro_anual / PRECIO_GLP_KG) / 15.8757;
             document.getElementById('res-savings-detail').innerText = "Equivalente a " + cilindros_evitados.toFixed(1) + " cilindros de GLP (35 lb) evitados al año";
 
-            // Lógica de estimación de costo del proyecto (VP) según el tamaño del hato
+            // Lógica de estimación de costo del proyecto (VP) según el tamaño del hato (Escalas adaptadas a la realidad colombiana)
             let valor_proyecto = 0;
-            if (bovinos >= 15) {
+            if (bovinos >= 30) {
+                // Gran Escala / Comercial
                 valor_proyecto = 8340000; // Biodigestor comercial preensamblado (coincide con Excel!)
                 if (temp < 10) {
-                    recommendation.innerHTML = "<strong>Recomendación (Frío Extremo):</strong> A temperaturas menores a 10 °C, se sugiere implementar un <strong>Biodigestor comercial preensamblado</strong> pero equipado obligatoriamente con <strong>aislamiento térmico industrial (poliuretano)</strong> o un sistema de recirculación de Biol caliente para evitar la caída extrema de producción de biogás.";
+                    recommendation.innerHTML = "<strong>Recomendación (Escala Comercial - Frío Extremo):</strong> A temperaturas menores a 10 °C, se sugiere implementar un <strong>Biodigestor comercial preensamblado</strong> equipado obligatoriamente con <strong>aislamiento térmico industrial (poliuretano)</strong> o recirculación de Biol caliente para evitar la caída extrema de producción de biogás.";
                 } else {
-                    recommendation.innerHTML = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor comercial preensamblado</strong>. Su escala justifica una estructura más robusta, que aunque exige mayor inversión inicial, ofrece mayor vida útil, mejor retención térmica y facilidad de operación a mediano plazo.";
+                    recommendation.innerHTML = "<strong>Recomendación (Escala Comercial):</strong> Se sugiere implementar un <strong>Biodigestor comercial preensamblado</strong>. Su escala comercial justifica una estructura robusta de ingeniería, que aunque exige mayor inversión inicial, ofrece una larga vida útil y facilidad de operación automatizada.";
                 }
-            } else if (bovinos >= 5) {
+            } else if (bovinos >= 10) {
+                // Mediana Escala
                 valor_proyecto = 4500000; // Biodigestor de fosa revestida mediano
                 if (temp < 10) {
-                    recommendation.innerHTML = "<strong>Recomendación (Frío Extremo):</strong> Se sugiere implementar un <strong>Biodigestor de fosa revestida mediano</strong> pero incorporando un <strong>invernadero de plástico sobre la fosa</strong> para capturar radiación solar y mantener el lodo por encima de los 15 °C de temperatura interna.";
+                    recommendation.innerHTML = "<strong>Recomendación (Mediana Escala - Frío Extremo):</strong> Se sugiere implementar un <strong>Biodigestor de fosa revestida mediano</strong> incorporando un <strong>invernadero de plástico sobre la fosa</strong> para capturar radiación solar y mantener el lodo por encima de los 15 °C de temperatura interna.";
                 } else {
-                    recommendation.innerHTML = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor de fosa revestida con domo flotante</strong> o tubular de formato mediano, ideal para fincas medianas con manejo semiestabulado.";
+                    recommendation.innerHTML = "<strong>Recomendación (Mediana Escala):</strong> Se sugiere implementar un <strong>Biodigestor de fosa revestida con domo flotante</strong> o tubular de formato mediano, ideal para fincas medianas con manejo semiestabulado.";
                 }
             } else {
-                valor_proyecto = 1500000; // Biodigestor tubular de bajo costo
-                if (temp < 10) {
-                    recommendation.innerHTML = "<strong>Recomendación (Frío Extremo):</strong> Se sugiere un <strong>Biodigestor tubular de bajo costo (geomembrana flexible)</strong> pero requiere ser instalado bajo un **cobertizo semicerrado con láminas transparentes** (efecto invernadero) y cubierto con paja o mulch para conservar el calor mínimo.";
+                // Pequeña Escala / Agricultura Familiar (<10 bovinos)
+                // Costo adaptado a soluciones de autoconstrucción modular casera (IBCs o canecas) o tubulares pequeños
+                if (vol_total_m3 <= 1.2) {
+                    valor_proyecto = 450000; // Autoconstrucción casera con canecas de 200L (muy económico!)
+                    if (temp < 10) {
+                        recommendation.innerHTML = "<strong>Recomendación (Pequeña Escala / Casero - Frío Extremo):</strong> Se sugiere un <strong>Biodigestor modular de canecas plásticas de 200L en serie</strong>. Al ser portátil, es muy fácil de aislar térmicamente cubriéndolo con paja, aserrín o instalándolo dentro de la cocina o un cobertizo cerrado.";
+                    } else {
+                        recommendation.innerHTML = "<strong>Recomendación (Pequeña Escala / Casero):</strong> Se sugiere un <strong>Biodigestor casero modular con canecas plásticas de 200L conectadas en serie</strong>. Es una solución de autoconstrucción sumamente económica, portátil y fácil de limpiar por la misma familia.";
+                    }
+                } else if (vol_total_m3 <= 4.0) {
+                    valor_proyecto = 950000; // Autoconstrucción modular con contenedores IBC de 1000L (1 TON)
+                    if (temp < 10) {
+                        recommendation.innerHTML = "<strong>Recomendación (Pequeña Escala / Modular - Frío Extremo):</strong> Se sugiere un <strong>Biodigestor modular con contenedores IBC de 1000L</strong>. Requiere ser forrado con plástico de invernadero (efecto térmico) o cubierto con paja para mantener el calor mínimo en zonas de frío extremo.";
+                    } else {
+                        recommendation.innerHTML = "<strong>Recomendación (Pequeña Escala / Modular):</strong> Se sugiere un <strong>Biodigestor modular con contenedores IBC de 1000 Litros (1 TON)</strong>. Es una solución de autoconstrucción de bajo costo, muy limpia, portátil, duradera y que no requiere excavación de fosa.";
+                    }
                 } else {
-                    recommendation.innerHTML = "<strong>Recomendación:</strong> Se sugiere implementar un <strong>Biodigestor tubular de bajo costo tipo modelo de trinchera (plástico de invernadero o geomembrana flexible)</strong>, el cual es económico, fácil de autoconstruir y mantener por la misma familia.";
+                    valor_proyecto = 1500000; // Biodigestor tubular de geomembrana de bajo costo
+                    if (temp < 10) {
+                        recommendation.innerHTML = "<strong>Recomendación (Pequeña Escala - Frío Extremo):</strong> Se sugiere un <strong>Biodigestor tubular de bajo costo (geomembrana flexible)</strong>. Requiere ser instalado bajo un **cobertizo semicerrado con láminas transparentes** (efecto invernadero) para conservar el calor mínimo.";
+                    } else {
+                        recommendation.innerHTML = "<strong>Recomendación (Pequeña Escala):</strong> Se sugiere implementar un <strong>Biodigestor tubular de bajo costo tipo modelo de trinchera (plástico de invernadero o geomembrana flexible)</strong>, el cual es económico, fácil de autoconstruir y mantener.";
+                    }
                 }
             }
 
