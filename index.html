@@ -1844,48 +1844,78 @@
             if (temp < 10) {
                 trh_dias = 90; // Frío extremo / psicrófilo bajo
             } else if (temp < 18) {
-                // Interpolación lineal de TRH entre 10°C (90 días) y 18°C (60 días)
                 trh_dias = Math.round(90 - ((temp - 10.0) / (18.0 - 10.0)) * (90 - 60));
             } else if (temp < 24) {
-                // Interpolación lineal de TRH entre 18°C (60 días) y 24°C (30 días)
                 trh_dias = Math.round(60 - ((temp - 18.0) / (24.0 - 18.0)) * (60 - 30));
             } else {
-                trh_dias = 30; // Límite mínimo para digestores tubulares de bajo costo sin agitación
+                trh_dias = 30;
             }
 
-            // 2. Volumen de líquido útil y volumen físico total (incluyendo 25% cámara de gas)
-            const mezcla_diaria_lts = manure_total_dia * 3.0; // 1 parte estiércol + 2 partes agua = 3 partes volumen total de mezcla diaria
+            // 2. Optimización por Demanda Real (Evitar reactores gigantescos e inviables para familias pequeñas)
+            // Si el hato produce más estiércol del necesario para cubrir el 100% de la demanda del hogar, 
+            // limitamos el estiércol cargado al sistema al óptimo necesario. Esto evita sobrecargar el reactor
+            // y que el campesino tenga que recolectar toneladas de estiércol de forma innecesaria.
+            const biogás_necesario_dia = (4.20 * personas) / (PCI_METANO * EFICIENCIA_FOGON); // m3 biogás/día necesarios para cubrir la cocina
+            const biogas_por_kg_manure = VS_FRACCION * clima.rendimiento; // m3 biogás producido por cada kg de estiércol
+            
+            let manure_efectivo_dia = manure_total_dia;
+            let es_optimizada_demanda = false;
+            
+            if (biogas_por_kg_manure > 0) {
+                const manure_requerido_demanda = biogás_necesario_dia / biogas_por_kg_manure;
+                // Si el hato produce más del doble de lo requerido, limitamos la carga para mantener el reactor pequeño y viable
+                if (manure_total_dia > manure_requerido_demanda * 1.2) {
+                    manure_efectivo_dia = Math.max(manure_requerido_demanda * 1.1, 8.0); // Dejamos un margen del 10% de seguridad, mínimo 8 kg/día
+                    es_optimizada_demanda = true;
+                }
+            }
+            
+            // Si se optimiza por demanda, le informamos al usuario de forma clara en la nota de recolección
+            if (es_optimizada_demanda && bovinos < 10) {
+                document.getElementById('res-manure-total-line').innerHTML = `Total recolectado: ${manure_total_dia.toFixed(1)} kg/día<br><span style="color: var(--primary-green); font-weight: 700; font-size: 0.8rem;">💡 Optimizado: Cargue solo ${manure_efectivo_dia.toFixed(1)} kg/día para cubrir su gas</span>`;
+            } else {
+                document.getElementById('res-manure-total-line').innerText = "Total recolectado: " + manure_total_dia.toFixed(1) + " kg/día";
+            }
+
+            // 3. Volumen de líquido útil y volumen físico total basados en la carga efectiva
+            const mezcla_diaria_lts = manure_efectivo_dia * 3.0; // 1 parte estiércol + 2 partes agua
             const vol_util_lts = mezcla_diaria_lts * trh_dias;
-            const vol_total_m3 = (vol_util_lts * 1.25) / 1000.0; // 25% cámara de gas, convertido a metros cúbicos
+            let vol_total_m3 = (vol_util_lts * 1.25) / 1000.0; // 25% cámara de gas
+            
+            // Límite de viabilidad práctica para pequeña escala familiar (<10 vacas): tope de 2.0 m³
+            if (bovinos < 10 && vol_total_m3 > 2.0) {
+                vol_total_m3 = 2.0;
+            }
 
-            // 3. Estiércol inicial requerido para el arranque (Día 1)
-            // Para el arranque inicial se requiere llenar el reactor con mezcla. El estiércol seco/puro representa aprox el 15% del volumen líquido útil total en peso.
-            const estiercol_arranque_kg = Math.round(vol_util_lts * 0.15);
+            // Recalcular volumen líquido útil en base al volumen total real acotado
+            const vol_util_real_lts = (vol_total_m3 * 1000.0) / 1.25;
 
-            // 4. Tiempo sellado y quieto (fase de latencia y estabilización anaerobia antes de cargar continuo)
-            const tiempo_quieto_dias = trh_dias; // El tiempo de reposo inicial es igual al TRH para asegurar colonización completa
+            // 4. Estiércol inicial requerido para el arranque (Día 1)
+            // Se calcula como el 15% en peso del volumen líquido útil. El 30% del volumen líquido útil debe ser INÓCULO ACTIVO (lodos anaerobios o contenido ruminal).
+            const estiercol_arranque_kg = Math.round(vol_util_real_lts * 0.15);
+            const inoculo_arranque_lts = Math.round(vol_util_real_lts * 0.30);
 
-            // 5. Equivalencia en recipientes caseros (Canecas de 200L e IBC de 1000L / 1 TON)
+            // 5. Tiempo sellado y quieto (fase de latencia anaerobia)
+            const tiempo_quieto_dias = trh_dias;
+
+            // 6. Equivalencia en recipientes caseros (Canecas de 200L e IBC de 1000L)
             let recipientes_html = "";
             if (vol_total_m3 <= 0.05) {
                 recipientes_html = "Escala insignificante para recipientes físicos.";
             } else if (vol_total_m3 <= 1.2) {
-                // Sugerir canecas de 200L
                 const canecas = Math.ceil(vol_total_m3 / 0.2);
                 recipientes_html = `Equivale a conectar <strong>${canecas} ${canecas === 1 ? 'caneca' : 'canecas'} azul ${canecas === 1 ? 'plástica' : 'plásticas'} de 200 Litros</strong> en serie. Ideal para autoconstrucción casera.`;
-            } else if (vol_total_m3 <= 4.0) {
-                // Sugerir tanques IBC de 1000L (1 TON)
+            } else if (vol_total_m3 <= 2.1) {
                 const ibcs = Math.ceil(vol_total_m3 / 1.0);
-                recipientes_html = `Equivale a conectar <strong>${ibcs} ${ibcs === 1 ? 'contenedor IBC' : 'contenedores IBC'} de 1.000 Litros (1 TON)</strong> en serie. Solución modular económica y de fácil instalación.`;
+                recipientes_html = `Equivale a conectar <strong>${ibcs} ${ibcs === 1 ? 'contenedor IBC' : 'contenedores IBC'} de 1.000 Litros (1 TON)</strong> en serie. Solución modular económica, limpia y fácil de instalar.`;
             } else {
-                // Sugerir biodigestor tubular de geomembrana o fosa revestida
                 recipientes_html = `Requiere un <strong>biodigestor tubular de geomembrana flexible</strong> o fosa revestida de <strong>${vol_total_m3.toFixed(1)} m³</strong>. Escala demasiado grande para recipientes plásticos portátiles.`;
             }
 
             // Actualizar la interfaz de usuario con los datos de dimensionamiento y arranque
             document.getElementById('res-trh-val').innerText = trh_dias + " días";
             document.getElementById('res-vol-val').innerText = vol_total_m3.toFixed(1) + " m³";
-            document.getElementById('res-arranque-val').innerText = estiercol_arranque_kg.toLocaleString('es-CO') + " kg";
+            document.getElementById('res-arranque-val').innerHTML = `${estiercol_arranque_kg.toLocaleString('es-CO')} kg <br><span style="font-size: 0.75rem; color: #555;">+ ${inoculo_arranque_lts.toLocaleString('es-CO')} L de Inóculo</span>`;
             document.getElementById('res-quieto-val').innerText = tiempo_quieto_dias + " días";
             document.getElementById('res-recipientes-val').innerHTML = recipientes_html;
 
@@ -1948,7 +1978,7 @@
                     } else {
                         recommendation.innerHTML = "<strong>Recomendación (Pequeña Escala / Casero):</strong> Se sugiere un <strong>Biodigestor casero modular con canecas plásticas de 200L conectadas en serie</strong>. Es una solución de autoconstrucción sumamente económica, portátil y fácil de limpiar por la misma familia.";
                     }
-                } else if (vol_total_m3 <= 4.0) {
+                } else if (vol_total_m3 <= 2.1) {
                     valor_proyecto = 950000; // Autoconstrucción modular con contenedores IBC de 1000L (1 TON)
                     const ibc_cnt = Math.ceil(vol_total_m3 / 1.0);
                     cost_breakdown_html = `

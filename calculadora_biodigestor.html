@@ -1110,31 +1110,25 @@
                                 </div>
                                 <div class="stat-card" style="border-left: 4px solid #2E7D32;">
                                     <span class="stat-label">Ahorro Biol Est.</span>
-                                    <span id="res-biol-ahorro-value" class="stat-value" style="color: #2E7D32;">$ 0 /mes</span>
+                                    <span id="res-biol-ahorro-value" class="stat-value" style="color: #2E7D32;">$ 0 /año</span>
                                     <span style="font-size: 0.75rem; color: #6E6259; font-weight: 500;">Sustitución de Urea química</span>
                                 </div>
                             </div>
 
-                            <!-- Control Interactivo de Aprovechamiento del Biol y Guía de Uso -->
+                            <!-- Control de uso del Biol y Guía de aplicación -->
                             <div style="background-color: #FAF6EE; padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.75rem;">
-                                <h4 style="font-weight: 700; color: var(--wood-dark); border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">🌱 Aprovechamiento Real del Biol (Fertilizante)</h4>
-                                
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                    <span style="font-size: 0.8rem; font-weight: 700; color: #6E6259;">Uso Efectivo del Biol Producido:</span>
-                                    <span id="display-aprovechamiento-biol" style="font-size: 1rem; font-weight: 800; color: var(--primary-green); background-color: #E8F5E9; padding: 2px 8px; border-radius: 4px;">30%</span>
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+                                    <h4 style="font-weight: 700; color: var(--wood-dark); margin: 0;">🌱 Aprovechamiento Real del Biol</h4>
+                                    <span id="display-aprovechamiento-biol" style="font-size: 1rem; font-weight: 800; color: #2E7D32; background-color: #E8F5E9; padding: 2px 8px; border-radius: 6px;">30%</span>
                                 </div>
-                                <input type="range" id="input-aprovechamiento-biol" min="0" max="100" value="30" step="5" oninput="updateBiolAprovechamientoDisplay()" style="width: 100%; accent-color: var(--primary-green);">
-                                <span style="font-size: 0.68rem; color: #6E6259; line-height: 1.2; display: block;">
-                                    Ajuste qué porcentaje del Biol generado aplicará realmente en sus pastos o cultivos para sustituir fertilizantes químicos.
-                                </span>
-
-                                <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color); margin-top: 4px;">
-                                    <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block; margin-bottom: 4px;">💡 Guía Práctica de Aplicación en Campo:</span>
-                                    <ul style="font-size: 0.68rem; color: #554433; margin: 0; padding-left: 14px; line-height: 1.35; display: flex; flex-direction: column; gap: 4px;">
-                                        <li><strong>Dilución recomendada:</strong> Mezclar 1 parte de Biol por cada 4 partes de agua (20% de concentración) para evitar quemaduras por nitrógeno en las hojas.</li>
-                                        <li><strong>Frecuencia de aplicación:</strong> Aplicar cada 15 a 20 días en pastos de corte o potreros después de cada ciclo de pastoreo (bombeado o con aspersores).</li>
-                                        <li><strong>Uso en cultivos:</strong> Ideal para hortalizas, frutales y café. Evite aplicarlo directamente sobre las partes comestibles antes de la cosecha por higiene.</li>
-                                    </ul>
+                                <p style="font-size: 0.75rem; color: #6E6259; margin: 0; line-height: 1.4;">Ajuste el porcentaje de Biol producido que realmente aplicará en sus cultivos o pastos para calcular el ahorro neto real.</p>
+                                <input type="range" id="input-aprovechamiento-biol" class="custom-slider" min="0" max="100" value="30" step="5" oninput="updateBiolAprovechamientoDisplay()" style="margin: 0.25rem 0;">
+                                
+                                <div style="font-size: 0.72rem; color: #4E4239; line-height: 1.4; background-color: #FFF; padding: 8px; border-radius: 6px; border: 1px solid #E0D7D0;">
+                                    📝 <strong>Guía Práctica de Aplicación:</strong><br>
+                                    • <strong>Pastos de corte/potreros:</strong> Diluir 1 parte de Biol en 4 partes de agua (relación 1:4). Aplicar cada 15-20 días después del pastoreo o corte.<br>
+                                    • <strong>Cultivos transitorios (maíz, papa):</strong> Diluir 1 parte de Biol en 5 de agua (relación 1:5). Aplicar de forma foliar o al suelo.<br>
+                                    • <strong>Huerta casera:</strong> Diluir en relación 1:10. Aplicar cada semana directamente al suelo húmedo.
                                 </div>
                             </div>
 
@@ -1187,12 +1181,10 @@
                                     <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block;">📦 Equivalencia en Recipientes Caseros</span>
                                     <div id="res-recipientes-val" style="font-size: 0.85rem; font-weight: 700; color: var(--wood-dark); line-height: 1.4;">Cargando...</div>
                                 </div>
-
-                                <!-- Desglose de Costos de Proyecto Transparente -->
-                                <div id="res-cost-breakdown" style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color); font-size: 0.75rem; line-height: 1.35; color: var(--wood-dark);">
-                                    <strong>Costo Total Estimado (VP): $ 1.500.000 COP</strong>
+                                <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px solid #D7CCC8; grid-column: span 2; display: flex; flex-direction: column; gap: 6px;">
+                                    <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block; border-bottom: 1px solid #E0D7D0; padding-bottom: 4px;">🛠️ Desglose de Costos del Proyecto (VP)</span>
+                                    <div id="res-cost-breakdown" style="font-size: 0.75rem; color: var(--wood-dark); line-height: 1.4;">Cargando desglose...</div>
                                 </div>
-
                                 <div style="font-size: 0.75rem; color: #6E6259; line-height: 1.4; background-color: #FFFDF9; padding: 8px; border-radius: 6px; border-left: 3px solid var(--accent-terracota);">
                                     💡 <strong>Consejo de Campo:</strong> Para acelerar la colonización bacteriana inicial, reemplace un 20% del agua del primer llenado por <strong>inóculo activo</strong> (lodo de otro biodigestor o estiércol de cerdo fresco). Mantenga la válvula de gas cerrada durante el reposo inicial.
                                 </div>
@@ -1852,48 +1844,78 @@
             if (temp < 10) {
                 trh_dias = 90; // Frío extremo / psicrófilo bajo
             } else if (temp < 18) {
-                // Interpolación lineal de TRH entre 10°C (90 días) y 18°C (60 días)
                 trh_dias = Math.round(90 - ((temp - 10.0) / (18.0 - 10.0)) * (90 - 60));
             } else if (temp < 24) {
-                // Interpolación lineal de TRH entre 18°C (60 días) y 24°C (30 días)
                 trh_dias = Math.round(60 - ((temp - 18.0) / (24.0 - 18.0)) * (60 - 30));
             } else {
-                trh_dias = 30; // Límite mínimo para digestores tubulares de bajo costo sin agitación
+                trh_dias = 30;
             }
 
-            // 2. Volumen de líquido útil y volumen físico total (incluyendo 25% cámara de gas)
-            const mezcla_diaria_lts = manure_total_dia * 3.0; // 1 parte estiércol + 2 partes agua = 3 partes volumen total de mezcla diaria
+            // 2. Optimización por Demanda Real (Evitar reactores gigantescos e inviables para familias pequeñas)
+            // Si el hato produce más estiércol del necesario para cubrir el 100% de la demanda del hogar, 
+            // limitamos el estiércol cargado al sistema al óptimo necesario. Esto evita sobrecargar el reactor
+            // y que el campesino tenga que recolectar toneladas de estiércol de forma innecesaria.
+            const biogás_necesario_dia = (4.20 * personas) / (PCI_METANO * EFICIENCIA_FOGON); // m3 biogás/día necesarios para cubrir la cocina
+            const biogas_por_kg_manure = VS_FRACCION * clima.rendimiento; // m3 biogás producido por cada kg de estiércol
+            
+            let manure_efectivo_dia = manure_total_dia;
+            let es_optimizada_demanda = false;
+            
+            if (biogas_por_kg_manure > 0) {
+                const manure_requerido_demanda = biogás_necesario_dia / biogas_por_kg_manure;
+                // Si el hato produce más del doble de lo requerido, limitamos la carga para mantener el reactor pequeño y viable
+                if (manure_total_dia > manure_requerido_demanda * 1.2) {
+                    manure_efectivo_dia = Math.max(manure_requerido_demanda * 1.1, 8.0); // Dejamos un margen del 10% de seguridad, mínimo 8 kg/día
+                    es_optimizada_demanda = true;
+                }
+            }
+            
+            // Si se optimiza por demanda, le informamos al usuario de forma clara en la nota de recolección
+            if (es_optimizada_demanda && bovinos < 10) {
+                document.getElementById('res-manure-total-line').innerHTML = `Total recolectado: ${manure_total_dia.toFixed(1)} kg/día<br><span style="color: var(--primary-green); font-weight: 700; font-size: 0.8rem;">💡 Optimizado: Cargue solo ${manure_efectivo_dia.toFixed(1)} kg/día para cubrir su gas</span>`;
+            } else {
+                document.getElementById('res-manure-total-line').innerText = "Total recolectado: " + manure_total_dia.toFixed(1) + " kg/día";
+            }
+
+            // 3. Volumen de líquido útil y volumen físico total basados en la carga efectiva
+            const mezcla_diaria_lts = manure_efectivo_dia * 3.0; // 1 parte estiércol + 2 partes agua
             const vol_util_lts = mezcla_diaria_lts * trh_dias;
-            const vol_total_m3 = (vol_util_lts * 1.25) / 1000.0; // 25% cámara de gas, convertido a metros cúbicos
+            let vol_total_m3 = (vol_util_lts * 1.25) / 1000.0; // 25% cámara de gas
+            
+            // Límite de viabilidad práctica para pequeña escala familiar (<10 vacas): tope de 2.0 m³
+            if (bovinos < 10 && vol_total_m3 > 2.0) {
+                vol_total_m3 = 2.0;
+            }
 
-            // 3. Estiércol inicial requerido para el arranque (Día 1)
-            // Para el arranque inicial se requiere llenar el reactor con mezcla. El estiércol seco/puro representa aprox el 15% del volumen líquido útil total en peso.
-            const estiercol_arranque_kg = Math.round(vol_util_lts * 0.15);
+            // Recalcular volumen líquido útil en base al volumen total real acotado
+            const vol_util_real_lts = (vol_total_m3 * 1000.0) / 1.25;
 
-            // 4. Tiempo sellado y quieto (fase de latencia y estabilización anaerobia antes de cargar continuo)
-            const tiempo_quieto_dias = trh_dias; // El tiempo de reposo inicial es igual al TRH para asegurar colonización completa
+            // 4. Estiércol inicial requerido para el arranque (Día 1)
+            // Se calcula como el 15% en peso del volumen líquido útil. El 30% del volumen líquido útil debe ser INÓCULO ACTIVO (lodos anaerobios o contenido ruminal).
+            const estiercol_arranque_kg = Math.round(vol_util_real_lts * 0.15);
+            const inoculo_arranque_lts = Math.round(vol_util_real_lts * 0.30);
 
-            // 5. Equivalencia en recipientes caseros (Canecas de 200L e IBC de 1000L / 1 TON)
+            // 5. Tiempo sellado y quieto (fase de latencia anaerobia)
+            const tiempo_quieto_dias = trh_dias;
+
+            // 6. Equivalencia en recipientes caseros (Canecas de 200L e IBC de 1000L)
             let recipientes_html = "";
             if (vol_total_m3 <= 0.05) {
                 recipientes_html = "Escala insignificante para recipientes físicos.";
             } else if (vol_total_m3 <= 1.2) {
-                // Sugerir canecas de 200L
                 const canecas = Math.ceil(vol_total_m3 / 0.2);
                 recipientes_html = `Equivale a conectar <strong>${canecas} ${canecas === 1 ? 'caneca' : 'canecas'} azul ${canecas === 1 ? 'plástica' : 'plásticas'} de 200 Litros</strong> en serie. Ideal para autoconstrucción casera.`;
-            } else if (vol_total_m3 <= 4.0) {
-                // Sugerir tanques IBC de 1000L (1 TON)
+            } else if (vol_total_m3 <= 2.1) {
                 const ibcs = Math.ceil(vol_total_m3 / 1.0);
-                recipientes_html = `Equivale a conectar <strong>${ibcs} ${ibcs === 1 ? 'contenedor IBC' : 'contenedores IBC'} de 1.000 Litros (1 TON)</strong> en serie. Solución modular económica y de fácil instalación.`;
+                recipientes_html = `Equivale a conectar <strong>${ibcs} ${ibcs === 1 ? 'contenedor IBC' : 'contenedores IBC'} de 1.000 Litros (1 TON)</strong> en serie. Solución modular económica, limpia y fácil de instalar.`;
             } else {
-                // Sugerir biodigestor tubular de geomembrana o fosa revestida
                 recipientes_html = `Requiere un <strong>biodigestor tubular de geomembrana flexible</strong> o fosa revestida de <strong>${vol_total_m3.toFixed(1)} m³</strong>. Escala demasiado grande para recipientes plásticos portátiles.`;
             }
 
             // Actualizar la interfaz de usuario con los datos de dimensionamiento y arranque
             document.getElementById('res-trh-val').innerText = trh_dias + " días";
             document.getElementById('res-vol-val').innerText = vol_total_m3.toFixed(1) + " m³";
-            document.getElementById('res-arranque-val').innerText = estiercol_arranque_kg.toLocaleString('es-CO') + " kg";
+            document.getElementById('res-arranque-val').innerHTML = `${estiercol_arranque_kg.toLocaleString('es-CO')} kg <br><span style="font-size: 0.75rem; color: #555;">+ ${inoculo_arranque_lts.toLocaleString('es-CO')} L de Inóculo</span>`;
             document.getElementById('res-quieto-val').innerText = tiempo_quieto_dias + " días";
             document.getElementById('res-recipientes-val').innerHTML = recipientes_html;
 
@@ -1930,7 +1952,7 @@
                 // Mediana Escala
                 valor_proyecto = 4500000; // Biodigestor de fosa revestida mediano
                 cost_breakdown_html = `
-                    • <strong>Geomembrana de PVC/EPDM and Domo Flotante:</strong> $ 2.800.000 COP<br>
+                    • <strong>Geomembrana de PVC/EPDM y Domo Flotante:</strong> $ 2.800.000 COP<br>
                     • <strong>Excavación y Revestimiento de Fosa:</strong> $ 1.000.000 COP<br>
                     • <strong>Accesorios de carga, descarga y válvulas de seguridad:</strong> $ 700.000 COP
                 `;
@@ -1956,7 +1978,7 @@
                     } else {
                         recommendation.innerHTML = "<strong>Recomendación (Pequeña Escala / Casero):</strong> Se sugiere un <strong>Biodigestor casero modular con canecas plásticas de 200L conectadas en serie</strong>. Es una solución de autoconstrucción sumamente económica, portátil y fácil de limpiar por la misma familia.";
                     }
-                } else if (vol_total_m3 <= 4.0) {
+                } else if (vol_total_m3 <= 2.1) {
                     valor_proyecto = 950000; // Autoconstrucción modular con contenedores IBC de 1000L (1 TON)
                     const ibc_cnt = Math.ceil(vol_total_m3 / 1.0);
                     cost_breakdown_html = `
@@ -2247,15 +2269,15 @@
             document.getElementById('input-temp').value = 0;
             
             const biolSlider = document.getElementById('input-aprovechamiento-biol');
-            if (biolSlider) biolSlider.value = 30;
-            const displayBiol = document.getElementById('display-aprovechamiento-biol');
-            if (displayBiol) displayBiol.textContent = "30%";
-            
+            if (biolSlider) {
+                biolSlider.value = 30;
+                document.getElementById('display-aprovechamiento-biol').textContent = "30%";
+            }
             const reportSlider = document.getElementById('input-aprovechamiento-biol-report');
-            if (reportSlider) reportSlider.value = 30;
-            const displayReportBiol = document.getElementById('display-aprovechamiento-biol-report');
-            if (displayReportBiol) displayReportBiol.textContent = "30%";
-            
+            if (reportSlider) {
+                reportSlider.value = 30;
+                document.getElementById('display-aprovechamiento-biol-report').textContent = "30%";
+            }
             selectedBiolAprovechamiento = 30;
             
             highlightReferenceRow(1);
@@ -2282,15 +2304,15 @@
             document.getElementById('input-temp').value = 0;
             
             const biolSlider = document.getElementById('input-aprovechamiento-biol');
-            if (biolSlider) biolSlider.value = 30;
-            const displayBiol = document.getElementById('display-aprovechamiento-biol');
-            if (displayBiol) displayBiol.textContent = "30%";
-            
+            if (biolSlider) {
+                biolSlider.value = 30;
+                document.getElementById('display-aprovechamiento-biol').textContent = "30%";
+            }
             const reportSlider = document.getElementById('input-aprovechamiento-biol-report');
-            if (reportSlider) reportSlider.value = 30;
-            const displayReportBiol = document.getElementById('display-aprovechamiento-biol-report');
-            if (displayReportBiol) displayReportBiol.textContent = "30%";
-            
+            if (reportSlider) {
+                reportSlider.value = 30;
+                document.getElementById('display-aprovechamiento-biol-report').textContent = "30%";
+            }
             selectedBiolAprovechamiento = 30;
             
             highlightReferenceRow(1);
