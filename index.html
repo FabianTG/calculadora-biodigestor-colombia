@@ -1135,6 +1135,36 @@
                                 <div id="res-savings-detail" style="font-size: 0.8rem; text-align: center; color: #6E6259; font-style: italic;">Equivalente a 0 cilindros de gas al año.</div>
                             </div>
 
+                            <!-- Sección de Dimensionamiento y Puesta en Marcha (Arranque) -->
+                            <div style="background-color: #FAF6EE; padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.75rem;">
+                                <h4 style="font-weight: 700; color: var(--wood-dark); border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">🛠️ Dimensionamiento y Puesta en Marcha (Arranque)</h4>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+                                    <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color);">
+                                        <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block; margin-bottom: 4px;">Tiempo de Retención (TRH)</span>
+                                        <div id="res-trh-val" style="font-size: 1.1rem; font-weight: 800; color: var(--primary-green);">0 días</div>
+                                        <span style="font-size: 0.65rem; color: #6E6259; display: block; margin-top: 2px;">Permanencia del lodo</span>
+                                    </div>
+                                    <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color);">
+                                        <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block; margin-bottom: 4px;">Volumen del Reactor</span>
+                                        <div id="res-vol-val" style="font-size: 1.1rem; font-weight: 800; color: var(--primary-green);">0.0 m³</div>
+                                        <span style="font-size: 0.65rem; color: #6E6259; display: block; margin-top: 2px;">Capacidad física total</span>
+                                    </div>
+                                    <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color);">
+                                        <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block; margin-bottom: 4px;">Estiércol de Arranque (Día 1)</span>
+                                        <div id="res-arranque-val" style="font-size: 1.1rem; font-weight: 800; color: var(--accent-terracota);">0 kg</div>
+                                        <span style="font-size: 0.65rem; color: #6E6259; display: block; margin-top: 2px;">Para el primer llenado</span>
+                                    </div>
+                                    <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color);">
+                                        <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block; margin-bottom: 4px;">Tiempo Sellado y Quieto</span>
+                                        <div id="res-quieto-val" style="font-size: 1.1rem; font-weight: 800; color: var(--accent-terracota);">0 días</div>
+                                        <span style="font-size: 0.65rem; color: #6E6259; display: block; margin-top: 2px;">Fase de reposo anaerobio</span>
+                                    </div>
+                                </div>
+                                <div style="font-size: 0.75rem; color: #6E6259; line-height: 1.4; background-color: #FFFDF9; padding: 8px; border-radius: 6px; border-left: 3px solid var(--accent-terracota);">
+                                    💡 <strong>Consejo de Campo:</strong> Para acelerar la colonización bacteriana inicial, reemplace un 20% del agua del primer llenado por <strong>inóculo activo</strong> (lodo de otro biodigestor o estiércol de cerdo fresco). Mantenga la válvula de gas cerrada durante el reposo inicial.
+                                </div>
+                            </div>
+
                             <div id="res-recommendation" class="recommendation-block"></div>
 
                             <div id="res-alert-insufficient" class="needed-cows-alert" style="display: none;">
@@ -1741,6 +1771,39 @@
             } else {
                 resNeededCows.innerText = "N/A";
             }
+
+            // Cálculos reales de ingeniería de Dimensionamiento y Arranque (Puesta en Marcha)
+            // 1. Tiempo de Retención Hidráulica (TRH) continuo en días según temperatura
+            let trh_dias = 30; // Óptimo mesófilo
+            if (temp < 10) {
+                trh_dias = 90; // Frío extremo / psicrófilo bajo
+            } else if (temp < 18) {
+                // Interpolación lineal de TRH entre 10°C (90 días) y 18°C (60 días)
+                trh_dias = Math.round(90 - ((temp - 10.0) / (18.0 - 10.0)) * (90 - 60));
+            } else if (temp < 24) {
+                // Interpolación lineal de TRH entre 18°C (60 días) y 24°C (30 días)
+                trh_dias = Math.round(60 - ((temp - 18.0) / (24.0 - 18.0)) * (60 - 30));
+            } else {
+                trh_dias = 30; // Límite mínimo para digestores tubulares de bajo costo sin agitación
+            }
+
+            // 2. Volumen de líquido útil y volumen físico total (incluyendo 25% cámara de gas)
+            const mezcla_diaria_lts = manure_total_dia * 3.0; // 1 parte estiércol + 2 partes agua = 3 partes volumen total de mezcla diaria
+            const vol_util_lts = mezcla_diaria_lts * trh_dias;
+            const vol_total_m3 = (vol_util_lts * 1.25) / 1000.0; // 25% cámara de gas, convertido a metros cúbicos
+
+            // 3. Estiércol inicial requerido para el arranque (Día 1)
+            // Para el arranque inicial se requiere llenar el reactor con mezcla. El estiércol seco/puro representa aprox el 15% del volumen líquido útil total en peso.
+            const estiercol_arranque_kg = Math.round(vol_util_lts * 0.15);
+
+            // 4. Tiempo sellado y quieto (fase de latencia y estabilización anaerobia antes de cargar continuo)
+            const tiempo_quieto_dias = trh_dias; // El tiempo de reposo inicial es igual al TRH para asegurar colonización completa
+
+            // Actualizar la interfaz de usuario con los datos de dimensionamiento y arranque
+            document.getElementById('res-trh-val').innerText = trh_dias + " días";
+            document.getElementById('res-vol-val').innerText = vol_total_m3.toFixed(1) + " m³";
+            document.getElementById('res-arranque-val').innerText = estiercol_arranque_kg.toLocaleString('es-CO') + " kg";
+            document.getElementById('res-quieto-val').innerText = tiempo_quieto_dias + " días";
 
             const gasto_mensual_sin = personas * CONSUMO_GLP_PERSONA_DIA * 30 * PRECIO_GLP_KG;
             const ahorro_mensual = gasto_mensual_sin * Math.min(cobertura / 100, 1.0);
