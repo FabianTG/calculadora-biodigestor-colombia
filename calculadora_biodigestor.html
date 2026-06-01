@@ -420,12 +420,6 @@
         }
 
         .badge-cold {
-            background-color: #FEF9E7;
-            color: #B7950B;
-            border: 1px solid #FCF3CF;
-        }
-
-        .badge-cold {
             background-color: #EBF5FB;
             color: #2471A3;
             border: 1px solid #D4E6F1;
@@ -1156,25 +1150,25 @@
                             <div style="background-color: #FAF6EE; padding: 1.25rem; border-radius: 10px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.75rem;">
                                 <h4 style="font-weight: 700; color: var(--wood-dark); border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">🛠️ Dimensionamiento y Puesta en Marcha (Arranque)</h4>
                                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
-                                    <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color);">
+                                    <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color);" title="Tiempo de Retención Hidráulica: Días que debe permanecer la mezcla dentro del reactor para que las bacterias digieran el estiércol completamente.">
                                         <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block; margin-bottom: 4px;">Tiempo de Retención (TRH)</span>
                                         <div id="res-trh-val" style="font-size: 1.1rem; font-weight: 800; color: var(--primary-green);">0 días</div>
-                                        <span style="font-size: 0.65rem; color: #6E6259; display: block; margin-top: 2px;">Permanencia del lodo</span>
+                                        <span style="font-size: 0.65rem; color: #6E6259; display: block; margin-top: 2px;">Días que el estiércol se digiere</span>
                                     </div>
-                                    <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color);">
+                                    <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color);" title="Volumen físico total del biodigestor en metros cúbicos, incluyendo un 25% de espacio libre para almacenar el biogás generado (cámara de gas).">
                                         <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block; margin-bottom: 4px;">Volumen del Reactor</span>
                                         <div id="res-vol-val" style="font-size: 1.1rem; font-weight: 800; color: var(--primary-green);">0.0 m³</div>
-                                        <span style="font-size: 0.65rem; color: #6E6259; display: block; margin-top: 2px;">Capacidad física total</span>
+                                        <span style="font-size: 0.65rem; color: #6E6259; display: block; margin-top: 2px;">Tamaño total del biodigestor</span>
                                     </div>
-                                    <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color);">
-                                        <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block; margin-bottom: 4px;">Estiércol de Arranque (Día 1)</span>
+                                    <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color);" title="Cantidad de estiércol fresco (en kilogramos) y de inóculo bacteriano (en litros) requeridos el primer día para llenar y arrancar el biodigestor.">
+                                        <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block; margin-bottom: 4px;">Carga de Arranque (Día 1)</span>
                                         <div id="res-arranque-val" style="font-size: 1.1rem; font-weight: 800; color: var(--accent-terracota);">0 kg</div>
-                                        <span style="font-size: 0.65rem; color: #6E6259; display: block; margin-top: 2px;">Para el primer llenado</span>
+                                        <span style="font-size: 0.65rem; color: #6E6259; display: block; margin-top: 2px;">Estiércol + Inóculo inicial</span>
                                     </div>
-                                    <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color);">
-                                        <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block; margin-bottom: 4px;">Tiempo Sellado y Quieto</span>
+                                    <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px dashed var(--border-color);" title="Días que debe permanecer el sistema sellado y en reposo absoluto después del primer llenado para permitir que las bacterias colonicen el reactor antes de empezar las cargas diarias.">
+                                        <span style="font-size: 0.75rem; font-weight: 700; color: #887766; display: block; margin-bottom: 4px;">Tiempo de Espera Inicial</span>
                                         <div id="res-quieto-val" style="font-size: 1.1rem; font-weight: 800; color: var(--accent-terracota);">0 días</div>
-                                        <span style="font-size: 0.65rem; color: #6E6259; display: block; margin-top: 2px;">Fase de reposo anaerobio</span>
+                                        <span style="font-size: 0.65rem; color: #6E6259; display: block; margin-top: 2px;">Días sellado antes de usar</span>
                                     </div>
                                 </div>
                                 <div style="background-color: #FFFFFF; padding: 0.75rem; border-radius: 8px; border: 1px solid #D7CCC8; grid-column: span 2; display: flex; flex-direction: column; gap: 4px;">
@@ -1222,16 +1216,16 @@
                             <span style="font-size: 0.75rem; color: #6E6259; font-weight: 500;">Costo estimado de instalación</span>
                         </div>
                         <div>
-                            <span style="font-size: 0.8rem; font-weight: 700; color: #887766; text-transform: uppercase;">Cuota Inicial (Contado)</span>
+                            <span style="font-size: 0.8rem; font-weight: 700; color: #887766; text-transform: uppercase;">Aporte Propio (Efectivo)</span>
                             <div id="credit-cuota-ini-val" style="font-size: 1.6rem; font-weight: 800; color: var(--primary-green);">$ 0</div>
-                            <span style="font-size: 0.75rem; color: #6E6259; font-weight: 500;">Aporte inicial del productor</span>
+                            <span style="font-size: 0.75rem; color: #6E6259; font-weight: 500;">Dinero inicial que pone el productor</span>
                         </div>
                     </div>
 
                     
                     <div class="input-group slider-container" style="margin-top: 1rem;">
                         <div class="input-label">
-                            <span>Ajustar Cuota Inicial</span>
+                            <span>Ajustar Aporte Propio (Cuota Inicial)</span>
                             <span id="display-credit-cuota-ini" class="slider-value-display" style="color: var(--accent-terracota);">$ 0</span>
                         </div>
                         <input type="range" id="input-credit-cuota-ini" class="custom-slider" min="0" max="5000000" value="100000" step="50000" oninput="runCalculations()">
@@ -2154,10 +2148,10 @@
             
             let detail_text = "";
             if (cobertura_cuota_pct >= 100) {
-                detail_text = "<strong>¡Crédito Sostenible y Autofinanciable!</strong> El ahorro mensual total (<strong>$ " + Math.round(ahorro_mensual_total).toLocaleString('es-CO') + "</strong>, que incluye $ " + Math.round(ahorro_mensual_glp).toLocaleString('es-CO') + " en GLP y $ " + Math.round(ahorro_mensual_biol).toLocaleString('es-CO') + " en Biol) supera la cuota inicial (<strong>$ " + Math.round(cuota_1).toLocaleString('es-CO') + "</strong>). ¡El biodigestor se paga solo y genera excedentes desde el primer mes!";
+                detail_text = "<strong>Viabilidad Financiera Teórica (Autofinanciable):</strong> El ahorro mensual total estimado (<strong>$ " + Math.round(ahorro_mensual_total).toLocaleString('es-CO') + "</strong>, que incluye $ " + Math.round(ahorro_mensual_glp).toLocaleString('es-CO') + " en GLP y $ " + Math.round(ahorro_mensual_biol).toLocaleString('es-CO') + " en Biol) es superior a la cuota mensual del crédito (<strong>$ " + Math.round(cuota_1).toLocaleString('es-CO') + "</strong>). <br><span style='font-size: 0.75rem; color: #555; display: block; margin-top: 4px;'>⚠️ <strong>Nota de Realismo de Campo:</strong> Aunque matemáticamente el proyecto se autofinancia, recuerde que el ahorro de Biol es un **ahorro indirecto** (sustitución de fertilizante químico). Para que este dinero 'se sienta' en el bolsillo, debe aplicar juiciosamente el Biol en sus potreros o cultivos y evitar la compra de Urea. Además, el flujo de caja real dependerá de mantener el biodigestor cargado diariamente y protegido de los vientos fríos.</span>";
             } else {
                 const excedente = cuota_1 - ahorro_mensual_total;
-                detail_text = "<strong>Sostenibilidad Parcial.</strong> El ahorro mensual total (<strong>$ " + Math.round(ahorro_mensual_total).toLocaleString('es-CO') + "</strong>, que incluye $ " + Math.round(ahorro_mensual_glp).toLocaleString('es-CO') + " en GLP y $ " + Math.round(ahorro_mensual_biol).toLocaleString('es-CO') + " en Biol) cubre el <strong>" + Math.round(cobertura_cuota_pct) + "%</strong> de la primera cuota. El productor debe aportar un excedente mensual de <strong>$ " + Math.round(excedente).toLocaleString('es-CO') + "</strong> de su bolsillo.";
+                detail_text = "<strong>Retorno Parcial de Inversión:</strong> El ahorro mensual total estimado (<strong>$ " + Math.round(ahorro_mensual_total).toLocaleString('es-CO') + "</strong>, que incluye $ " + Math.round(ahorro_mensual_glp).toLocaleString('es-CO') + " en GLP y $ " + Math.round(ahorro_mensual_biol).toLocaleString('es-CO') + " en Biol) cubre el <strong>" + Math.round(cobertura_cuota_pct) + "%</strong> de la cuota mensual del crédito. El productor debe aportar un excedente de **$ " + Math.round(excedente).toLocaleString('es-CO') + " COP** mensuales de su bolsillo para pagar la cuota.<br><span style='font-size: 0.75rem; color: #555; display: block; margin-top: 4px;'>💡 <strong>Consejo Práctico:</strong> Este aporte de bolsillo disminuye a medida que los pastos fertilizados con Biol aumentan su rendimiento (lo que permite tener más animales o reducir gastos en concentrados), o si se logra una mayor fracción de recolección de estiércol en el establo.</span>";
             }
             
             document.getElementById('credit-sustainability-detail').innerHTML = detail_text;

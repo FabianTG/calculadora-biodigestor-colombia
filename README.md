@@ -50,7 +50,7 @@ Para facilitar la lectura y comprensión del modelo matemático, se presenta a c
 | $x_{\text{VS}}$ | Fracción de Sólidos Volátiles (VS) | $\text{kg VS/kg est.}$ | Constante | $0.12$ ($12\%$) | Rivera et al. (2025) |
 | $\text{VS}_{\text{diario}}$ | Masa de Sólidos Volátiles cargados al día | $\text{kg VS/día}$ | Variable | $P_{e,\text{total}} \times x_{\text{VS}}$ | Balance de materia |
 | $Y_{\text{CH}_4}$ | Rendimiento específico de metano | $\text{m}^3\text{ CH}_4\text{/kg VS}$ | Constante | $0.17$ | López et al. (2025); Andrade (2020) |
-| $C_t$ | Cobertura / Coeficiente térmico de actividad | Adimensional | Variable | Discreto: 0,00 / 0,55 / 0,75 / 1,00 según banda climática | Tavera-Ruiz et al. (2023) |
+| $C_t$ | Cobertura / Coeficiente térmico de actividad | Adimensional | Variable | Segmentado-Interpolado continuo: 0,00 a 1,00 según temperatura ambiente | Tavera-Ruiz et al. (2023) |
 | $V_{\text{CH}_4}$ | Producción diaria de metano | $\text{m}^3\text{ CH}_4\text{/día}$ | Variable | $\text{VS}_{\text{diario}} \times Y_{\text{CH}_4} \times C_t$ | Ecuación biológica central |
 | $d_{\text{coc}}$ | Demanda diaria de cocción per cápita | $\text{kg GLP/pers}\cdot\text{día}$ | Constante | $0.166$ | Inversiones GLP (2026); UPME (2024) |
 | $\eta_{\text{GLP}}$ | Equivalencia térmica Biogás-GLP | $\text{kg GLP/m}^3\text{ CH}_4$ | Constante | $0.45$ | UPME (2024) |
@@ -75,11 +75,12 @@ P_{e,\text{total}} = N_{\text{bov}} \times p_{\text{est}} \times f_{\text{rec}}
 ```
   Donde $x_{\text{VS}}$ es la fracción de Sólidos Volátiles sobre estiércol fresco ($0.12\text{ kg VS/kg estiércol}$).
 * **Rendimiento Específico de Metano ($Y_{\text{CH}_4}$):** Se adopta un factor conservador de $0.17\text{ m}^3\text{ CH}_4\text{/kg VS}$ alimentado (Andrade et al., 2020; López et al., 2025).
-* **Efecto de la Temperatura (Coeficiente de Actividad Biológica $C_t$):** La digestión anaeróbica se ve afectada críticamente por la temperatura media anual ($T$ en °C) y se clasifica en tres bandas climáticas discretas de actividad (Tavera-Ruiz et al., 2023):
-  * **Inhibido por Frío ($T < 10\text{ °C}$):** El sistema se inhibe por completo ($C_t = 0.00$, producción nula).
-  * **Clima Frío ($10\text{ °C} \le T < 18\text{ °C}$):** Actividad reducida por frío ($C_t = 0.55$, rendimiento neto de $0.0935\text{ m}^3\text{ CH}_4\text{/kg VS}$).
-  * **Clima Templado ($18\text{ °C} \le T \le 24\text{ °C}$):** Actividad moderada ($C_t = 0.75$, rendimiento neto de $0.1275\text{ m}^3\text{ CH}_4\text{/kg VS}$).
-  * **Clima Cálido ($T > 24\text{ °C}$):** Actividad óptima mesofílica ($C_t = 1.00$, rendimiento neto de $0.1700\text{ m}^3\text{ CH}_4\text{/kg VS}$).
+* **Efecto de la Temperatura (Coeficiente de Actividad Biológica $C_t$):** La digestión anaeróbica se ve afectada críticamente por la temperatura media anual ($T$ en °C). Para evitar saltos matemáticos discretos e irreales, la calculadora implementa una **interpolación lineal continua por segmentos** basada en la termofilia bacteriana (Tavera-Ruiz et al., 2023). Adicionalmente, por debajo de los 10 °C no se asume una inhibición matemática total (producción nula), sino que se calcula una tasa de producción mínima pero existente (actividad psicrófila basal) para reflejar la realidad de los biodigestores forrados o aislados en el páramo colombiano:
+  * **Inhibición Severa por Frío ($T < -5\text{ °C}$):** Actividad nula ($C_t = 0.00$).
+  * **Rango de Frío Extremo ($-5\text{ °C} \le T < 10\text{ °C}$):** Interpolación lineal continua entre $C_t = 0.00$ y $C_t = 0.30$.
+  * **Rango de Clima Frío ($10\text{ °C} \le T < 18\text{ °C}$):** Interpolación lineal continua entre $C_t = 0.30$ y $C_t = 0.75$.
+  * **Rango de Clima Templado ($18\text{ °C} \le T \le 24\text{ °C}$):** Interpolación lineal continua entre $C_t = 0.75$ y $C_t = 1.00$.
+  * **Rango de Clima Cálido ($T > 24\text{ °C}$):** Actividad óptima mesofílica constante ($C_t = 1.00$, rendimiento neto de $0.1700\text{ m}^3\text{ CH}_4\text{/kg VS}$).
 * **Producción Diaria de Metano ($V_{\text{CH}_4}$):**
 ```math
 V_{\text{CH}_4} = \text{VS}_{\text{diario}} \times Y_{\text{CH}_4} \times C_t
