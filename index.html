@@ -1804,7 +1804,9 @@
                 resViability.className = "viability-badge viability-no";
             }
 
-            const vacas_requeridas = Math.ceil(demanda_hogar / oferta_por_bovino);
+            // Se calcula el número de bovinos necesarios basándose en la demanda de biogás del hogar y la oferta teórica por bovino
+            const oferta_por_bovino = manure_per_animal * VS_FRACCION * clima.rendimiento;
+            const vacas_requeridas = oferta_por_bovino > 0 ? Math.ceil(demanda_hogar_biogas / oferta_por_bovino) : 0;
             if (isFinite(vacas_requeridas) && vacas_requeridas > 0) {
                 resNeededCows.innerText = vacas_requeridas + " " + (vacas_requeridas === 1 ? "bovino" : "bovinos");
             } else {
