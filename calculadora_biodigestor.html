@@ -1035,10 +1035,10 @@
                         <div class="input-group slider-container">
                             <div class="input-label">
                                 <span>Temperatura Media Anual</span>
-                                <span id="display-temp" class="slider-value-display">0.0 °C</span>
+                                <span id="display-temp" class="slider-value-display">12.0 °C</span>
                             </div>
                             <p class="input-description">La temperatura ambiente regula la velocidad de digestión bacteriana psicrófila/mesófila en sistemas tubulares de bajo costo.</p>
-                            <input type="range" id="input-temp" class="custom-slider" min="-5" max="40" value="0" step="0.5" oninput="updateTempDisplay()">
+                            <input type="range" id="input-temp" class="custom-slider" min="8.0" max="40" value="12.0" step="0.5" oninput="updateTempDisplay()">
                             <div id="badge-clima" class="climate-badge badge-cold">
                                 ❄️ Clima Frío (&lt;18°C) – factor 0.55
                             </div>
@@ -1554,14 +1554,16 @@
             let cssClass = "";
             let badgeText = "";
 
-            if (temp < -5) {
-                factor = 0.00;
-                name = "Congelación Extrema";
-                cssClass = "climate-badge badge-cold";
-                badgeText = "❄️ Congelación Extrema (< -5°C) – factor 0.00";
-            } else if (temp < 10) {
-                // Interpolación lineal entre -5°C (factor 0.0) y 10°C (factor 0.30)
-                factor = 0.00 + ((temp - (-5)) / (10 - (-5))) * (0.30 - 0.00);
+            if (temp < 10) {
+                // Interpolación lineal entre 8.0°C (factor 0.20) y 10.0°C (factor 0.30)
+                // Se establece el mínimo en 8.0°C por restricciones de la Frontera Agrícola de Colombia (UPRA) y viabilidad de digestión anaerobia de bajo costo
+                const temp_min_lim = 8.0;
+                const factor_min_lim = 0.20;
+                if (temp < temp_min_lim) {
+                    factor = 0.00;
+                } else {
+                    factor = factor_min_lim + ((temp - temp_min_lim) / (10.0 - temp_min_lim)) * (0.30 - factor_min_lim);
+                }
                 name = "Inhibición por Frío";
                 cssClass = "climate-badge badge-cold";
                 badgeText = "⚠️ Inhibición por Frío (<10°C) – factor " + factor.toFixed(2);
@@ -2242,7 +2244,7 @@
             document.getElementById('input-bovinos').value = 0;
             document.getElementById('input-fraccion').value = 0;
             document.getElementById('input-personas').value = 1;
-            document.getElementById('input-temp').value = 0;
+            document.getElementById('input-temp').value = 12.0;
             
             const biolSlider = document.getElementById('input-aprovechamiento-biol');
             if (biolSlider) {
@@ -2277,7 +2279,7 @@
             document.getElementById('input-bovinos').value = 0;
             document.getElementById('input-fraccion').value = 0;
             document.getElementById('input-personas').value = 1;
-            document.getElementById('input-temp').value = 0;
+            document.getElementById('input-temp').value = 12.0;
             
             const reportSlider = document.getElementById('input-aprovechamiento-biol-report');
             if (reportSlider) {

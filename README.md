@@ -76,9 +76,9 @@ P_{e,\text{total}} = N_{\text{bov}} \times p_{\text{est}} \times f_{\text{rec}}
   Donde $x_{\text{VS}}$ es la fracción de Sólidos Volátiles sobre estiércol fresco ($0.12\text{ kg VS/kg estiércol}$).
 * **Rendimiento Específico de Metano ($Y_{\text{CH}_4}$):** Se adopta un factor conservador de $0.17\text{ m}^3\text{ CH}_4\text{/kg VS}$ alimentado (Andrade et al., 2020; López et al., 2025).
 * **Efecto de la Temperatura (Coeficiente de Actividad Biológica $C_t$):** La digestión anaeróbica se ve afectada críticamente por la temperatura media anual ($T$ en °C). Para evitar saltos matemáticos discretos e irreales, la calculadora implementa una **interpolación lineal continua por segmentos** basada en la termofilia bacteriana (Tavera-Ruiz et al., 2023). Adicionalmente, por debajo de los 10 °C no se asume una inhibición matemática total (producción nula), sino que se calcula una tasa de producción mínima pero existente (actividad psicrófila basal) para reflejar la realidad de los biodigestores forrados o aislados en el páramo colombiano:
-  * **Inhibición Severa por Frío ($T < -5\text{ °C}$):** Actividad nula ($C_t = 0.00$).
-  * **Rango de Frío Extremo ($-5\text{ °C} \le T < 10\text{ °C}$):** Interpolación lineal continua entre $C_t = 0.00$ y $C_t = 0.30$.
-  * **Rango de Clima Frío ($10\text{ °C} \le T < 18\text{ °C}$):** Interpolación lineal continua entre $C_t = 0.30$ y $C_t = 0.75$.
+  * **Límite de Frontera Agrícola y Viabilidad de Bajo Costo ($T < 8.0\text{ °C}$):** No aplicable para la ganadería bovina colombiana (según delimitación de frontera agrícola de la UPRA e inactividad biológica total sin calefacción industrial activa).
+  * **Rango de Frío Extremo ($8.0\text{ °C} \le T < 10.0\text{ °C}$):** Interpolación lineal continua entre $C_t = 0.20$ y $C_t = 0.30$, representando el límite físico de adaptación biológica en el trópico alto (por ejemplo, Túquerres).
+  * **Rango de Clima Frío ($10.0\text{ °C} \le T < 18.0\text{ °C}$):** Interpolación lineal continua entre $C_t = 0.30$ y $C_t = 0.75$.
   * **Rango de Clima Templado ($18\text{ °C} \le T \le 24\text{ °C}$):** Interpolación lineal continua entre $C_t = 0.75$ y $C_t = 1.00$.
   * **Rango de Clima Cálido ($T > 24\text{ °C}$):** Actividad óptima mesofílica constante ($C_t = 1.00$, rendimiento neto de $0.1700\text{ m}^3\text{ CH}_4\text{/kg VS}$).
 * **Producción Diaria de Metano ($V_{\text{CH}_4}$):**
