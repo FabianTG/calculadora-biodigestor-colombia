@@ -1749,13 +1749,18 @@
             document.getElementById('res-biol').innerText = Math.round(biol_dia) + " L/día (" + Math.round(biol_mes).toLocaleString('es-CO') + " L/mes)";
             document.getElementById('res-biol-ahorro-value').innerText = "$ " + Math.round(biol_ahorro_anual).toLocaleString('es-CO') + " /año";
 
-            const demanda_hogar = 4.20 * personas;
-            const oferta_por_bovino = manure_per_animal * VS_FRACCION * clima.rendimiento * PCI_METANO * EFICIENCIA_FOGON;
-            const oferta_total = bovinos * oferta_por_bovino;
+            // Demanda del hogar calculada en m³ de biogás equivalentes para cocinar (demanda útil de cocina)
+            // Cada persona consume 0.166 kg de GLP/día. 
+            // Con PCI_GLP = 46.0 MJ/kg, demanda energética útil por persona = 0.166 kg * 46.0 MJ/kg = 7.636 MJ/día.
+            // Para cubrir esto con biogás (PCI_METANO = 35.8 MJ/m³ y eficiencia de fogón de biogás = 55%):
+            // Biogás necesario por persona-día = 7.636 MJ / (35.8 MJ/m³ * 0.55) = 0.3878 m³ de biogás/persona-día.
+            // Para simplificar y unificar con el resto del modelo:
+            const biogas_necesario_por_persona = (0.166 * PCI_GLP) / (PCI_METANO * EFICIENCIA_FOGON); // ~0.3878 m³ de biogás/persona-día
+            const demanda_hogar_biogas = biogas_necesario_por_persona * personas; // m³ de biogás/día necesarios en total para el hogar
 
             let cobertura = 0;
-            if (demanda_hogar > 0) {
-                cobertura = (oferta_total / demanda_hogar) * 100;
+            if (demanda_hogar_biogas > 0) {
+                cobertura = (biogas_dia / demanda_hogar_biogas) * 100;
             }
             
             const display_cobertura = Math.round(cobertura);
@@ -1821,13 +1826,14 @@
             // Si el hato produce más estiércol del necesario para cubrir el 100% de la demanda del hogar, 
             // limitamos el estiércol cargado al sistema al óptimo necesario. Esto evita sobrecargar el reactor
             // y que el campesino tenga que recolectar toneladas de estiércol de forma innecesaria.
-            const biogás_necesario_dia = (4.20 * personas) / (PCI_METANO * EFICIENCIA_FOGON); // m3 biogás/día necesarios para cubrir la cocina
+            // NOTA DE CONTROL: Solo se optimiza si la cobertura real supera el 110%, lo que garantiza que hay excedente de gas.
+            const biogás_necesario_dia = demanda_hogar_biogas; // m3 biogás/día necesarios para cubrir la cocina
             const biogas_por_kg_manure = VS_FRACCION * clima.rendimiento; // m3 biogás producido por cada kg de estiércol
             
             let manure_efectivo_dia = manure_total_dia;
             let es_optimizada_demanda = false;
             
-            if (biogas_por_kg_manure > 0) {
+            if (biogas_por_kg_manure > 0 && cobertura > 110) {
                 const manure_requerido_demanda = biogás_necesario_dia / biogas_por_kg_manure;
                 // Si el hato produce más del doble de lo requerido, limitamos la carga para mantener el reactor pequeño y viable
                 if (manure_total_dia > manure_requerido_demanda * 1.2) {
