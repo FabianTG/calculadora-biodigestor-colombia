@@ -25,7 +25,7 @@
 
 ## 📝 Resumen del Proyecto
 
-Esta herramienta interactiva permite a productores rurales, extensionistas técnicos y académicos evaluar de manera rápida, confiable y con rigor científico la viabilidad técnica, el potencial de generación energética y el retorno de inversión de la instalación de un biodigestor tubular de bajo costo en fincas colombianas. 
+Esta herramienta interactiva y de acceso libre permite a productores rurales, extensionistas técnicos y académicos evaluar la prefactibilidad de instalar un biodigestor tubular en fincas ganaderas bovinas colombianas. A partir de tres datos ingresados por el usuario —número de bovinos, personas en el hogar y temperatura media anual del predio—, la calculadora estima la cobertura energética de cocción, el potencial de generación de biogás y Biol, el ahorro económico por sustitución de GLP y urea, y clasifica automáticamente el sistema según dos umbrales diferenciados: autoconsumo energético familiar y viabilidad económica de la inversión. Además, incluye un módulo de simulación de crédito de fomento Finagro y un reporte de valorización de urea, lo que la convierte en una herramienta integral de toma de decisiones con respaldo en los parámetros calibrados del modelo paramétrico del estudio.
 
 El modelo matemático y los parámetros biológicos han sido calibrados y validados estrictamente bajo las realidades climáticas, geográficas y socioeconómicas de Colombia, utilizando datos de la literatura científica nacional y tarifas de energéticos vigentes a 2026.
 
